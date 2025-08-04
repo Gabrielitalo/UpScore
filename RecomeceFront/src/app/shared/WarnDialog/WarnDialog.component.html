@@ -1,0 +1,11 @@
+<h2 *ngIf="!this.data.title" mat-dialog-title>Confirmar ação</h2>
+<h2 *ngIf="this.data.title" mat-dialog-title>{{this.data.title}}</h2>
+<mat-dialog-content>
+  <p *ngIf="this.data.content"><strong>{{this.data.content}}</strong></p>
+  <p *ngIf="this.data.canRevert == false">Esta ação é irreversível e não poderá ser desfeita.</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onAction(false)">Cancelar</button>
+  <button mat-flat-button color="warn" (click)="onAction(true)">Sim</button>
+</mat-dialog-actions>

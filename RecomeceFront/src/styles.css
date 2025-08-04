@@ -1,0 +1,436 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap'); */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+:root {
+  /* --primary: #005f86; */
+  --primary: #016087;
+  --primaryGray: #f6f6f6;
+  --secondGray: #e9e9e9;
+  --whiteGray: #959595;
+  --borderColor: #b6b6b6b4;
+  --fontColorPrimary: #016087;
+  --red: #e53e3e;
+  --green: #38a169;
+  --orange: #e17f11;
+}
+
+body {
+  margin: 0;
+  /* font-family: Roboto, "Helvetica Neue", sans-serif; */
+  /* font-family: 'Poppins', sans-serif; */
+  font-family: "Inter Tight Regular", sans-serif;
+}
+
+.component-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #57098426;
+  padding-bottom: 5px;
+}
+
+.grid-container {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  height: 85vh;
+  padding: 10px;
+  background-color: #fff;
+}
+
+.grid-container-with-filter {
+  height: 75vh !important;
+}
+
+.grid-container-mini {
+  height: auto !important;
+  max-height: 250px !important;
+}
+
+/* Estiliza a borda das células superiores e inferiores */
+.grid-container thead tr:first-child th:first-child {
+  border-top-left-radius: 10px;
+}
+
+.grid-container thead tr:first-child th:last-child {
+  border-top-right-radius: 10px;
+}
+
+.grid-container tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 10px;
+}
+
+.grid-container tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 10px;
+}
+
+.form-detalhes {
+  background-color: #fff;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  min-height: 95vh;
+}
+
+.dialog-component {
+  padding: 10px;
+  overflow: auto;
+  max-height: 95vh;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.card-grid {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.card-item {
+  background-color: white;
+  border: 1px solid #e1e1e1;
+  padding: 10px;
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: border 0.5s ease, box-shadow 0.5s ease;
+}
+
+.card-item:hover {
+  border: 1px solid var(--primary);
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.cs-table {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  /* Ocupa 100% da altura do contêiner pai */
+}
+
+.cs-table-header {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid var(--borderColor);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--fontColorPrimary);
+  align-items: center;
+}
+
+.cs-table-header > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cs-table-header-mini p {
+  font-size: 12px !important;
+}
+
+.cs-table-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  height: 75vh;
+}
+
+.cs-table-body-mini {
+  height: auto !important;
+}
+
+.cs-table-body-mini > div {
+  font-size: 11px !important;
+}
+
+.cs-table-row {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid var(--borderColor);
+  color: var(--fontColorPrimary);
+  font-size: 14px;
+  transition: border 0.5s ease, box-shadow 0.5s ease;
+  align-items: center;
+}
+
+.cs-table-row:hover {
+  border: 1px solid var(--primary);
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+.cs-table-totals {
+  display: flex;
+  font-size: 12px;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  font-weight: 600;
+}
+
+/* .cs-table-totals {
+  margin: 5px;
+} */
+
+.btns-dialog-footer {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.only-text input,
+.only-text select {
+  border: none !important;
+  pointer-events: none;
+}
+
+.form-field {
+  position: relative;
+  width: 100%;
+  font-family: Arial, sans-serif;
+}
+
+.form-field input,
+.form-field select {
+  padding: 14px 12px 6px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 90%;
+  outline: none;
+  transition: border-color 0.2s;
+  background: white;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.form-field label {
+  position: absolute;
+  top: 14px;
+  left: 12px;
+  color: #999;
+  font-size: 16px;
+  pointer-events: none;
+  transition: 0.2s ease all;
+  background: white;
+  padding: 0 4px;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+  border-color: var(--primary);
+}
+
+.form-field input:focus + label,
+.form-field input:not(:placeholder-shown) + label,
+.form-field select:focus + label,
+.form-field select:valid + label {
+  top: 0px;
+  background-color: transparent !important;
+  font-size: 12px;
+  color: var(--primary);
+}
+
+.subtitle-form {
+  color: var(--primary);
+  margin-left: 10px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+.a4-page {
+  width: 210mm;
+  height: 297mm;
+  padding: 0;
+  box-sizing: border-box;
+  background: white;
+  page-break-after: always;
+}
+
+.grid-filters {
+  display: flex;
+  align-items: center;
+}
+
+.btns-header-groups {
+  display: flex;
+  gap: 5px;
+}
+
+.flex-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-center-c {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-center-v {
+  display: flex;
+  align-items: center;
+}
+
+.text-obs {
+  color: #777;
+}
+
+.grid-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.grid-actions mat-icon {
+  font-size: 16px !important;
+  background-color: #e2e8f06e;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.mat-mdc-extended-fab {
+  height: 35px !important;
+}
+
+.delete-p {
+  color: var(--red);
+}
+
+.gerado {
+  background-color: #3182ce;
+  border-radius: 5px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  color: #fff;
+}
+
+.negociacao {
+  background-color: var(--orange);
+  border-radius: 5px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  color: #fff;
+}
+
+.aprovado {
+  background-color: var(--green);
+  border-radius: 5px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  color: #fff;
+}
+
+.recusado {
+  background-color: var(--red);
+  border-radius: 5px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  color: #fff;
+}
+
+.card-success {
+  border: 1px solid var(--green) !important;
+}
+
+.card-warning {
+  border: 1px solid var(--orange) !important;
+}
+
+.d-none {
+  display: none !important;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1050;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  opacity: 0.5;
+}
+
+.modal-backdrop.fade {
+  opacity: 0;
+  transition: opacity 0.15s linear;
+}
+
+.modal-backdrop.show {
+  opacity: 0.5;
+}
+
+.container-etapas {
+  margin-top: 20px;
+}
+
+.tabela-row {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.title-detalhes {
+  color: var(--primary);
+  margin-left: 10px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.grid-card-container {
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  gap: 10px;
+  height: 65vh;
+  overflow: auto;
+}
+
+.grid-card-row {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.grid-card-item{
+  margin-bottom: 10px;
+}
+
+.grid-card-item-split {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.grid-card-item-split > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.grid-card-item > mat-icon{
+  color: var(--primary) !important;
+}
+
+.grid-card-item-split > div p{
+  margin: 3px;
+}

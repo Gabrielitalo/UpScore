@@ -1,0 +1,30 @@
+<div class="title">
+  <p>Participações Societárias</p>
+  <p>Vínculos do documento como sócio em outras empresas</p>
+</div>
+<div class="sub-container">
+  <p class="sub-title"><strong>Detalhes das participações Societárias</strong> Exibindo
+    {{this.data.summary.count}} registros</p>
+  <div class="serasa-table-container">
+    <div class="serasa-table-header">
+      <div>CNPJ</div>
+      <div>Razão Social</div>
+      <div>Capital</div>
+      <div>UF</div>
+      <div>Situação Receita Federal</div>
+      <div>Data situação</div>
+      <div>Atualizado em</div>
+    </div>
+    <div class="serasa-table-body">
+      <div class="serasa-table-row" *ngFor="let row of data.partnershipResponse">
+        <div>{{this.cc.MascaraCnpjCpf(row.businessDocument) }}</div>
+        <div>{{row.companyName}}</div>
+        <div>{{row.participationPercentage}}%</div>
+        <div>{{row.companyState}}</div>
+        <div>{{row.companyStatus}}</div>
+        <div>{{this.cc.DataFormatoBr(row.updateDate)}}</div>
+        <div>{{this.cc.DataFormatoBr(row.companyStatusDate)}}</div>
+      </div>
+    </div>
+  </div>
+</div>

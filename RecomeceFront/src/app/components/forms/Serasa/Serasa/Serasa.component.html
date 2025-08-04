@@ -1,0 +1,158 @@
+<div class="component-header">
+  <app-Header [titulo]="'Consultas'"></app-Header>
+
+  <div
+    class="btns-header-groups"
+    *ngIf="
+      this.auth.isAdm() || this.auth.isConsulta() || this.auth.isAssociacao()
+    "
+  >
+    <button mat-fab [extended]="!isMobile" color="primary" matTooltip="Nova Consulta" (click)="newQuery()">
+      <mat-icon>add</mat-icon>
+      <span *ngIf="isMobile == false"> Nova Consulta</span>
+    </button>
+
+    <button mat-fab [extended]="!isMobile" color="primary" matTooltip="Comprar créditos" (click)="this.router.navigate(['FinanceiroConsultas/1'])">
+      <mat-icon>shopping_cart</mat-icon>
+      <span *ngIf="isMobile == false"> Comprar créditos</span>
+    </button>
+  </div>
+</div>
+
+<div class="grid-filters">
+  <mat-form-field appearance="fill" class="col-2" *ngIf="isMobile == false">
+    <mat-label>CPF/CNPJ</mat-label>
+    <input
+      matInput
+      [(ngModel)]="this.filtros.inscricao"
+      name="inscricao"
+      maxlength="18"
+      onkeydown="MascaraCnpjCpf(this)"
+    />
+  </mat-form-field>
+  <mat-form-field appearance="fill" [ngClass]="{ 'col-2': isMobile == false, 'col-9': isMobile == true }">
+    <mat-label>Nome</mat-label>
+    <input matInput [(ngModel)]="this.filtros.nome" name="nome" />
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="col-2" *ngIf="isMobile == false">
+    <mat-label>Data Inicial</mat-label>
+    <input
+      matInput
+      [(ngModel)]="this.filtros.dataInicial"
+      name="dataInicial"
+      onkeydown="formatDate(this)"
+    />
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="col-2" *ngIf="isMobile == false">
+    <mat-label>Data Final</mat-label>
+    <input
+      matInput
+      [(ngModel)]="this.filtros.dataFinal"
+      name="dataFinal"
+      onkeydown="formatDate(this)"
+    />
+  </mat-form-field>
+  <button mat-fab [extended]="!isMobile" color="primary" (click)="filter()">
+    <mat-icon>search</mat-icon>
+    <span *ngIf="isMobile == false">Buscar</span>
+  </button>
+</div>
+<div class="cs-table-totals" *ngIf="this.pagination?.itens?.length > 0">
+  <p>{{ this.pagination.itens.length }} resultado(s)</p>
+</div>
+<div
+  class="grid-card-container"
+  (scroll)="onScroll($event)"
+  *ngIf="isMobile == true"
+>
+  <div class="grid-card-row" *ngFor="let row of this.pagination?.itens">
+    <div class="grid-card-item flex-center-c">
+      <p>
+        <strong
+          >{{ row.nome }} - {{ this.cc.MascaraCnpjCpf(row.inscricao) }}</strong
+        >
+      </p>
+    </div>
+    <div class="grid-card-item">
+      <div class="grid-card-item-split">
+        <div>
+          <p><mat-icon color="primary">insert_chart</mat-icon> SCORE</p>
+          <p>{{ this.cc.converterDecimalParaInt(row.score) }}</p>
+        </div>
+        <div>
+          <p><mat-icon color="primary">calendar_month</mat-icon>Data</p>
+          <p>{{ this.cc.DataTempoFormatoBr(row.dataHoraConsulta) }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="grid-card-item">
+      <div class="grid-card-item-split">
+        <div>
+          <p><mat-icon color="primary">assignment</mat-icon> Consulta</p>
+          <p>{{ row.nomeConsulta }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="grid-card-item">
+      <div class="grid-card-item-split">
+        <div (click)="getAdv(row)">
+          <p>
+            <mat-icon color="primary">picture_as_pdf</mat-icon> Visualizar
+            Consulta
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="grid-container grid-container-with-filter" *ngIf="!isMobile">
+  <div class="cs-table" *ngIf="this.pagination?.itens?.length > 0">
+    <div class="cs-table-header">
+      <div class="col-2">
+        <p>Data</p>
+      </div>
+      <div class="col-3">
+        <p>Cliente</p>
+      </div>
+      <div class="col-2">
+        <p>CPF/CNPJ</p>
+      </div>
+      <div class="col-2">
+        <p>Consulta</p>
+      </div>
+      <div class="col-1">
+        <p>Score</p>
+      </div>
+      <div class="col-1">
+        <p>Ações</p>
+      </div>
+    </div>
+    <div class="cs-table-body" (scroll)="onScroll($event)">
+      <div class="cs-table-row" *ngFor="let row of this.pagination?.itens">
+        <div class="col-2">
+          <p>{{ this.cc.DataTempoFormatoBr(row.dataHoraConsulta) }}</p>
+        </div>
+        <div class="col-3">
+          <p>{{ row.nome }}</p>
+        </div>
+        <div class="col-2 text-right">
+          <p>{{ this.cc.MascaraCnpjCpf(row.inscricao) }}</p>
+        </div>
+        <div class="col-2 text-center">
+          <p>{{ row.nomeConsulta }}</p>
+        </div>
+        <div class="col-1 text-right">
+          <p>{{ this.cc.converterDecimalParaInt(row.score) }}</p>
+        </div>
+        <div class="col-1 grid-actions">
+          <p (click)="getAdv(row)">
+            <mat-icon>picture_as_pdf</mat-icon>
+          </p>
+          <!-- <p (click)="getDetails(row.markID)">
+            <mat-icon>picture_as_pdf</mat-icon>
+          </p> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

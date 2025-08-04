@@ -1,0 +1,96 @@
+Insert Into CadProdutos(Situacao, DataInicial, Codigo, Descricao, Custo)
+Select 1, '2025-01-01', '1', 'Reabilitação de Crédito - 12 Meses', 400;
+
+
+Insert Into CadProdutosFaixas(Fk_CadProdutos, ValorDivida, ValorServico, ValorEntradaMinima)
+Select 1, 20000, 1693, 1;
+
+Insert Into CadProdutosFaixas(Fk_CadProdutos, ValorDivida, ValorServico, ValorEntradaMinima)
+Select 1, 50000, 1993, 1;
+
+Insert Into CadProdutosFaixas(Fk_CadProdutos, ValorDivida, ValorServico, ValorEntradaMinima)
+Select 1, 100000, 2993, 1;
+
+Insert Into CadProdutosFaixas(Fk_CadProdutos, ValorDivida, ValorServico, ValorEntradaMinima)
+Select 1, 250000, 3993, 1;
+
+Insert Into CadProdutosFaixas(Fk_CadProdutos, ValorDivida, ValorServico, ValorEntradaMinima)
+Select 1, 500000, 5993, 1;
+
+Insert Into CadProdutosFaixas(Fk_CadProdutos, ValorDivida, ValorServico, ValorEntradaMinima)
+Select 1, 1000000, 9993, 1;
+
+Insert Into CadProdutosFaixas(Fk_CadProdutos, ValorDivida, ValorServico, ValorEntradaMinima)
+Select 1, 999999999.00, 25000, 1;
+
+
+
+Insert Into CadProdutos(Situacao, DataInicial, Codigo, Descricao, Custo)
+Select 1, '2025-01-01', '2', 'Reabilitação de Crédito - PROMO', 400;
+
+Insert Into CadProdutosFaixas(Fk_CadProdutos, ValorDivida, ValorServico, ValorEntradaMinima)
+Select 2, 999999999.00, 990, 990;
+
+
+Insert Into CadProdutosFaixasPagamento(Fk_CadProdutosFaixas, Tipo, Modo, ValorMaxParcelas, Descricao)
+Select 1, 1, 3, 0, '10% Desconto à Vista';
+
+Insert Into CadProdutosFaixasPagamento(Fk_CadProdutosFaixas, Tipo, Modo, ValorMaxParcelas, Descricao)
+Select 1, 2, 2, 12, 'Cartão de Crédito em até 12x (sem juros)';
+
+Insert Into CadProdutosFaixasPagamento(Fk_CadProdutosFaixas, Tipo, Modo, ValorMaxParcelas, Descricao)
+Select 1, 2, 1, 3, 'Entrada + 2 Parcelas';
+
+Insert Into CadProdutosFaixasPagamento(Fk_CadProdutosFaixas, Tipo, Modo, ValorMaxParcelas, Descricao) -- A vista
+Select 2, 1, 3, 0, '10% Desconto à Vista';
+
+Insert Into CadProdutosFaixasPagamento(Fk_CadProdutosFaixas, Tipo, Modo, ValorMaxParcelas, Descricao) -- Cartão de crédito
+Select 2, 2, 2, 10, 'Cartão de Crédito em até 10x (sem juros)';
+
+Insert Into CadProdutosFaixasPagamento(Fk_CadProdutosFaixas, Tipo, Modo, ValorMaxParcelas, Descricao) -- Boleto
+Select 2, 2, 1, 4, 'Entrada + 3 Parcelas';
+
+Insert Into CadProdutosFaixasPagamento(Fk_CadProdutosFaixas, Tipo, Modo, ValorMaxParcelas, Descricao) -- A vista
+Select 3, 1, 3, 0, '10% Desconto à Vista';
+
+Insert Into CadProdutosFaixasPagamento(Fk_CadProdutosFaixas, Tipo, Modo, ValorMaxParcelas, Descricao) -- Boleto
+Select 3, 2, 1, 5, 'Entrada + 4 Parcelas';
+
+Insert Into CadProdutosFaixasPagamento(Fk_CadProdutosFaixas, Tipo, Modo, ValorMaxParcelas, Descricao) -- Cartão de crédito
+Select 3, 2, 2, 10, 'Cartão de Crédito em até 10x (sem juros)';
+
+Insert Into CadProdutosFaixasPagamento(Fk_CadProdutosFaixas, Tipo, Modo, ValorMaxParcelas, Descricao) -- A vista
+Select 4, 1, 3, 0, '10% Desconto à Vista';
+
+Insert Into CadProdutosFaixasPagamento(Fk_CadProdutosFaixas, Tipo, Modo, ValorMaxParcelas, Descricao) -- Boleto
+Select 4, 2, 1, 4, 'Entrada + 4 Parcelas';
+
+Insert Into CadProdutosFaixasPagamento(Fk_CadProdutosFaixas, Tipo, Modo, ValorMaxParcelas, Descricao) -- Cartão de crédito
+Select 4, 2, 2, 12, 'Cartão de Crédito em até 10x (sem juros)';
+
+Insert Into CadProdutosFaixasPagamento(Fk_CadProdutosFaixas, Tipo, Modo, ValorMaxParcelas, Descricao) -- A vista
+Select 5, 1, 3, 0, '10% Desconto à Vista';
+
+Insert Into CadProdutosFaixasPagamento(Fk_CadProdutosFaixas, Tipo, Modo, ValorMaxParcelas, Descricao) -- Boleto
+Select 5, 2, 1, 4, 'Entrada + 4 Parcelas';
+
+Insert Into CadProdutosFaixasPagamento(Fk_CadProdutosFaixas, Tipo, Modo, ValorMaxParcelas, Descricao) -- Cartão de crédito
+Select 5, 2, 2, 10, 'Cartão de Crédito em até 10x (sem juros)';
+
+Insert Into CadProdutosFaixasPagamento(Fk_CadProdutosFaixas, Tipo, Modo, ValorMaxParcelas, Descricao) -- A vista
+Select 6, 1, 3, 0, '10% Desconto à Vista';
+
+Insert Into CadProdutosFaixasPagamento(Fk_CadProdutosFaixas, Tipo, Modo, ValorMaxParcelas, Descricao) -- Boleto
+Select 6, 2, 1, 6, 'Entrada + 5 Parcelas';
+
+Insert Into CadProdutosFaixasPagamento(Fk_CadProdutosFaixas, Tipo, Modo, ValorMaxParcelas, Descricao) -- Cartão de crédito
+Select 6, 2, 2, 10, 'Cartão de Crédito em até 10x (sem juros)';
+
+Insert Into CadProdutosFaixasPagamento(Fk_CadProdutosFaixas, Tipo, Modo, ValorMaxParcelas, Descricao) -- A vista
+Select 7, 1, 3, 0, '10% Desconto à Vista';
+
+Insert Into CadProdutosFaixasPagamento(Fk_CadProdutosFaixas, Tipo, Modo, ValorMaxParcelas, Descricao) -- Boleto
+Select 7, 2, 1, 6, 'Entrada + 5 Parcelas';
+
+Insert Into CadProdutosFaixasPagamento(Fk_CadProdutosFaixas, Tipo, Modo, ValorMaxParcelas, Descricao) -- Cartão de crédito
+Select 7, 2, 2, 10, 'Cartão de Crédito em até 10x (sem juros)';

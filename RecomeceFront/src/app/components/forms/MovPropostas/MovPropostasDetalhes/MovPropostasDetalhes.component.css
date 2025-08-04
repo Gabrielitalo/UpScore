@@ -1,0 +1,69 @@
+.container {
+  overflow: auto !important;
+}
+
+.container-negocios {
+  /* background-color: #fff; */
+  border-radius: 10px;
+  min-height: 85vh;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+}
+
+.title-beneficiario {
+  color: var(--primary);
+  margin-left: 10px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+.grid-container {
+  height: auto !important;
+}
+
+.desconto {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.desconto p {
+  margin: 5px;
+}
+
+.desconto-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.desconto-info {
+  display: flex;
+  flex-direction: column;
+  background-color: #01608729;
+  width: 250px;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.desc-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.titular-active {
+  color: var(--primary) !important;
+}
+
+.titular-inactive {
+  color: #000 !important;
+}
+
+.grid-action p{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+

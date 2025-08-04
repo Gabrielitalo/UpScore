@@ -1,0 +1,254 @@
+<button mat-fab extended color="primary" class="mb-2" (click)="Back()">
+  <mat-icon>arrow_back_ios</mat-icon>
+  Voltar
+</button>
+
+<button mat-fab extended color="primary" class="mb-2" (click)="print()">
+  <mat-icon>picture_as_pdf</mat-icon>
+  Gerar PDF
+</button>
+
+<div class="a4-page" id="printArea" *ngIf="this.concentre">
+  <div class="concentre">
+    <div class="header">
+      <span class="title">Concentre - Detalhe</span>
+      <span>{{this.cc.DataTempoFormatoBr(this.concentre.dataConsulta)}}</span>
+      <!-- <span>{{GeraDataBr(this.concentre?.dataConsulta)}}
+        {{this.concentre.regF900Score?.horaConsulta}}</span> -->
+    </div>
+
+    <div class="section">
+      <table>
+        <tr class="blue-label">
+          <th>Identificação</th>
+        </tr>
+      </table>
+      <table>
+        <tr>
+          <th>Nome</th>
+          <th>CPF/CNPJ</th>
+          <th>Data de Nascimento</th>
+          <th *ngIf="this.concentre.regI100.inscricao.length == 11">Nome da Mãe</th>
+          <th *ngIf="this.concentre.regI100.inscricao.length == 14">Razão Social</th>
+        </tr>
+        <tr>
+          <td>{{this.concentre.regI100.nome}}</td>
+          <td>{{this.cc.MascaraCnpjCpf(this.concentre.regI100.inscricao)}}</td>
+          <td>{{GeraDataBr(this.concentre.regI100.dataConfirm)}}</td>
+          <td>{{this.concentre.regI101.nomeMae}}</td>
+        </tr>
+      </table>
+    </div>
+    <table class="section-table">
+      <thead>
+        <tr>
+          <th colspan="2" class="blue-label">Status do Documento</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Situação do CPF em {{GeraDataBr(this.concentre.regI100.dataSit)}}: REGULAR</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="section" *ngIf="isNadaConsta == false">
+      <table>
+        <tr class="blue-label">
+          <th>Anotações Negativas</th>
+        </tr>
+      </table>
+      <table>
+        <tr class="blue-label">
+          <th>Resumo</th>
+        </tr>
+      </table>
+      <table>
+        <tr>
+          <th>Ocorrências</th>
+          <th>Quantidade</th>
+          <th>Período</th>
+          <th>Valor (R$)</th>
+          <th>Mais Recente</th>
+        </tr>
+        <tr *ngIf="this.concentre.regI220?.pefinResumo">
+          <td>Pendências Comerciais (PEFIN)</td>
+          <td>{{this.concentre.regI220.pefinResumo.qtdeTotal}}</td>
+          <td>{{GeraDataUsBr(this.concentre.regI220.pefinResumo.dataInicial)}} á
+            {{GeraDataUsBr(this.concentre.regI220.pefinResumo.dataFinal)}}</td>
+          <td>R$ {{this.cc.MascaraDecimal(this.concentre.regI220.pefinResumo.valor)}}</td>
+          <td>{{this.concentre.regI220.pefinResumo.origem}}</td>
+        </tr>
+        <tr *ngIf="this.concentre.regI140?.resumo">
+          <td>Pendências Bancárias (REFIN)</td>
+          <td>{{this.concentre.regI140.resumo.qtdeTotal}}</td>
+          <td>{{GeraDataUsBr(this.concentre.regI140.resumo.dataInicial)}} á
+            {{GeraDataUsBr(this.concentre.regI140.resumo.dataFinal)}}</td>
+          <td>R$ {{this.cc.MascaraDecimal(this.concentre.regI140.resumo.valor)}}</td>
+          <td>{{this.concentre.regI140.resumo.origem}}</td>
+        </tr>
+        <tr *ngIf="this.concentre.regI110?.regI110Resumo">
+          <td>Protestos</td>
+          <td>{{this.concentre.regI110?.regI110Resumo.qtdeTotal}}</td>
+          <td>{{GeraDataUsBr(this.concentre.regI110?.regI110Resumo.dataInicial)}} á
+            {{GeraDataUsBr(this.concentre.regI110?.regI110Resumo.dataFinal)}}</td>
+          <td>R$ {{this.cc.MascaraDecimal(this.concentre.regI110?.regI110Resumo.valor)}}</td>
+          <td>{{this.concentre.regI110?.regI110Resumo.origem}}</td>
+        </tr>
+        <tr *ngIf="this.concentre.regI120?.regI120Resumo">
+          <td>Ações Judiciais</td>
+          <td>{{this.concentre.regI120?.regI120Resumo.qtdeTotal}}</td>
+          <td>{{GeraDataUsBr(this.concentre.regI120?.regI120Resumo.dataInicial)}} á
+            {{GeraDataUsBr(this.concentre.regI120?.regI120Resumo.dataFinal)}}</td>
+          <td>R$ {{this.cc.MascaraDecimal(this.concentre.regI120?.regI120Resumo.valor)}}</td>
+          <td>{{this.concentre.regI120?.regI120Resumo.origem}}</td>
+        </tr>
+        <tr *ngIf="this.concentre.regI230?.resumo">
+          <td>Convém Devedores</td>
+          <td>{{this.concentre.regI230?.resumo.qtdeTotal}}</td>
+          <td>{{GeraDataUsBr(this.concentre.regI230?.resumo.dataInicial)}} á
+            {{GeraDataUsBr(this.concentre.regI230?.resumo.dataFinal)}}</td>
+          <td>R$ {{this.cc.MascaraDecimal(this.concentre.regI230?.resumo.valor)}}</td>
+          <td>{{this.concentre.regI230?.resumo.origem}}</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="blue-label">Detalhe</div>
+      <div *ngIf="isNadaConsta == true" class="nada-consta">
+        <p>NADA CONSTA</p>
+      </div>
+      <div class="blue-label" *ngIf="this.concentre.regI220?.pefinResumo">Pendências Comerciais (PEFIN)</div>
+      <table *ngIf="this.concentre.regI220?.pefinResumo">
+        <tr>
+          <th>Contrato</th>
+          <th>Modalidade</th>
+          <th>Empresa</th>
+          <th>Data</th>
+          <th>Valor (R$)</th>
+          <th>Analista ?</th>
+        </tr>
+        <ng-container *ngFor="let item of this.concentre.regI220.pefinDetalhamento">
+          <tr>
+            <td>{{ item.pefinDetail.contrato }}</td>
+            <td>{{ item.pefinDetail2.modality }}</td>
+            <td>{{ item.pefinCredorDetail.nomeCredor }}</td>
+            <td>{{ GeraDataUsBr(item.pefinDetail.dataOcorr) }}</td>
+            <td>R$ {{ this.cc.MascaraDecimal(item.pefinDetail.valor) }}</td>
+            <td>Sim</td>
+          </tr>
+          <tr>
+            <td colspan="6"><strong>Credor:</strong> {{ this.cc.MascaraCnpjCpf(item.pefinCredorDetail.documentoCredor)
+              }}</td>
+          </tr>
+        </ng-container>
+        <tr>
+          <td colspan="6"><strong>Total de Ocorrências:</strong> {{this.concentre.regI220.pefinResumo.qtdeTotal}}</td>
+        </tr>
+      </table>
+
+      <div class="blue-label" *ngIf="this.concentre.regI140?.resumo">Pendências Bancárias (REFIN)</div>
+      <table *ngIf="this.concentre.regI140?.resumo">
+        <tr>
+          <th>Contrato</th>
+          <th>Modalidade</th>
+          <th>Empresa</th>
+          <th>Data</th>
+          <th>Valor (R$)</th>
+          <th>Analista ?</th>
+        </tr>
+        <ng-container *ngFor="let item of this.concentre.regI140.componentes">
+          <tr>
+            <td>{{ item.detalhe02.contrato }}</td>
+            <td>{{ item.detalhe02.modality }}</td>
+            <td>{{ item.detalhe.nomeEmpresa }}</td>
+            <td>{{ GeraDataUsBr(item.detalhe.dataOcorr) }}</td>
+            <td>R$ {{ this.cc.MascaraDecimal(item.detalhe.valor) }}</td>
+            <td>Sim</td>
+          </tr>
+          <tr>
+            <td colspan="6"><strong>Credor:</strong> {{ this.cc.MascaraCnpjCpf(item.detalhe.cnpjOrigem) }}</td>
+          </tr>
+        </ng-container>
+        <tr>
+          <td colspan="6"><strong>Total de Ocorrências:</strong> {{this.concentre.regI140.resumo.qtdeTotal}}</td>
+        </tr>
+      </table>
+      <div class="blue-label" *ngIf="this.concentre.regI110?.regI110Componentes.length > 0">Protestos</div>
+      <table *ngIf="this.concentre.regI110?.regI110Componentes.length > 0">
+        <tr>
+          <th>UF</th>
+          <th>Cidade</th>
+          <th>Data</th>
+          <th>Valor (R$)</th>
+        </tr>
+        <ng-container *ngFor="let item of this.concentre.regI110.regI110Componentes">
+          <tr>
+            <td>{{ item.regI110Detalhe.uf }}</td>
+            <td>{{ item.regI110Detalhe.cidade }}</td>
+            <td>{{ GeraDataUsBr(item.regI110Detalhe.dataOcorr) }}</td>
+            <td>R$ {{ this.cc.MascaraDecimal(item.regI110Detalhe.valor) }}</td>
+          </tr>
+        </ng-container>
+        <tr>
+          <td colspan="6"><strong>Total de Ocorrências:</strong> {{this.concentre.regI110.regI110Resumo.qtdeTotal}}</td>
+        </tr>
+      </table>
+      <div class="blue-label" *ngIf="this.concentre.regI120?.regI120Componentes.length > 0">Ações Judiciais</div>
+      <table *ngIf="this.concentre.regI120?.regI120Componentes.length > 0">
+        <tr>
+          <th>UF</th>
+          <th>Cidade</th>
+          <th>Data</th>
+          <th>Valor (R$)</th>
+        </tr>
+        <ng-container *ngFor="let item of this.concentre.regI120.regI120Componentes">
+          <tr>
+            <td>{{ item.regI120Detalhe.uf }}</td>
+            <td>{{ item.regI120Detalhe.cidade }}</td>
+            <td>{{ GeraDataUsBr(item.regI120Detalhe.dataOcorr) }}</td>
+            <td>R$ {{ this.cc.MascaraDecimal(item.regI120Detalhe.valor) }}</td>
+          </tr>
+        </ng-container>
+        <tr>
+          <td colspan="6"><strong>Total de Ocorrências:</strong> {{this.concentre.regI120.regI120Resumo.qtdeTotal}}</td>
+        </tr>
+      </table>
+      <div class="blue-label" *ngIf="this.concentre.regI230?.resumo">Convém Devedores</div>
+      <table *ngIf="this.concentre.regI230?.resumo">
+        <tr>
+          <th>Contrato</th>
+          <th>Modalidade</th>
+          <th>Empresa</th>
+          <th>Data</th>
+          <th>Valor (R$)</th>
+          <th>Analista ?</th>
+        </tr>
+        <ng-container *ngFor="let item of this.concentre.regI230.componentes">
+          <tr>
+            <td>{{ item.detalhe.contrato }}</td>
+            <td>{{ item.detalhe02.descNatureza }}</td>
+            <td>{{ item.detalhe.nomeInst }}</td>
+            <td>{{ GeraDataUsBr(item.detalhe.dataOcorr) }}</td>
+            <td>R$ {{ this.cc.MascaraDecimal(item.detalhe.valor) }}</td>
+            <td>Sim</td>
+          </tr>
+          <tr>
+            <td colspan="6"><strong>CNPJ Raiz:</strong> {{ this.cc.MascaraCnpjCpf(item.detalhe.cnpjCredor) }}</td>
+          </tr>
+        </ng-container>
+        <tr>
+          <td colspan="6"><strong>Total de Ocorrências:</strong> {{this.concentre.regI230.resumo.qtdeTotal}}</td>
+        </tr>
+      </table>
+    </div>
+
+
+    <div class="score-section">
+      <div class="blue-label serasa-title">Serasa Score com Positivo</div>
+      <img src="../assets/gauge-serasa.png" class="image-score">
+      <div class="score-number">{{this.concentre.regF900Score?.score}}</div>
+      <div class="chance-text">{{BuscaChancePagamento(this.concentre.regF900Score?.score)}}</div>
+    </div>
+  </div>
+</div>

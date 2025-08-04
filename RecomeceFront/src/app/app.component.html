@@ -1,0 +1,74 @@
+<mat-sidenav-container class="main-container">
+  <!-- Menu Lateral -->
+  <mat-sidenav *ngIf="hideMenu == false && isMobile == false" #sidenav mode="side" [(opened)]="menuOpen" class="sidenav"
+    [class.closed]="!menuOpen">
+    <div *ngIf="this.auth.isQa() == true" class="homolog">
+      <p>Homologação</p>
+    </div>
+    <div class="logoImg" [ngClass]="{
+        'logo-custom': this.whiteLabelConfig.tipo == 1,
+        'logo-default': this.whiteLabelConfig.tipo == 0
+      }">
+      <img [src]="logo" />
+    </div>
+    <div class="person-name">
+      <a>
+        <mat-icon>account_circle</mat-icon>
+        Olá, {{ this.converts.FFirtLastName(auth.getUsername()) }}</a>
+    </div>
+    <nav class="menu">
+      <div class="menu-container" *ngFor="let item of menuContainer; let row = index">
+        <a mat-button (click)="Navegar(item)" *ngIf="item.Tipo == 0">
+          <mat-icon>{{ item.Icone }}</mat-icon>
+          <span class="menu-text" *ngIf="menuOpen">{{ item.Titulo }}</span>
+        </a>
+        <a mat-button (click)="SubMenu(item, row)" *ngIf="item.Tipo == 1" class="menu-item">
+          <mat-icon>{{ item.Icone }}</mat-icon>
+          <span class="menu-text" *ngIf="menuOpen">{{ item.Titulo }}</span>
+          <mat-icon class="arrow">arrow_drop_down</mat-icon>
+
+          <div class="menu-sub" *ngIf="item.isOpen" (mouseleave)="CloseAllOpens()">
+            <a mat-button (click)="Navegar(sub)" *ngFor="let sub of item.Sub">
+              <mat-icon>{{ sub.Icone }}</mat-icon>
+              <span class="menu-text" *ngIf="menuOpen">{{ sub.Titulo }}</span>
+            </a>
+          </div>
+        </a>
+      </div>
+      <div class="menu-container">
+        <a mat-button (click)="this.logout()">
+          <mat-icon>logout</mat-icon>
+          <span class="menu-text">Sair</span>
+        </a>
+      </div>
+    </nav>
+  </mat-sidenav>
+
+  <!-- Conteúdo Principal -->
+  <mat-sidenav-content class="content expanded">
+    <div class="top-menu" *ngIf="isMobile == true">
+      <button mat-fab color="primary" [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="this.router.navigate(['/Comercial'])">
+          <mat-icon color="primary">work</mat-icon>
+          <span>Propostas</span>
+        </button>
+        <button mat-menu-item (click)="this.router.navigate(['/Consultas'])">
+          <mat-icon color="primary">query_stats</mat-icon>
+          <span>Consultas</span>
+        </button>
+      </mat-menu>
+    </div>
+    <div class="body-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<button id="BtnBackDrop" class="d-none" (click)="toogleLoader()">teste</button>
+<div id="back-drop" class="modal-backdrop fade show flex-center" *ngIf="isLoadingSomething == true">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>

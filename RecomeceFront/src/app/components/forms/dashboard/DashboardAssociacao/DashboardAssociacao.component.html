@@ -1,0 +1,54 @@
+<div class="container-dash" *ngIf="dash">
+  <div class="grid-filters">
+    <mat-form-field appearance="fill" class="col-2">
+      <mat-label>Data Inicial</mat-label>
+      <input matInput [(ngModel)]="this.filtros.dataInicial" name="dataInicial"
+        onkeydown="formatDate(this)" />
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="col-2">
+      <mat-label>Data Final</mat-label>
+      <input matInput [(ngModel)]="this.filtros.dataFinal" name="dataFinal"
+        onkeydown="formatDate(this)" />
+    </mat-form-field>
+    <button mat-fab extended color="primary" (click)="filter()">
+      <mat-icon>autorenew</mat-icon>
+      Atualizar
+    </button>
+  </div>
+  <div class="tables-group">
+    <div class="card-table" *ngIf="dash[0]?.length > 0">
+      <h4 class="title-detalhes flex-center "> <mat-icon color="primary">work</mat-icon>Ranking de Consultas</h4>
+      <div class="table-content">
+        <div class="table-row">
+          <p class="col-8">Empresa</p>
+          <p class="col-2">Nº Consultas</p>
+        </div>
+        <div class="table-row" *ngFor="let row of dash[0]">
+          <p class="col-8">{{row.nome}}</p>
+          <p class="col-2">{{row.total}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tables-group">
+    <div class="card-table" *ngIf="dash[1]?.length > 0">
+      <h4 class="title-detalhes flex-center "> <mat-icon color="primary">receipt_long</mat-icon>Lotes
+      </h4>
+      <div class="table-content">
+        <div class="table-row">
+          <p class="col-5">Empresa</p>
+          <p class="col-2">Nº Lotes</p>
+          <p class="col-1">Pessoas</p>
+          <p class="col-3">Total</p>
+        </div>
+        <div class="table-row" *ngFor="let row of dash[1]">
+          <p class="col-5">{{row.nome}}</p>
+          <p class="col-1">{{row.total}}</p>
+          <p class="col-2">{{row.totalBeneficiarios}}</p>
+          <p class="col-3 text-right">R$ {{this.cc.MascaraDecimal(row.valor)}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

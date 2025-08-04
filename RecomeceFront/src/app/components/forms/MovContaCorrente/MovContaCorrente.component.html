@@ -1,0 +1,61 @@
+<div class="component-header">
+  <app-Header [titulo]="'Conta Corrente'"></app-Header>
+</div>
+
+<div class="grid-filters">
+  <mat-form-field appearance="fill" class="col-2" *ngIf="isMobile == false">
+    <mat-label>Data Inicial</mat-label>
+    <input matInput [(ngModel)]="this.filtros.dataInicial" name="dataInicial" onkeydown="formatDate(this)" />
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="col-2" *ngIf="isMobile == false">
+    <mat-label>Data Final</mat-label>
+    <input matInput [(ngModel)]="this.filtros.dataFinal" name="dataFinal" onkeydown="formatDate(this)" />
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="col-2">
+    <mat-label>Status</mat-label>
+    <select matNativeControl [(ngModel)]="filtros.tipo" name="tipo">
+      <option value="0">Todos</option>
+      <option value="1">Débito</option>
+      <option value="2">Crédito</option>
+    </select>
+  </mat-form-field>
+  <button mat-fab extended color="primary" (click)="filter()">
+    <mat-icon>search</mat-icon>
+    Buscar
+  </button>
+</div>
+<div class="cs-table-totals" *ngIf="this.pagination?.itens?.length > 0">
+  <p><strong> Saldo R$ {{this.cc.MascaraDecimal(this.saldoValue)}}</strong></p>
+  <p>{{ this.pagination.itens.length }} resultado(s)</p>
+</div>
+<div class="grid-container grid-container-with-filter">
+  <div class="cs-table" *ngIf="this.pagination?.itens?.length > 0">
+    <div class="cs-table-header">
+      <div class="col-2"><p>Data</p></div>
+      <div class="col-1"><p>Tipo</p></div>
+      <div class="col-1"><p>Valor</p></div>
+      <div class="col-4"><p>Histórico</p></div>
+      <div class="col-2"><p>Ações</p></div>
+    </div>
+    <div class="cs-table-body" (scroll)="onScroll($event)">
+      <div class="cs-table-row" *ngFor="let row of this.pagination?.itens">
+        <div class="col-2">
+          <p>{{ row.tipo == 1 ? this.cc.DataTempoFormatoBr(row.dataCriacao) : this.cc.DataTempoFormatoBr(row.dataPagamento) }}</p>
+        </div>
+        <div class="col-1">
+          <p>{{ row.tipoDesc }}</p>
+        </div>
+        <div class="col-1 text-right" [ngClass]="{'delete-p': row.valor < 0}">
+          <p>{{ this.cc.MascaraDecimal(row.valor) }}</p>
+        </div>
+        <div class="col-4">
+          <p>{{ getHistorico(row) }}</p>
+        </div>
+        <div class="col-2 grid-actions">
+          <mat-icon matTooltip="Visualizar consulta" (click)="openQuery(row)" *ngIf="row.fk_Origem"
+            >visibility</mat-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

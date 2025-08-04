@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Docs\logoContrato.png" />
+    <None Remove="Docs\ModeloLote.xlsx" />
+    <None Remove="Docs\PropostaModeloRecomece.pdf" />
+    <None Remove="Docs\PropostaModeloUpScore.pdf" />
+    <None Remove="Libs\libwkhtmltox.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Docs\logoContrato.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\ModeloLote.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\PropostaModeloRecomece.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Docs\PropostaModeloUpScore.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.104.2" />
+    <PackageReference Include="DinkToPdf" Version="1.0.8" />
+    <PackageReference Include="DocX" Version="4.0.25105.5786" />
+    <PackageReference Include="MySql.Data" Version="9.3.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="PdfSharpCore" Version="1.3.67" />
+    <PackageReference Include="PuppeteerSharp" Version="20.2.2" />
+    <PackageReference Include="QuestPDF" Version="2025.4.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.1" />
+  </ItemGroup>
+
+<Target Name="CopyWkhtmltoxToOutput" AfterTargets="Build">
+  <Copy SourceFiles="Libs\libwkhtmltox.dll" DestinationFolder="$(OutputPath)" />
+</Target>
+
+
+</Project>

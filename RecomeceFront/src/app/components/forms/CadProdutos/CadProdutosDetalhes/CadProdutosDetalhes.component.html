@@ -1,0 +1,180 @@
+<div class="dialog-component" *ngIf="isLoading == false">
+  <div class="row">
+    <mat-form-field appearance="fill" class="col-6">
+      <mat-label>Nome</mat-label>
+      <input matInput [(ngModel)]="cadProdutos.descricao" required name="descricao" maxlength="300" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="col-3">
+      <mat-label>Tipo</mat-label>
+      <select matNativeControl required [(ngModel)]="cadProdutos.limpaNome" name="limpaNome">
+        <option value="1">Limpa Nome</option>
+        <option value="2">Genérico</option>
+      </select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="col-2">
+      <mat-label>R$ Custo</mat-label>
+      <input matInput [(ngModel)]="cadProdutos.custo" name="custo" (input)="this.cc.mascararValorMonetario($event)" />
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field appearance="fill" class="col-3">
+      <mat-label>Tipo de Consulta</mat-label>
+      <select matNativeControl required [(ngModel)]="cadProdutos.tipoConsulta" name="tipoConsulta">
+        <option value="1">Relatório Avançado</option>
+        <option value="2">Relatório Básico</option>
+      </select>
+    </mat-form-field>
+    <mat-checkbox color="primary" [(ngModel)]="cadProdutos.situacao" name="situacao" class="">Ativo</mat-checkbox>
+  </div>
+  <div class="btns-dialog-footer mb-4">
+    <button mat-raised-button color="primary" (click)="Salvar()">Salvar</button>
+  </div>
+  <div class="container-etapas" *ngIf="this.cadProdutos?.faixas?.length > 0">
+    <div class="table-container" *ngFor="let row of this.cadProdutos?.faixas">
+      <h4 class="title-detalhes">Dívida</h4>
+      <div class="tabela-row">
+        <mat-form-field appearance="fill" class="col-3">
+          <mat-label>Dívidas de até (R$)</mat-label>
+          <input matInput [(ngModel)]="row.valorDivida" (input)="this.cc.mascararValorMonetario($event)"
+            (change)="AlteraValorFaixa(row)" name="valorDivida" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="col-3">
+          <mat-label>Valor do Serviço (R$)</mat-label>
+          <input matInput [(ngModel)]="row.valorServico" (input)="this.cc.mascararValorMonetario($event)"
+            (change)="AlteraValorFaixa(row)" name="valorServico" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="col-3">
+          <mat-label>Entrada Mínima (R$)</mat-label>
+          <input matInput [(ngModel)]="row.valorEntradaMinima" (change)="AlteraValorFaixa(row)"
+            (input)="this.cc.mascararValorMonetario($event)" name="valorEntradaMinima" />
+        </mat-form-field>
+      </div>
+      <h4 class="title-detalhes">Condições de Pagamento</h4>
+      <div class="tabela-row" *ngFor="let sub of row.pagamentos">
+        <mat-form-field appearance="fill" class="col-2">
+          <mat-label>Tipo Pagamento</mat-label>
+          <select matNativeControl required [(ngModel)]="sub.tipo" name="tipo" (change)="AlteraValorFaixaCond(sub)">
+            <option value="1">A Vista</option>
+            <option value="2">Parcelado</option>
+          </select>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="col-3" *ngIf="sub.tipo == 2">
+          <mat-label>Tipo</mat-label>
+          <select matNativeControl required [(ngModel)]="sub.modo" name="modo" (change)="AlteraValorFaixaCond(sub)">
+            <option value="1">Boleto</option>
+            <option value="2">Cartão de Crédito</option>
+            <option selected value="3">Pix</option>
+          </select>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="col-2" *ngIf="sub.tipo == 2">
+          <mat-label>Max de Parcelas</mat-label>
+          <select matNativeControl required [(ngModel)]="sub.valorMaxParcelas" name="valorMaxParcelas"
+            (change)="AlteraValorFaixaCond(sub)">
+            <option value="1">1</option>
+            <option selected value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+          </select>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="col-3" (change)="AlteraValorFaixaCond(sub)">
+          <mat-label>Descrição</mat-label>
+          <input matInput [(ngModel)]="sub.descricao" name="descricao" />
+        </mat-form-field>
+        <button mat-fab color="primary" (click)="deleteRow(row, sub)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+      <div class="flex-center">
+        <button mat-raised-button color="primary" (click)="NovaCondicao(row)">
+          <mat-icon>add</mat-icon>
+          Nova Condição de Pagamento</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-etapas" *ngIf="this.tempFaixa">
+    <h4 class="title-detalhes">Nova Tabela</h4>
+    <div class="tabela-row">
+      <mat-form-field appearance="fill" class="col-3">
+        <mat-label>Dívidas de até (R$)</mat-label>
+        <input matInput [(ngModel)]="this.tempFaixa.valorDivida" (input)="this.cc.mascararValorMonetario($event)"
+          name="valorDivida" />
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="col-3">
+        <mat-label>Valor do Serviço (R$)</mat-label>
+        <input matInput [(ngModel)]="this.tempFaixa.valorServico" (input)="this.cc.mascararValorMonetario($event)"
+          name="valorServico" />
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="col-3">
+        <mat-label>Entrada Mínima (R$)</mat-label>
+        <input matInput [(ngModel)]="this.tempFaixa.valorEntradaMinima" (input)="this.cc.mascararValorMonetario($event)"
+          name="valorEntradaMinima" />
+      </mat-form-field>
+    </div>
+    <div class="tabela-row" *ngFor="let row of this.tempFaixa.cadProdutosFaixasPagamento">
+      <mat-form-field appearance="fill" class="col-2">
+        <mat-label>Tipo Pagamento</mat-label>
+        <select matNativeControl required [(ngModel)]="row.tipo" name="tipo">
+          <option value="1">A Vista</option>
+          <option value="2">Parcelado</option>
+        </select>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="col-3" *ngIf="row.tipo == 2">
+        <mat-label>Tipo</mat-label>
+        <select matNativeControl required [(ngModel)]="row.modo" name="modo">
+          <option value="1">Boleto</option>
+          <option value="2">Cartão de Crédito</option>
+          <option selected value="3">Pix</option>
+        </select>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="col-2" *ngIf="row.tipo == 2">
+        <mat-label>Nº Max de Parcelas</mat-label>
+        <select matNativeControl required [(ngModel)]="row.valorMaxParcelas" name="valorMaxParcelas">
+          <option value="1">1</option>
+          <option selected value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+        </select>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="col-3">
+        <mat-label>Descrição</mat-label>
+        <input matInput [(ngModel)]="row.descricao" name="descricao" />
+      </mat-form-field>
+      <button mat-fab color="primary" (click)="deleteTempRow(row)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+    <div class="rule-row">
+      <button mat-raised-button color="primary" (click)="NewRule()">
+        <mat-icon>add</mat-icon>
+        Nova Regra</button>
+      <button mat-raised-button color="primary" (click)="saveRow()">
+        <mat-icon>save</mat-icon>
+        Salvar Tabela</button>
+    </div>
+  </div>
+
+  <div class="flex-center">
+    <button mat-raised-button color="primary" class="mt-4" *ngIf="this.data.id > 0 && this.cadProdutos.limpaNome == 1"
+      (click)="NewFaixa()" matTooltip="Adicionar tabela de preços">
+      <mat-icon>add</mat-icon>
+      Criar Tabela de Preços</button>
+  </div>
+</div>

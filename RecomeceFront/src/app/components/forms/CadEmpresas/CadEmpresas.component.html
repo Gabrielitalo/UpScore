@@ -1,0 +1,48 @@
+<div class="component-header">
+  <app-Header [titulo]="'Empresas'"></app-Header>
+
+  <button mat-fab extended color="primary" (click)="openDialog(0)" *ngIf="this.auth.isAssociacao()">
+    <mat-icon>add</mat-icon>
+    Novo
+  </button>
+</div>
+
+<div class="cs-table-totals" *ngIf="this.pagination?.itens?.length > 0">
+  <p>{{ this.pagination.itens.length }} resultado(s)</p>
+</div>
+<div class="grid-container">
+  <div class="cs-table" *ngIf="this.pagination?.itens?.length > 0">
+    <div class="cs-table-header">
+      <div class="col-1"><p>Tipo</p></div>
+      <div class="col-2"><p>CNPJ</p></div>
+      <div class="col-3"><p>Razão Social</p></div>
+      <div class="col-2"><p>Telefone</p></div>
+      <div class="col-2"><p>Cidade</p></div>
+      <div class="col-2"><p>Ações</p></div>
+    </div>
+    <div class="cs-table-body" (scroll)="onScroll($event)">
+      <div class="cs-table-row" *ngFor="let row of this.pagination?.itens">
+        <div class="col-1">
+          <p>{{ VerificaTipo(row.tipo) }}</p>
+        </div>
+        <div class="col-2">
+          <p>{{ this.cc.MascaraCnpjCpf(row.inscricao) }}</p>
+        </div>
+        <div class="col-3">
+          <p>{{ row.nome }}</p>
+        </div>
+        <div class="col-2">
+          <p>{{ this.cc.MascaraTelefone(row.telefoneResponsavel) }}</p>
+        </div>
+        <div class="col-2">
+          <p>{{ row.cidade }}</p>
+        </div>
+        <div class="col-2 grid-actions">
+          <mat-icon matTooltip="Editar registro" (click)="openDialog(row.id)"
+            >edit</mat-icon
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

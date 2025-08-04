@@ -1,0 +1,29 @@
+.validation-container{
+  overflow: auto !important;
+  height: 500px;
+}
+.validation-dialog {
+  display: flex;
+  padding: 15px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  overflow: auto !important;
+}
+
+/* .msg-validation{
+  border-bottom: 1px solid red;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: red;
+} */
+
+.msg-validation{
+  border-bottom: 1px solid var(--red);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--red);
+}
+

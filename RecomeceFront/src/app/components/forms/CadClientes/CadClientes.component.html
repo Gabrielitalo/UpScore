@@ -1,0 +1,59 @@
+<div class="component-header">
+  <app-Header [titulo]="'Clientes'"></app-Header>
+</div>
+
+<div class="grid-filters">
+  <mat-form-field appearance="fill" class="col-2">
+    <mat-label>CPF/CNPJ</mat-label>
+    <input
+      matInput
+      [(ngModel)]="this.filtros.inscricao"
+      name="inscricao"
+      maxlength="18"
+      onkeydown="MascaraCnpjCpf(this)"
+    />
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="col-2">
+    <mat-label>Nome</mat-label>
+    <input matInput [(ngModel)]="this.filtros.nome" name="nome" />
+  </mat-form-field>
+  <button mat-fab extended color="primary" (click)="filter()">
+    <mat-icon>search</mat-icon>
+    Buscar
+  </button>
+</div>
+<div class="cs-table-totals" *ngIf="this.pagination?.itens?.length > 0">
+  <p>{{ this.pagination.itens.length }} resultado(s)</p>
+</div>
+<div class="grid-container grid-container-with-filter">
+  <div class="cs-table" *ngIf="this.pagination?.itens?.length > 0">
+    <div class="cs-table-header">
+      <div class="col-3"><p>Nome</p></div>
+      <div class="col-2"><p>CPF/CNPJ</p></div>
+      <div class="col-2"><p>Telefone</p></div>
+      <div class="col-2"><p>Email</p></div>
+      <div class="col-2"><p>Ações</p></div>
+    </div>
+    <div class="cs-table-body" (scroll)="onScroll($event)">
+      <div class="cs-table-row" *ngFor="let row of this.pagination?.itens">
+        <div class="col-3">
+          <p>{{ row.nome }}</p>
+        </div>
+        <div class="col-2 text-right">
+          <p>{{ this.cc.MascaraCnpjCpf(row.inscricao) }}</p>
+        </div>
+        <div class="col-2 text-right">
+          <p>{{ this.cc.MascaraTelefone(row.telefone) }}</p>
+        </div>
+        <div class="col-2">
+          <p>{{ row.email }}</p>
+        </div>
+        <div class="col-2 grid-actions">
+          <mat-icon matTooltip="Editar registro" (click)="openDialog(row.id)"
+            >edit</mat-icon
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+.query-info{
+  display: flex;
+}
+
+.card-info p{
+  margin: 5px;
+}
+
+.card-title{
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.group-table {
+  display: flex;
+  border: 1px solid var(--borderColor);
+  border-radius: 10px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.group-table p {
+  margin: 5px;
+}
+
+.group-table.active{
+  border: 2px solid var(--primary);
+}
+.group-table:hover{
+  border: 2px solid var(--primary);
+  cursor: pointer;
+}
+
+.title-beneficiario {
+  color: var(--primary);
+  margin-bottom: 5px;
+  margin-top: 15px;
+}

@@ -1,0 +1,233 @@
+/* Define o layout principal */
+.main-container {
+  height: 100vh;
+  display: flex;
+  background-color: var(--primaryGray);
+}
+
+.top-menu {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 100vw;
+  height: 50px;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.top-menu>button {
+  margin-right: 10px;
+}
+
+/* Configuração do menu lateral */
+/* Upscore */
+/* .sidenav {
+  width: 200px;
+  min-width: 200px;
+  transition: width 0.3s ease-in-out;
+  background-image: linear-gradient(131deg, #570984 26%, #ff7200 100%);
+  color: white;
+  overflow: hidden;
+  position: relative;
+  z-index: 1050;
+} */
+.sidenav {
+  width: 200px;
+  min-width: 200px;
+  transition: width 0.3s ease-in-out;
+  background: #fff;
+  color: white;
+  overflow: hidden;
+  position: relative;
+  z-index: 1050;
+}
+
+/* Quando o menu está fechado, mantém apenas os ícones visíveis */
+.sidenav.closed {
+  width: 60px;
+}
+
+/* Toolbar dentro do menu */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #34495e;
+  padding: 10px;
+}
+
+/* Links do menu */
+.menu {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  z-index: 1051;
+}
+
+.menu a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--primary);
+  text-decoration: none;
+  transition: background 0.2s;
+  width: 100%;
+  justify-content: flex-start;
+  padding: 10px;
+  position: relative;
+}
+
+/* upscore */
+/* .menu a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  text-decoration: none;
+  transition: background 0.2s;
+  width: 100%;
+  justify-content: flex-start;
+  padding: 10px;
+  position: relative;
+} */
+
+.menu a:hover {
+  background: rgba(0, 95, 134, 0.1);
+  border-radius: 5px;
+}
+
+/* Ícones do menu */
+.menu mat-icon {
+  font-size: 24px;
+}
+
+.menu-sub mat-icon {
+  font-size: 20px !important;
+}
+
+/* Quando o menu está fechado, esconde o texto */
+.sidenav.closed .menu-text {
+  display: none;
+}
+
+/* Área de conteúdo principal */
+.content {
+  flex-grow: 1;
+  transition: margin-left 0.3s ease-in-out;
+}
+
+/* Ajuste do espaço do conteúdo quando o menu está fechado */
+.content.expanded {
+  margin-left: 0px !important;
+}
+
+.menu>.menu-container>a>.mat-icon {
+  height: 24px !important;
+  width: 24px !important;
+}
+
+.menu-container {
+  width: 100%;
+}
+
+/* Barra superior dentro do conteúdo */
+mat-toolbar {
+  background: #005f86;
+  color: white;
+}
+
+/* Logo no menu */
+.logoImg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 25px;
+}
+
+.logo-default img {
+  width: 60px;
+  height: 40px;
+}
+
+.logo-custom img {
+  width: 85px;
+  height: 65px;
+}
+
+.person-name {
+  color: var(--primary);
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.person-name>a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -5px;
+}
+
+.person-name>a>mat-icon {
+  font-size: 22px !important;
+  margin: auto;
+  height: 50%;
+}
+
+/* Ajuste do ícone da seta */
+.menu-item>.arrow {
+  right: 0px;
+  position: absolute;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Animação da seta quando o submenu está aberto */
+.menu-item.open>.arrow {
+  transform: rotate(180deg);
+}
+
+/* Ajuste do container do menu principal */
+.menu-item {
+  position: relative;
+  display: block;
+  z-index: 1052;
+}
+
+/* Estilização do submenu */
+.menu-sub {
+  position: fixed;
+  left: 183px;
+  margin-top: -25px;
+  z-index: 1100;
+  width: 190px;
+  border-radius: 10px;
+  border: 1px solid #005f8621;
+  background-color: #fff;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.menu-sub a {
+  color: var(--primary) !important;
+}
+
+/* Exibir o submenu quando o item do menu está aberto */
+.menu-item.open .menu-sub {
+  display: block;
+}
+
+.body-content {
+  padding: 10px;
+}
+
+
+.homolog {
+  display: flex;
+  background-color: var(--red);
+  align-items: center;
+  justify-content: center;
+}

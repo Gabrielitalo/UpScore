@@ -1,0 +1,47 @@
+<div class="contracts-container">
+  <app-Header [titulo]="'Escolha os contratos que irão para este lote'"></app-Header>
+
+  <div class="cs-table" *ngIf="this.contracts?.length > 0">
+    <div class="cs-table-header">
+      <div class="col-1">
+        <p>Ações</p>
+      </div>
+      <div class="col-1">
+        <p>Data</p>
+      </div>
+      <div class="col-5">
+        <p>Cliente</p>
+      </div>
+      <div class="col-2">
+        <p>Beneficiários</p>
+      </div>
+    </div>
+    <div class="cs-table-body">
+      <div class="cs-table-row" *ngFor="let row of this.contracts">
+        <div class="col-1 grid-actions">
+          <!-- <mat-icon matTooltip="Alterar para análise">sell</mat-icon> -->
+          <p><mat-slide-toggle [(ngModel)]="row.checked" color="primary"></mat-slide-toggle></p>
+        </div>
+        <div class="col-1">
+          <p>{{this.cc.DataFormatoBr(row.dataCriacao)}}</p>
+        </div>
+        <div class="col-5">
+          <p>{{row.nome}}</p>
+        </div>
+        <div class="col-2 text-right">
+          <p>{{row.beneficiarios}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex-center mt-3" *ngIf="this.contracts?.length > 0">
+    <button mat-fab extended color="primary" (click)="newBatch()">
+      <mat-icon>bolt</mat-icon>
+      Novo Lote
+    </button>
+  </div>
+  <div class="flex-center mt-3" *ngIf="this.contracts?.length == 0">
+    <mat-icon color="primary" style="font-size: 80px; width: 80px; height: 80px;">assignment_late</mat-icon>
+    <p>Nenhum contrato disponível para ser enviado!</p>
+  </div>
+</div>

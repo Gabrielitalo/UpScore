@@ -1,0 +1,28 @@
+<div class="contracts-container">
+  <app-Header [titulo]="'Novo Lote'"></app-Header>
+
+  <div class="row mt-2">
+    <mat-form-field appearance="fill" class="w-full" *ngIf="this.auth.isAssociacao()">
+      <mat-label>Empresas</mat-label>
+      <select matNativeControl [(ngModel)]="formData.companyId" name="companyId">
+        <option *ngFor="let item of companys" value="{{item.id}}">{{item.nome}}</option>
+      </select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Tipo de Lote</mat-label>
+      <select matNativeControl required [(ngModel)]="formData.tipo" name="tipo">
+        <option value="1">Envio</option>
+        <option value="2">Reenvio</option>
+      </select>
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <button mat-fab extended color="primary" (click)="selectFile(0)">
+      <mat-icon>add</mat-icon>
+      Importar Planilha
+    </button>
+  </div>
+</div>
+
+<input type="file" hidden #fileInput accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" (change)="onFileSelected($event)" />

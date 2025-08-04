@@ -1,0 +1,110 @@
+<div class="component-header">
+  <app-Header [titulo]="'Contratos'"></app-Header>
+
+  <div class="btns-header-groups">
+  </div>
+</div>
+
+<div class="grid-filters">
+  <mat-form-field appearance="fill" class="col-1">
+    <mat-label>CPF/CNPJ</mat-label>
+    <input matInput [(ngModel)]="this.filtros.inscricao" name="inscricao" maxlength="18"
+      onkeydown="MascaraCnpjCpf(this)" />
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="col-2">
+    <mat-label>Nome</mat-label>
+    <input matInput [(ngModel)]="this.filtros.nome" name="nome" />
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="col-1">
+    <mat-label>Data Inicial</mat-label>
+    <input matInput [(ngModel)]="this.filtros.dataInicial" name="dataInicial"
+      onkeydown="formatDate(this)" />
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="col-1">
+    <mat-label>Data Final</mat-label>
+    <input matInput [(ngModel)]="this.filtros.dataFinal" name="dataFinal"
+      onkeydown="formatDate(this)" />
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="col-1">
+    <mat-label>Status</mat-label>
+    <select matNativeControl [(ngModel)]="filtros.situacao" name="situacao">
+      <option value="0">Todos</option>
+      <option value="1">Gerado</option>
+      <option value="2">Em análise</option>
+      <option value="3">Aprovado</option>
+      <option value="4">Reprovado</option>
+    </select>
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="col-2" *ngIf="this.auth.isAdm()">
+    <mat-label>Vendedor</mat-label>
+    <select matNativeControl [(ngModel)]="filtros.vendedor" name="vendedor">
+      <option value="0">Todos</option>
+      <option *ngFor="let item of equipe" value="{{item.id}}">{{item.nome}}</option>
+    </select>
+  </mat-form-field>
+  <button mat-fab extended color="primary" (click)="filter()">
+    <mat-icon>search</mat-icon>
+    Buscar
+  </button>
+</div>
+<div class="cs-table-totals" *ngIf="this.pagination?.itens?.length > 0">
+  <p>{{this.pagination.itens.length}} resultado(s)</p>
+</div>
+<div class="grid-container grid-container-with-filter">
+  <div class="cs-table" *ngIf="this.pagination?.itens?.length > 0">
+    <div class="cs-table-header">
+      <div class="col-1">
+        <p>Data</p>
+      </div>
+      <div class="col-2">
+        <p>Cliente</p>
+      </div>
+      <!-- <div class="col-1">
+        <p>CPF/CNPJ</p>
+      </div> -->
+      <div class="col-2">
+        <p>Vendedor</p>
+      </div>
+      <div class="col-2">
+        <p>Valor</p>
+      </div>
+      <div class="col-1">
+        <p>Status</p>
+      </div>
+      <div class="col-2">
+        <p>Ações</p>
+      </div>
+    </div>
+    <div class="cs-table-body" (scroll)="onScroll($event)">
+      <div class="cs-table-row" *ngFor="let row of this.pagination?.itens">
+        <div class="col-1">
+          <p>{{this.cc.DataFormatoBr(row.dataCriacao)}}</p>
+        </div>
+        <div class="col-3">
+          <p>{{row.nome}}</p>
+        </div>
+        <!-- <div class="col-1 text-right">
+          <p>{{this.cc.MascaraCnpjCpf(row.inscricao)}}</p>
+        </div> -->
+        <div class="col-1">
+          <p>{{ this.cc.FFirtLastName(row.vendedor) }}</p>
+        </div>
+        <div class="col-2 text-right">
+          <p>{{this.cc.MascaraDecimal(row.valorAprovado)}}</p>
+        </div>
+        <div class="col-1 text-center">
+          <p class="{{this.situacoes[row.situacao].Classe}}">{{SituacaoDesc(row.situacao)}}</p>
+        </div>
+        <div class="col-2 grid-actions">
+          <mat-icon *ngIf="this.auth.isAdm()" matTooltip="Excluir contrato" (click)="openDeleteDialog(row.id, row.nome)" style="color: #e53e3e">delete</mat-icon>
+          <mat-icon matTooltip="Alterar dados do titular" (click)="getDetails(row.clienteId)">edit</mat-icon>
+          <mat-icon matTooltip="Gerenciar documentos do contrato" (click)="manager(row)">cases</mat-icon>
+          <mat-icon matTooltip="Visualizar proposta" (click)="ViewProposal(row)">visibility</mat-icon>
+          <mat-icon (click)="UpdateStatus(row.id, 2)" *ngIf="row.situacao == 1" matTooltip="Alterar para análise">sell</mat-icon>
+          <mat-icon *ngIf="row.situacao == 2" (click)="openAproval(row)" matTooltip="Aprovar" style="color: #38a169">thumb_up</mat-icon>
+          <mat-icon *ngIf="row.situacao == 2" (click)="openReproval(row.id)" matTooltip="Recusar" style="color: #e53e3e">thumb_down</mat-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

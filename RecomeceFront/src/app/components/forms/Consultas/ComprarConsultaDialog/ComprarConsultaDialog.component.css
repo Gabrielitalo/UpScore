@@ -1,0 +1,63 @@
+.plans-container {
+  display: flex;
+  gap: 10px;
+  margin: 20px;
+}
+
+.plans-container-mobile {
+  display: flex;
+  gap: 10px;
+  margin: 20px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.plans-container>.card {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  width: 200px;
+  padding: 20px;
+}
+
+.card-success {
+  border: 2px solid var(--green) !important;
+}
+
+.plans-container>.card>.card-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  align-items: center;
+}
+
+.plans-container>.card>.card-row p {
+  margin: 2px;
+}
+
+.card-row>.title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.aprovado {
+  width: 200px;
+}
+
+
+.group-table {
+  display: flex;
+  border-bottom: 1px solid var(--borderColor);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.group-table p {
+  margin: 5px;
+}
+
+.title-beneficiario {
+  color: var(--primary);
+  margin-bottom: 5px;
+  margin-top: 15px;
+}

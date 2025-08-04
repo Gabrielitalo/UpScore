@@ -1,0 +1,26 @@
+<div class="title">
+  <p>Consultas à Serasa Experian</p>
+  <p>Detalhamento do mês atual e do mês anterior de consultas deste documento</p>
+</div>
+<div class="sub-container">
+  <p class="sub-title"><strong> Consultas à Serasa Experian</strong> Exibindo
+    {{this.data.summary?.count}} registros</p>
+  <div class="serasa-table-container">
+    <div class="serasa-table-header">
+      <div>Data</div>
+      <div>Quantidade e consultas no dia</div>
+      <div>Seguimento do consultantes</div>
+    </div>
+    <div class="serasa-table-body">
+      <div class="serasa-table-row" *ngFor="let row of data.inquiryResponse">
+        <div>{{this.cc.DataFormatoBr(row.occurrenceDate)}}</div>
+        <div>{{row.daysQuantity}}</div>
+        <div>{{row.segmentDescription}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card-with-title">
+  <p class="bold">Informações</p>
+  <p>Simples consulta ao CPF no cadastro da Serasa. Essa informação de consulta não significa negócio realizado, nem se confunde com anotação negativa no cadastro de inadimplentes. Quando houver consulta do CNPJ consulente, será apresentada a Razão Social.</p>
+</div>

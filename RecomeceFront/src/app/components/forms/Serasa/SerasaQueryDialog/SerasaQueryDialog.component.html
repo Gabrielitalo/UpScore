@@ -1,0 +1,41 @@
+<div class="p-3 flex-center" *ngIf="this.formData.products.length > 0">
+
+
+  <div class="group-table" [ngClass]="{'active': formData.productChoosed?.id == row.id}"
+    *ngFor="let row of this.formData.products" (click)="setProduct(row)">
+    <p>{{row.nome}}</p>
+    <p>R$ {{this.cc.MascaraDecimal(row.venda)}}</p>
+  </div>
+
+  <mat-form-field appearance="fill" class="w-full" *ngIf="this.formData.productChoosed?.id">
+    <mat-label>{{this.formData.personType == 1 ? 'CPF' : 'CNPJ'}}</mat-label>
+    <input matInput [(ngModel)]="formData.inscricao" required name="inscricao" maxlength="18"
+      onkeydown="MascaraCnpjCpf(this)" />
+  </mat-form-field>
+
+  <button mat-fab extended color="primary" class="mb-2" (click)="newQuery()">
+    <mat-icon>query_stats</mat-icon>
+    Consultar
+  </button>
+
+  <!-- <mat-card appearance="outlined">
+    <mat-card-content class="card-info">
+      <div class="flex-center-c">
+        <p class="card-title"><mat-icon color="primary">paid</mat-icon>
+          Comprado</p>
+        <p>{{formData.querys.totalBuy}} consultas</p>
+      </div>
+      <div class="flex-center-c">
+        <p class="card-title"><mat-icon color="primary">paid</mat-icon>
+          Utilizado</p>
+        <p>{{formData.querys.totalQuerys}} consultas</p>
+      </div>
+      <div class="flex-center-c">
+        <p class="card-title"><mat-icon color="primary">paid</mat-icon>
+          Saldo</p>
+        <p>{{formData.querys.saldo}} consultas</p>
+      </div>
+    </mat-card-content>
+  </mat-card> -->
+  <h4 class="text-obs" *ngIf="this.formData.productChoosed?.id">Esta consulta irá debitar do seu saldo R$ {{this.cc.MascaraDecimal(formData.productChoosed?.venda)}}</h4>
+</div>

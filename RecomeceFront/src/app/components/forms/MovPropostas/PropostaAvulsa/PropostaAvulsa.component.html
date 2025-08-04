@@ -1,0 +1,71 @@
+<div class="inicio">
+  <div class="row d-flex-center-vertical">
+    <mat-form-field appearance="fill" class="col-6">
+      <mat-label
+        >Escolha o cliente ou clique no botão para criar um novo</mat-label
+      >
+      <input
+        type="text"
+        matInput
+        [(ngModel)]="clienteSelecionado"
+        [matAutocomplete]="auto"
+        (ngModelChange)="buscarCliente($event)"
+      />
+
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayCliente">
+        <mat-option *ngFor="let client of clients" [value]="client">
+          {{ client.texto }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <button
+      (click)="newClient()"
+      mat-fab
+      color="primary"
+      style="top: -10px"
+      matTooltip="Criar novo cliente"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  <div class="row">
+    <mat-form-field appearance="fill" class="col-3">
+      <mat-label>Data da Venda</mat-label>
+      <input
+        matInput [disabled]="this.proposalId > 0"
+        [(ngModel)]="formData.dataHoraCadastro"
+        name="dataHoraCadastro"
+        maxlength="10"
+        oninput="formatDate(this)"
+      />
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="col-3">
+      <mat-label>R$ Valor da Venda</mat-label>
+      <input
+        matInput
+        [(ngModel)]="formData.valorContrato"
+        name="valorContrato"
+        (input)="this.cc.mascararValorMonetario($event)"
+      />
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field class="col-6">
+      <mat-label>Observação</mat-label>
+      <textarea
+        matInput
+        rows="5"
+        [(ngModel)]="formData.observacao"
+        name="observacao"
+      ></textarea>
+    </mat-form-field>
+  </div>
+
+  <div class="row d-flex-center-vertical" *ngIf="this.formData.situacao < 3">
+    <button mat-fab extended color="primary" class="mb-2" (click)="save()"
+    matTooltip="Salvar venda">
+      <mat-icon>save</mat-icon>
+      Salvar
+    </button>
+  </div>
+</div>

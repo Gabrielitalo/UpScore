@@ -1,0 +1,97 @@
+<div class="title">
+  <p>Anotações e Consultas SPC</p>
+  <p>Anotações negativas e consultas ao documento no SPC Brasil</p>
+</div>
+
+<div class="sub-container" *ngIf="tipo == 1 && this.data?.facts?.spcInquires">
+  <p class="sub-title"><strong> Histórico das últimas consultas</strong> Exibindo
+    {{this.data.facts.spcInquires?.summary.count}} registros</p>
+  <div class="serasa-table-container">
+    <div class="serasa-table-header">
+      <div>Data</div>
+      <div>Seguimento do consultante</div>
+    </div>
+    <div class="serasa-table-body">
+      <div class="serasa-table-row" *ngFor="let row of data.facts.spcInquires?.spcInquiriesResponse">
+        <div>{{this.cc.DataFormatoBr(row.occurrenceDate)}}</div>
+        <div>{{row.segmentDescription}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sub-container" *ngIf="tipo == 1 && data?.negativeData?.spcNegative">
+  <p class="sub-title"><strong> Anotações SPC</strong> Exibindo
+    {{this.data.negativeData.spcNegative.summary.count}} registros</p>
+  <div class="serasa-table-container">
+    <div class="serasa-table-header">
+      <div>Data</div>
+      <div>Valor</div>
+      <div>Contrato</div>
+      <div>Credor</div>
+      <div>Cidade</div>
+      <div>UF</div>
+    </div>
+    <div class="serasa-table-body">
+      <div class="serasa-table-row" *ngFor="let row of data.negativeData.spcNegative.spcNegativeResponse">
+        <div>{{this.cc.DataFormatoBr(row.occurrenceDate)}}</div>
+        <div>{{this.cc.MascaraDecimal(row.amount) }}</div>
+        <div>{{row.contractId}}</div>
+        <div>{{row.creditorName}}</div>
+        <div>{{row.creditorCity}}</div>
+        <div>{{row.federalUnit}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sub-container" *ngIf="tipo == 2">
+  <p class="sub-title"><strong> Histórico das últimas consultas</strong> Exibindo
+    {{this.data.spcMarketInquiries.spcMarketInquiriesResponseList?.length}} registros</p>
+  <div class="serasa-table-container">
+    <div class="serasa-table-header">
+      <div>Data</div>
+      <div>CNPJ</div>
+      <div>Razão Social</div>
+      <div>Quantidade</div>
+    </div>
+    <div class="serasa-table-body">
+      <div class="serasa-table-row" *ngFor="let row of data.spcMarketInquiries.spcMarketInquiriesResponseList">
+        <div>{{this.cc.DataFormatoBr(row.occurrenceDate)}}</div>
+        <div>{{this.cc.MascaraCnpjCpf(row.companyDocumentId)}}</div>
+        <div>{{row.companyName}}</div>
+        <div>{{row.daysQuantity}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="sub-container" *ngIf="tipo == 2">
+  <p class="sub-title"><strong> Anotações SPC</strong> Exibindo
+    {{this.data.negativeData.spcNegative.summary.count}} registros</p>
+  <div class="serasa-table-container">
+    <div class="serasa-table-header">
+      <div>Data</div>
+      <div>Valor</div>
+      <div>Contrato</div>
+      <div>Credor</div>
+      <div>Cidade</div>
+      <div>UF</div>
+    </div>
+    <div class="serasa-table-body">
+      <div class="serasa-table-row" *ngFor="let row of data.negativeData.spcNegative.spcNegativeResponse">
+        <div>{{this.cc.DataFormatoBr(row.occurrenceDate)}}</div>
+        <div>{{this.cc.MascaraDecimal(row.amount) }}</div>
+        <div>{{row.contractId}}</div>
+        <div>{{row.creditorName}}</div>
+        <div>{{row.creditorCity}}</div>
+        <div>{{row.federalUnit}}</div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div class="card-with-title">
+  <p class="bold">Atenção</p>
+  <p>Dados exibidos de acordo com a última atualização do órgão emissor responsável – Simples consulta ao CNPJ/CPF no cadastro do SPC. Essa informação de consulta não significa negócio realizado, nem se confunde com anotação negativa no cadastro de inadimplentes. Quando houver consulta do CNPJ consulente, será apresentada a Razão Social.</p>
+</div>

@@ -1,0 +1,18 @@
+<div class="component-header">
+  <app-Header [titulo]="'Contas Bancárias'"></app-Header>
+
+  <button mat-fab extended color="primary" (click)="openDialog(0)">
+    <mat-icon>add</mat-icon>
+    Novo
+  </button>
+</div>
+
+<div class="card-grid">
+  <div class="card-item col-3" *ngFor="let item of this.itens" (click)="openDialog(item.id)">
+    <p>{{item.codBanco}} - {{cc.BuscaBancoCodigo(item.codBanco)}}</p>
+    <p>Agência: {{item.agencia}}</p>
+    <p>Conta: {{item.conta}}</p>
+    <p>PIX: {{item.chavePix}}</p>
+    <p>Ativo: {{cc.SimNaoInt(item.ativo)}}</p>
+  </div>
+</div>

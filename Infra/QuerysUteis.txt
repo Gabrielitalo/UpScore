@@ -1,0 +1,6 @@
+Select C.Id, C.Custo CustoUnit, C.Venda VendaUnit, Count(1) Total, (Count(1) * C.Custo) Custo, (Count(1) * C.Venda) Venda,
+((Count(1) * C.Venda) - (Count(1) * C.Custo)) Lucro
+From LogConsultas L
+Join CadConsultas C on (C.Id = L.Fk_CadConsultas)
+Where Legado = 0
+group by C.Id, C.Custo, C.Venda;

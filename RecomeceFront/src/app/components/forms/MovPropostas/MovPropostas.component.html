@@ -1,0 +1,178 @@
+<div class="component-header">
+  <app-Header [titulo]="'Propostas'"></app-Header>
+
+  <div class="btns-header-groups">
+    <button mat-fab [extended]="!isMobile" color="primary" matTooltip="Nova proposta" (click)="getDetails(0)">
+      <mat-icon>add</mat-icon>
+      <span *ngIf="isMobile == false"> Nova Proposta</span>
+    </button>
+  </div>
+</div>
+
+<div class="grid-filters">
+  <mat-form-field appearance="fill" class="col-1" *ngIf="isMobile == false">
+    <mat-label>CPF/CNPJ</mat-label>
+    <input matInput [(ngModel)]="this.filtros.inscricao" name="inscricao" maxlength="18"
+      onkeydown="MascaraCnpjCpf(this)" />
+  </mat-form-field>
+  <mat-form-field appearance="fill" [ngClass]="{ 'col-2': isMobile == false, 'col-9': isMobile == true }">
+    <mat-label>Nome</mat-label>
+    <input matInput [(ngModel)]="this.filtros.nome" name="nome" />
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="col-1" *ngIf="isMobile == false">
+    <mat-label>Data Inicial</mat-label>
+    <input matInput [(ngModel)]="this.filtros.dataInicial" name="dataInicial" onkeydown="formatDate(this)" />
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="col-1" *ngIf="isMobile == false">
+    <mat-label>Data Final</mat-label>
+    <input matInput [(ngModel)]="this.filtros.dataFinal" name="dataFinal" onkeydown="formatDate(this)" />
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="col-1" *ngIf="isMobile == false">
+    <mat-label>Status</mat-label>
+    <select matNativeControl [(ngModel)]="filtros.situacao" name="situacao">
+      <option value="0">Todos</option>
+      <option value="1">Gerado</option>
+      <option value="2">Em negociação</option>
+      <option value="3">Aprovado</option>
+      <option value="4">Reprovado</option>
+    </select>
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="col-2" *ngIf="this.auth.isAdm() && isMobile == false">
+    <mat-label>Vendedor</mat-label>
+    <select matNativeControl [(ngModel)]="filtros.vendedor" name="vendedor">
+      <option value="0">Todos</option>
+      <option *ngFor="let item of equipe" value="{{item.id}}">{{item.nome}}</option>
+    </select>
+  </mat-form-field>
+  <button mat-fab [extended]="!isMobile" color="primary" (click)="filter()">
+    <mat-icon>search</mat-icon>
+    <span *ngIf="isMobile == false">Buscar</span>
+  </button>
+</div>
+<div class="cs-table-totals" *ngIf="this.pagination?.itens?.length > 0">
+  <p>R$ {{ this.cc.MascaraDecimal(this.pagination.totals[0]) }}</p>
+  <p>{{ this.pagination.itens.length }} resultado(s)</p>
+</div>
+
+<div class="grid-card-container" (scroll)="onScroll($event)" *ngIf="isMobile == true">
+  <div class="grid-card-row" *ngFor="let row of this.pagination?.itens">
+    <div class="grid-card-item flex-center-c">
+      <p><strong>{{ row.nome }}</strong> </p>
+    </div>
+    <div class="grid-card-item">
+      <div class="grid-card-item-split">
+        <div>
+          <p><mat-icon color="primary">person</mat-icon> Vendedor</p>
+          <p>{{ this.cc.FFirtLastName(row.vendedor) }}</p>
+        </div>
+        <div>
+          <p><mat-icon color="primary">calendar_month</mat-icon>Data</p>
+          <p>{{ this.cc.DataTempoFormatoBr(row.dataHoraCadastro) }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="grid-card-item">
+      <div class="grid-card-item-split">
+        <div>
+          <p>R$ Dívida</p>
+          <p>{{ this.cc.MascaraDecimal(row.valorDivida) }}</p>
+        </div>
+        <div>
+          <p>R$ Contrato</p>
+          <p>
+            {{
+            this.cc.MascaraDecimal(
+            row.valorAprovado == 0 ? row.valorContrato : row.valorAprovado
+            )
+            }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="grid-card-item text-center">
+      <p class="{{ this.situacoes[row.situacao].Classe }}">
+        {{ SituacaoDesc(row.situacao) }}
+      </p>
+    </div>
+    <div class="grid-card-item grid-actions">
+      <mat-icon matTooltip="Editar registro" (click)="getDetails(row.id)">edit</mat-icon>
+      <mat-icon *ngIf="row.limpaNome == 1" matTooltip="Gerar proposta"
+        (click)="getProposalPdf(row.id, row.nome)">picture_as_pdf</mat-icon>
+      <mat-icon (click)="UpdateStatus(row.id, 2)" *ngIf="row.situacao == 1"
+        matTooltip="Alterar para negociação">sell</mat-icon>
+      <mat-icon *ngIf="row.situacao == 2" (click)="openAproval(row)" matTooltip="Aprovar"
+        style="color: #38a169">thumb_up</mat-icon>
+      <mat-icon *ngIf="row.situacao == 2" (click)="openReproval(row.id)" matTooltip="Recusar"
+        style="color: #e53e3e">thumb_down</mat-icon>
+
+    </div>
+  </div>
+</div>
+<div class="grid-container grid-container-with-filter" *ngIf="!isMobile">
+  <div class="cs-table" *ngIf="this.pagination?.itens?.length > 0">
+    <div class="cs-table-header">
+      <div class="col-1">
+        <p>Data</p>
+      </div>
+      <div class="col-3">
+        <p>Cliente</p>
+      </div>
+      <div class="col-2">
+        <p>Vendedor</p>
+      </div>
+      <div class="col-1">
+        <p>Dívida</p>
+      </div>
+      <div class="col-1">
+        <p>Valor</p>
+      </div>
+      <div class="col-1">
+        <p>Status</p>
+      </div>
+      <div class="col-2">
+        <p>Ações</p>
+      </div>
+    </div>
+    <div class="cs-table-body" (scroll)="onScroll($event)">
+      <div class="cs-table-row" *ngFor="let row of this.pagination?.itens">
+        <div class="col-1">
+          <p>{{ this.cc.DataTempoFormatoBr(row.dataHoraCadastro) }}</p>
+        </div>
+        <div class="col-3">
+          <p>{{ row.nome }}</p>
+        </div>
+        <div class="col-2">
+          <p>{{ this.cc.FFirtLastName(row.vendedor) }}</p>
+        </div>
+        <div class="col-1 text-right">
+          <p>{{ this.cc.MascaraDecimal(row.valorDivida) }}</p>
+        </div>
+        <div class="col-1 text-right">
+          <p>
+            {{
+            this.cc.MascaraDecimal(
+            row.valorAprovado == 0 ? row.valorContrato : row.valorAprovado
+            )
+            }}
+          </p>
+        </div>
+        <div class="col-1 text-center">
+          <p class="{{ this.situacoes[row.situacao].Classe }}">
+            {{ SituacaoDesc(row.situacao) }}
+          </p>
+        </div>
+        <div class="col-2 grid-actions">
+          <mat-icon matTooltip="Editar registro" (click)="getDetails(row.id)">edit</mat-icon>
+          <mat-icon *ngIf="row.limpaNome == 1" matTooltip="Gerar proposta"
+            (click)="getProposalPdf(row.id, row.nome)">picture_as_pdf</mat-icon>
+          <mat-icon (click)="UpdateStatus(row.id, 2)" *ngIf="row.situacao == 1"
+            matTooltip="Alterar para negociação">sell</mat-icon>
+          <mat-icon *ngIf="row.situacao == 2" (click)="openAproval(row)" matTooltip="Aprovar"
+            style="color: #38a169">thumb_up</mat-icon>
+          <mat-icon *ngIf="row.situacao == 2" (click)="openReproval(row.id)" matTooltip="Recusar"
+            style="color: #e53e3e">thumb_down</mat-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

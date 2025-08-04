@@ -1,0 +1,47 @@
+<button mat-fab extended color="primary" class="mb-2" (click)="Back()">
+  <mat-icon>arrow_back_ios</mat-icon>
+  Voltar
+</button>
+
+<button mat-fab extended color="primary" class="mb-2" (click)="print()">
+  <mat-icon>picture_as_pdf</mat-icon>
+  Gerar PDF
+</button>
+
+<div class="container a4-page" id="printArea" *ngIf="this.reportData && this.reportAdv.personType == 1">
+  <div class="serasa-header">
+    <img src="assets/logoSerasa.png" alt="Logo" class="logo">
+    <div class="header-content">
+      <p>{{this.cc.DataTempoFormatoBr(this.reportAdv.dataHoraConsulta)}}</p>
+      <p class="bold">RELATÓRIO BÁSICO</p>
+      <p class="bold" *ngIf="this.reportAdv.personType == 1">CPF: {{this.cc.MascaraCnpjCpf(this.reportData.reports[0].registration.documentNumber)}} | {{this.reportData.reports[0].registration.consumerName}}</p>
+    </div>
+  </div>
+  <app-SerasaRegistrationPF [data]="this.reportData" [totalDivida]="totalDivida"
+  [qtdDivida]="qtdDivida" [modelo]="2"></app-SerasaRegistrationPF>
+  <app-AnotacoesNegativas [data]="this.reportData" [totalDivida]="totalDivida"
+    [qtdDivida]="qtdDivida" [modelo]="2"></app-AnotacoesNegativas>
+  <app-ParticipacoesSocietarias
+    [data]="this.reportData.reports[0].partner"></app-ParticipacoesSocietarias>
+  <div class="section">
+    <app-ConsultasNaSerasa [data]="this.reportData.reports[0].facts.inquiry"></app-ConsultasNaSerasa>
+  </div>
+  <p>Este relatório é estritamente confidencial e destinado a apoiar decisões de crédito e negócios. É proibida a reprodução, total ou parcial, bem como sua divulgação a terceiros, por qualquer forma. A decisão de conceder ou não crédito é de inteira responsabilidade da empresa concedente. Serasa Experian. Todos os direitos reservados.</p>
+</div>
+
+<div class="container a4-page" id="printArea" *ngIf="this.reportData && this.reportAdv.personType == 2">
+  <div class="serasa-header">
+    <img src="assets/logoSerasa.png" alt="Logo" class="logo">
+    <div class="header-content">
+      <p>{{this.cc.DataTempoFormatoBr(this.reportAdv.dataHoraConsulta)}}</p>
+      <p class="bold">RELATÓRIO BÁSICO</p>
+      <p class="bold" *ngIf="this.reportAdv.personType == 2">CNPJ: {{this.cc.MascaraCnpjCpf(this.reportAdv.inscricao)}} | {{this.reportData.reports[0].registration.companyName}}</p>
+    </div>
+  </div>
+  <app-SerasaRegistrationPJ [data]="this.reportData" [totalDivida]="totalDivida"
+  [qtdDivida]="qtdDivida" [modelo]="2"></app-SerasaRegistrationPJ>
+  <app-AnotacoesNegativas [data]="this.reportData" [totalDivida]="totalDivida"
+  [qtdDivida]="qtdDivida" [modelo]="2"></app-AnotacoesNegativas>
+  <app-QuadroSocietario [data]="this.reportData.reports[0]" [totalDivida]="totalDivida"
+  [qtdDivida]="qtdDivida" [modelo]="2"></app-QuadroSocietario>
+</div>

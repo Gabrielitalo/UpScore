@@ -1,0 +1,59 @@
+<!-- <div class="plans-container" [ngClass]="{'plans-container-mobile': isMobile}">
+  <div class="card" [ngClass]="{'card-success': row.id == 2}" *ngFor="let row of this.plans">
+    <div class="card-row">
+      <p class="title flex-center-v">
+        <mat-icon>handshake</mat-icon>
+        Consultas
+      </p>
+      <p class="description">{{row.qtdConsultas}}</p>
+    </div>
+    <div class="card-row">
+      <p class="title flex-center-v">
+        <mat-icon>request_quote</mat-icon>
+        Valor da Consulta
+      </p>
+      <p class="description">R$ {{this.cc.MascaraDecimal(row.valor / row.qtdConsultas)}}</p>
+    </div>
+
+    <div class="card-row">
+      <p class="title flex-center-v">
+        <mat-icon>paid</mat-icon>
+        Investimento
+      </p>
+      <p class="description">R$ {{this.cc.MascaraDecimal(row.valor)}}</p>
+    </div>
+    <div class="card-row text-center" *ngIf="row.id == 2">
+      <p class="aprovado">Economize 7 %</p>
+    </div>
+
+    <div class="mt-4 flex-center">
+      <button mat-fab extended color="primary" (click)="buy(row)">
+        <mat-icon>shopping_cart</mat-icon>
+        Comprar
+      </button>
+    </div>
+  </div>
+</div> -->
+<div class="dialog-component">
+  <div class="flex-center">
+    <mat-form-field appearance="fill" class="col-4">
+      <mat-label>Valor do depósito</mat-label>
+      <input matInput [(ngModel)]="valorComprar" (input)="this.cc.mascararValorMonetario($event)" name="valorComprar" />
+    </mat-form-field>
+  </div>
+
+  <div class="mt-4 flex-center">
+    <button mat-fab extended color="primary" (click)="buy()">
+      <mat-icon>shopping_cart</mat-icon>
+      Comprar
+    </button>
+  </div>
+
+  <h4 class="title-beneficiario flex-center mb-4">
+    Tabela de Preços
+  </h4>
+  <div class="group-table" *ngFor="let row of this.querys">
+    <p>{{row.nome}}</p>
+    <p>R$ {{this.cc.MascaraDecimal(row.venda)}}</p>
+  </div>
+</div>

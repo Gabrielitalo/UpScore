@@ -1,0 +1,169 @@
+<div class="section">
+  <div class="title">
+    <p>Informações fixadas</p>
+  </div>
+  <div class="cards-container" *ngIf="modelo == 1">
+    <div class="serasa-card">
+      <p class="serasa-card-title">{{data.reports[0].identificationReport.statusCodeDescription}}</p>
+      <p>Situação Cadastral</p>
+      <p class="serasa-card-title">Atualizado em
+        {{this.cc.DataFormatoBr(data.reports[0].identificationReport.updateDate)}}</p>
+    </div>
+
+    <div class="serasa-card">
+      <p class="serasa-card-title">{{this.cc.converterDecimalParaInt(data.reports[0].score.score)}}</p>
+      <p>{{data.reports[0].score.message}}</p>
+      <p class="serasa-card-title">Serasa Score Empresas</p>
+    </div>
+
+    <div class="serasa-card">
+      <p class="serasa-card-title">{{data.reports[0].QSAReport.partnerCompleteReport.partnersList.length}} |
+        {{data.reports[0].QSAReport.directorCompleteReport.directorsList.length}} </p>
+      <p>Sócios | Administradores</p>
+      <p class="serasa-card-title">Ocorrências de anotações negativas</p>
+    </div>
+
+    <div class="serasa-card">
+      <p class="serasa-card-title">R$
+        {{this.cc.MascaraDecimal(data.reports[0].QSAReport.companyData.accomplishedValue)}}</p>
+      <p>Capital social</p>
+    </div>
+  </div>
+  <div class="cards-container" *ngIf="modelo == 2">
+    <div class="serasa-card">
+      <p class="serasa-card-title">{{data.reports[0].registration.statusCodeDescription}}</p>
+      <p>Situação Cadastral</p>
+      <p class="serasa-card-title">Atualizado em
+        {{this.cc.DataFormatoBr(data.reports[0].registration.updateDate)}}</p>
+    </div>
+
+    <div class="serasa-card">
+      <p class="serasa-card-title">{{this.cc.converterDecimalParaInt(data.reports[0].score.score)}}</p>
+      <p>{{data.reports[0].score.message}}</p>
+      <p class="serasa-card-title">Serasa Score Empresas</p>
+    </div>
+
+    <div class="serasa-card">
+      <p class="serasa-card-title">{{data.reports[0].partner.PartnerResponse.results.length}} |
+        {{data.reports[0].director.DirectorResponse.results.length}} </p>
+      <p>Sócios | Administradores</p>
+      <p class="serasa-card-title">Ocorrências de anotações negativas</p>
+    </div>
+  </div>
+</div>
+
+<div class="section" *ngIf="modelo == 1">
+  <div class="title">
+    <p>Dados Cadastrais</p>
+    <p>Atualizado em {{this.cc.DataFormatoBr(data.reports[0].identificationReport.updateDate)}}</p>
+  </div>
+  <div class="cards-container">
+    <div class="serasa-card">
+      <p class="serasa-card-title">{{data.reports[0].identificationReport.statusCodeDescription}}</p>
+      <p>Situação Cadastral</p>
+      <p class="serasa-card-title">Atualizado em
+        {{this.cc.DataFormatoBr(data.reports[0].identificationReport.updateDate)}}</p>
+    </div>
+
+    <div class="serasa-card">
+      <p class="serasa-card-title">{{this.calcularIdade(data.reports[0].identificationReport.companyFoundation)}}</p>
+      <p>Fundação em {{this.cc.DataFormatoBr(data.reports[0].identificationReport.companyFoundation)}}</p>
+    </div>
+
+    <div class="serasa-card">
+      <p class="serasa-card-title">
+        {{data.reports[0].identificationReport.address.city}}/{{data.reports[0].identificationReport.address.state}}
+      </p>
+      <p>Município/UF</p>
+    </div>
+
+    <div class="serasa-card">
+      <p class="serasa-card-title">{{data.reports[0].identificationReport.economicActivity}} </p>
+      <p>Ramo de atividade</p>
+    </div>
+
+    <div class="serasa-card">
+      <p class="serasa-card-title">{{data.reports[0].identificationReport.partnership}} </p>
+      <p>Tipo de sociedade</p>
+    </div>
+    <div class="serasa-card">
+      <p class="serasa-card-title">{{data.reports[0].identificationReport.numberEmployees}} </p>
+      <p>Número de funcionários</p>
+    </div>
+    <div class="serasa-card">
+      <p class="serasa-card-title">{{data.reports[0].identificationReport.taxOption}} </p>
+      <p>Opção tributária</p>
+    </div>
+
+  </div>
+
+  <div class="card-with-title" *ngIf="modelo == 1">
+    <p class="card-with-title-title">Dados cadastrais</p>
+    <div class="card-with-title-body">
+      <div class="row">
+        <div class="card-info row">
+          <p>Nome fantasia</p>
+          <p>{{data.reports[0].identificationReport?.companyAlias}}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="card-info row">
+          <p>Endereço</p>
+          <p>
+            {{data.reports[0].identificationReport.address.addressLine}}-{{data.reports[0].identificationReport.address.district}}-{{data.reports[0].identificationReport.address.city}}-{{data.reports[0].identificationReport.address.state}},{{data.reports[0].identificationReport.address.zipCode}}
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="card-info row">
+          <p>Site</p>
+          <p>{{data.reports[0].identificationReport.companyUrl}}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="card-info row">
+          <p>Telefone</p>
+          <p>
+            {{data.reports[0].identificationReport?.phone?.areaCode}}{{data.reports[0].identificationReport?.phone?.phoneNumber}}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-with-title">
+    <p class="card-with-title-title">Outros dados</p>
+    <div class="card-with-title-body">
+      <div class="row">
+        <div class="card-info row">
+          <p>CNAE</p>
+          <p>{{data.reports[0].identificationReport.cnae}}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="card-info row">
+          <p>Ramo de atividade econômica</p>
+          <p>{{data.reports[0].identificationReport.economicActivity}}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="card-info row">
+          <p>Inscrição Estadual</p>
+          <p>{{data.reports[0].identificationReport.stateRegistration}}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="card-info row">
+          <p>NIRE</p>
+          <p>{{data.reports[0].identificationReport.nireNumber}}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="card-info row">
+          <p>NIRE</p>
+          <p>{{this.cc.MascaraDecimal(data.reports[0].identificationReport.companyRegisterDate)}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

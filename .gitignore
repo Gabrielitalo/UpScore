@@ -1,0 +1,68 @@
+# Build results
+**/bin/
+**/bin/Debug/
+**/obj/
+
+
+# Visual Studio
+.vs/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+
+# Rider project files
+.idea/
+
+# Visual Studio Code
+.vscode/
+.history/
+
+# # ASP.NET Core secrets
+# secrets.json
+
+# # Configuration files
+# appsettings.*.json
+# !appsettings.json
+
+# Logs
+*.log
+
+# Publish results
+**/publish/
+**/out/
+
+# npm & Angular
+node_modules/
+dist/
+coverage/
+.angular/
+.env
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Package managers
+*.nupkg
+*.snupkg
+packages/
+*.cache
+
+# Test results
+TestResults/
+*.trx
+
+# Docker
+*.pid
+docker-compose.override.yml
+
+# Git files
+*.orig
+
+# Others
+_ReSharper*/
+*.resharper
+*.vs/

@@ -1,0 +1,55 @@
+<div class="section">
+  <div class="title">
+    <p>Anotações Negativas</p>
+    <p>Detalhamento sobre as anotações negativas do indivíduo de acordo com diversas fontes.</p>
+  </div>
+  <p class="blue-color">Resumo</p>
+  <p>R$ {{totalDivida}}</p>
+  <div class="cards-container">
+    <div class="serasa-card">
+      <p class="serasa-card-title">R$ {{totalDivida}}</p>
+      <p>Total em anotações negativas</p>
+      <p class="serasa-card-title">{{qtdDivida}}</p>
+    </div>
+
+    <div class="serasa-card">
+      <p class="serasa-card-title">{{this.checkValue(data.reports[0].negativeData.pefin.summary.balance)}}</p>
+      <p>Dívidas comerciais - Pefin</p>
+      <p class="serasa-card-title">{{this.data.reports[0].negativeData.pefin.summary.count}} registro(s)</p>
+    </div>
+    <div class="serasa-card">
+      <p class="serasa-card-title">{{this.checkValue(data.reports[0].negativeData.refin.summary.balance)}}</p>
+      <p>Dívidas em instituições financeiras - Refin</p>
+      <p class="serasa-card-title">{{this.data.reports[0].negativeData.refin.summary.count}} registro(s)</p>
+    </div>
+    <div class="serasa-card">
+      <p class="serasa-card-title">
+        {{this.checkValue(data.reports[0].negativeData.collectionRecords.summary.balance)}}</p>
+      <p>Dívidas vencidas - Convem</p>
+      <p class="serasa-card-title">{{this.data.reports[0].negativeData.collectionRecords.summary.count}}
+        registro(s)</p>
+    </div>
+    <div class="serasa-card" *ngIf="modelo == 1">
+      <p class="serasa-card-title">{{this.checkValue(data.reports[0].facts.judgementFilings.summary.balance)}}
+      </p>
+      <p>Ações judiciais</p>
+      <p class="serasa-card-title">{{this.data.reports[0].facts.judgementFilings.summary.count}} registro(s)</p>
+    </div>
+    <div class="serasa-card">
+      <p class="serasa-card-title">{{this.checkValue(data.reports[0].negativeData.notary.summary.balance)}}</p>
+      <p>Dívidas protestadas</p>
+      <p class="serasa-card-title">{{this.data.reports[0].negativeData.notary.summary.count}} registro(s)</p>
+    </div>
+    <div class="serasa-card">
+      <p class="serasa-card-title">{{this.checkValue(data.reports[0].negativeData.check.summary.balance)}}</p>
+      <p>Cheques sem fundo BACEN</p>
+      <p class="serasa-card-title">{{this.data.reports[0].negativeData.check.summary.count}} registro(s)</p>
+    </div>
+  </div>
+  <app-PefinRefin [type]="1" [data]="this.data.reports[0].negativeData.pefin"></app-PefinRefin>
+  <app-PefinRefin [type]="2" [data]="this.data.reports[0].negativeData.refin"></app-PefinRefin>
+  <app-DividasVencidas *ngIf="modelo == 1"  [data]="this.data.reports[0].negativeData.collectionRecords"></app-DividasVencidas>
+  <app-AcoesJudiciais *ngIf="modelo == 1" [data]="this.data.reports[0].facts.judgementFilings"></app-AcoesJudiciais>
+  <app-DividasProtestadas [data]="this.data.reports[0].negativeData.notary"></app-DividasProtestadas>
+  <app-Cheques [data]="this.data.reports[0].negativeData.check"></app-Cheques>
+</div>

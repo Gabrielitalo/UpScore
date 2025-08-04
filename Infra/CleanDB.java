@@ -1,0 +1,38 @@
+Delete From MovPropostasArquivos;
+Delete From MovPropostasBeneficiarios;
+Delete From MovPropostasDuplicatas;
+Delete From MovLotesEmpresasContratos;
+Delete From MovContratos;
+Delete From MovPropostas;
+Delete From MovCadClientesSerasa;
+Delete From LogConsultas;
+Delete From LogSerasaConsultas;
+Delete From LogAsaas;
+Delete From MovAuditoria;
+Delete From MovLotesAssociacaoComponentes;
+Delete From MovLotesEmpresasBeneficiarios;
+Delete From MovLotesEmpresasContratos;
+Delete From MovLotesAssociacao;
+Delete From MovLotesEmpresas;
+Delete From CadClientes;
+Delete From CadEquipe;
+
+
+Alter Table MovPropostasArquivos Auto_Increment = 1;
+Alter Table MovPropostasBeneficiarios Auto_Increment = 1;
+Alter Table MovPropostasDuplicatas Auto_Increment = 1;
+Alter Table MovLotesEmpresasContratos Auto_Increment = 1;
+Alter Table MovContratos Auto_Increment = 1;
+Alter Table MovPropostas Auto_Increment = 1;
+Alter Table MovCadClientesSerasa Auto_Increment = 1;
+Alter Table LogConsultas Auto_Increment = 1;
+Alter Table LogSerasaConsultas Auto_Increment = 1;
+Alter Table LogAsaas Auto_Increment = 1;
+Alter Table MovAuditoria Auto_Increment = 1;
+Alter Table MovLotesAssociacaoComponentes Auto_Increment = 1;
+Alter Table MovLotesEmpresasBeneficiarios Auto_Increment = 1;
+Alter Table MovLotesEmpresasContratos Auto_Increment = 1;
+Alter Table MovLotesAssociacao Auto_Increment = 1;
+Alter Table MovLotesEmpresas Auto_Increment = 1;
+Alter Table CadClientes Auto_Increment = 1;
+Alter Table CadEquipe Auto_Increment = 1;

@@ -1,0 +1,121 @@
+<div class="section">
+  <div class="title">
+    <p>Quadro societário</p>
+    <p *ngIf="modelo == 1">Composição dos sócios e administradores da empresa. Atualizado em
+      {{this.cc.DataFormatoBr(data?.companyData?.informationUpdateDate)}}</p>
+  </div>
+  <div class="cards-container" *ngIf="modelo == 1 && data?.companyData">
+    <div class="serasa-card">
+      <p class="serasa-card-title">R$
+        {{this.cc.MascaraDecimal(data.companyData.accomplishedValue)}}</p>
+      <p>Capital social</p>
+    </div>
+    <div class="serasa-card">
+      <p class="serasa-card-title">R$
+        {{this.cc.MascaraDecimal(data.companyData.accomplishedValue)}}</p>
+      <p>Capital realizado</p>
+    </div>
+
+    <div class="serasa-card">
+      <p class="serasa-card-title">{{data.companyData.nature}}</p>
+      <p class="serasa-card-title">Tipo de capital</p>
+    </div>
+
+    <div class="serasa-card">
+      <p class="serasa-card-title">{{data.companyData.controlType}}</p>
+      <p class="serasa-card-title">Tipo de controle</p>
+    </div>
+
+    <div class="serasa-card">
+      <p class="serasa-card-title">{{data.companyData.countryOrigin}}</p>
+      <p class="serasa-card-title">Origem</p>
+    </div>
+
+    <div class="serasa-card">
+      <p class="serasa-card-title">{{data.partnerCompleteReport.partnersList.length}} |
+        {{data.directorCompleteReport.directorsList.length}} </p>
+      <p>Sócios | Administradores</p>
+      <p class="serasa-card-title">Ocorrências de anotações negativas</p>
+    </div>
+  </div>
+
+  <div class="sub-container">
+    <p class="sub-title"><strong> Sócios e acionistas</strong> </p>
+    <div class="serasa-table-container" *ngIf="modelo == 1">
+      <div class="serasa-table-header">
+        <div>Capital</div>
+        <div>Capital votante</div>
+        <div>Sócio/Acionista</div>
+        <div>Entrada</div>
+        <div>Nacionalidade</div>
+      </div>
+      <div class="serasa-table-body">
+        <div class="serasa-table-row" *ngFor="let row of data.partnerCompleteReport.partnersList">
+          <div>{{row.capitalTotalValue}} %</div>
+          <div>{{row.capitalVoterValue}} %</div>
+          <div>{{row.name}}</div>
+          <div>{{this.cc.DataFormatoBr(row.sinceDate)}}</div>
+          <div>-</div>
+        </div>
+      </div>
+    </div>
+    <div class="serasa-table-container" *ngIf="modelo == 2">
+      <div class="serasa-table-header">
+        <div>Capital</div>
+        <div>Sócio/Acionista</div>
+        <div>CPF/CNPJ</div>
+        <div>Anotações</div>
+      </div>
+      <div class="serasa-table-body">
+        <div class="serasa-table-row" *ngFor="let row of data.partner.PartnerResponse.results">
+          <div>{{row.participationPercentage}} %</div>
+          <div>{{row.name}}</div>
+          <div>{{this.cc.MascaraCnpjCpf(row.documentId)}}</div>
+          <div>{{row.hasNegative == true ? 'Sim' : 'Não'}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sub-container">
+    <p class="sub-title"><strong> Administradores</strong> </p>
+    <div class="serasa-table-container" *ngIf="modelo == 1">
+      <div class="serasa-table-header">
+        <div>Nome</div>
+        <div>Cargo</div>
+        <div>CPF/CNPJ</div>
+        <div>Entrada</div>
+        <div>Mandato</div>
+        <div>Nacionalidade</div>
+        <div>Estado Civil</div>
+      </div>
+      <div class="serasa-table-body">
+        <div class="serasa-table-row" *ngFor="let row of data.directorCompleteReport.directorsList">
+          <div>{{row.name}}</div>
+          <div>{{row.role}}</div>
+          <div>{{this.cc.MascaraCnpjCpf(row.documentId)}}</div>
+          <div>{{row.name}}</div>
+          <div>{{this.cc.DataFormatoBr(row.sinceDate)}}</div>
+          <div>-</div>
+          <div>-</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="serasa-table-container" *ngIf="modelo == 2">
+      <div class="serasa-table-header">
+        <div>Nome</div>
+        <div>Cargo</div>
+        <div>CPF/CNPJ</div>
+        <div>Anotações</div>
+      </div>
+      <div class="serasa-table-body">
+        <div class="serasa-table-row" *ngFor="let row of data.director.DirectorResponse.results">
+          <div>{{row.name}}</div>
+          <div>{{row.role}}</div>
+          <div>{{this.cc.MascaraCnpjCpf(row.documentId)}}</div>
+          <div>{{row.hasNegative == true ? 'Sim' : 'Não'}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

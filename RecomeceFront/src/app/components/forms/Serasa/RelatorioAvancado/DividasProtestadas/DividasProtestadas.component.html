@@ -1,0 +1,25 @@
+<div class="sub-container">
+
+  <p class="sub-title"><strong> Dívidas Protestadas</strong> Exibindo
+    {{this.data.summary.count}} registros</p>
+  <div class="serasa-table-container">
+    <div class="serasa-table-header">
+      <div>Data</div>
+      <div>Valor</div>
+      <div>Natureza da ação</div>
+      <div>Cidade</div>
+      <div>UF</div>
+      <div>Nº do cartório</div>
+    </div>
+    <div class="serasa-table-body">
+      <div class="serasa-table-row" *ngFor="let row of data.notaryResponse">
+        <div>{{this.cc.DataFormatoBr(row.occurrenceDate)}}</div>
+        <div>{{this.cc.MascaraDecimal(row.amount) }}</div>
+        <div>{{row.legalNature}}</div>
+        <div>{{row.city}}</div>
+        <div>{{row.state}}</div>
+        <div>{{row.officeNumber}}</div>
+      </div>
+    </div>
+  </div>
+</div>

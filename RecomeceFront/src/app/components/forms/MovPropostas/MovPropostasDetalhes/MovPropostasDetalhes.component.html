@@ -1,0 +1,325 @@
+<div class="container-negocios" *ngIf="formData">
+  <button mat-fab extended color="primary" class="mb-2" (click)="Back()">
+    <mat-icon>arrow_back_ios</mat-icon>
+    Voltar
+  </button>
+
+  <div class="inicio">
+    <div class="row d-flex-center-vertical" *ngIf="this.auth.isAdm() && proposalId > 0">
+      <mat-form-field appearance="fill" [ngClass]="{ 'col-6': isMobile == false, 'col-9': isMobile == true }">
+        <mat-label>Vendedor</mat-label>
+        <select matNativeControl [(ngModel)]="this.formData.cadEquipe.id" name="vendedor">
+          <option *ngFor="let item of equipe" value="{{ item.id }}">
+            {{ item.nome }}
+          </option>
+        </select>
+      </mat-form-field>
+      <button mat-fab color="primary" style="top: -10px" (click)="updateVendedor()"
+        matTooltip="Alterar vendedor desta proposta">
+        <mat-icon>save</mat-icon>
+      </button>
+    </div>
+    <div class="row d-flex-center-vertical">
+      <mat-form-field appearance="fill" [ngClass]="{ 'col-3': isMobile == false, 'col-11': isMobile == true }">
+        <mat-label>Produto</mat-label>
+        <select matNativeControl required [(ngModel)]="formData.cadProdutos.id" (ngModelChange)="changeProduct($event)"
+          name="produtoId">
+          <option *ngFor="let item of products" value="{{ item.id }}">
+            {{ item.descricao }}
+          </option>
+        </select>
+      </mat-form-field>
+      <mat-form-field appearance="fill" *ngIf="proposalId > 0"
+        [ngClass]="{ 'col-3': isMobile == false, 'col-11': isMobile == true }">
+        <mat-label>Origem da venda</mat-label>
+        <select matNativeControl required [(ngModel)]="this.formData.cadOrigensId"
+          (ngModelChange)="changeOrigem($event)" name="cadOrigensId">
+          <option *ngFor="let item of origens" value="{{ item.id }}">
+            {{ item.nome }}
+          </option>
+        </select>
+      </mat-form-field>
+      <mat-form-field appearance="fill" *ngIf="proposalId > 0" [ngClass]="{ 'col-3': isMobile == false, 'col-8': isMobile == true }">
+        <mat-label>Data</mat-label>
+        <input matInput [(ngModel)]="formData.dataHoraCadastro" (change)="updateSaleDate()"
+          (input)="this.cc.DataTempoFormatoBr($event)" name="dataHoraCadastro" />
+      </mat-form-field>
+    </div>
+  </div>
+  <div *ngIf="this.productChoosed != null && this.productChoosed.limpaNome > 1">
+    <app-PropostaAvulsa [produto]="this.productChoosed" [proposalId]="this.proposalId"
+      [formData]="this.formData"></app-PropostaAvulsa>
+  </div>
+  <div class="flex-center-v" *ngIf="proposalId > 0">
+    <p>
+      <mat-slide-toggle [(ngModel)]="diagnosticoCobrado" (change)="changeCobrouDiagnostico($event)"
+        color="primary">Diagnóstico foi cobrado?</mat-slide-toggle>
+    </p>
+
+    <div *ngIf="diagnosticoCobrado">
+      <mat-form-field appearance="fill" [ngClass]="{ 'col-12': isMobile == false, 'col-8': isMobile == true }">
+        <mat-label>R$ Valor do Diagnóstico</mat-label>
+        <input matInput [(ngModel)]="formData.valorAvulso" (change)="updateAvulso()"
+          (input)="this.cc.mascararValorMonetario($event)" name="valorAvulso" />
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div *ngIf="this.productChoosed != null && this.productChoosed?.limpaNome == 1">
+    <div class="beneficiarios">
+      <div class="row" *ngIf="canEdit()">
+        <h4 class="title-beneficiario">
+          Vincule o(s) beneficiário(s) na Proposta
+        </h4>
+      </div>
+      <div class="row d-flex-center-vertical" *ngIf="canEdit()">
+        <mat-form-field appearance="fill" [ngClass]="{ 'col-3': isMobile == false, 'col-6': isMobile == true }">
+          <mat-label>CPF/CNPJ</mat-label>
+          <input matInput [(ngModel)]="tempInsc" name="tempInsc" maxlength="18" onkeydown="MascaraCnpjCpf(this)" />
+        </mat-form-field>
+        <button mat-fab extended color="primary" style="top: -10px" (click)="newBeneficiario()">
+          <mat-icon>add</mat-icon>
+          Vincular
+        </button>
+      </div>
+
+      <div class="grid-container" *ngIf="
+          this.formData?.beneficiarios == null ||
+          this.formData?.beneficiarios?.length == 0
+        ">
+        <p>Nenhum beneficiário vinculado a proposta</p>
+      </div>
+
+      <div class="grid-container" *ngIf="this.formData?.beneficiarios?.length > 0">
+        <div class="cs-table">
+          <div class="cs-table-header cs-table-header-mini">
+            <div class="col-3">
+              <p>Cliente</p>
+            </div>
+            <div class="col-2">
+              <p>CPF/CNPJ</p>
+            </div>
+            <div class="col-1">
+              <p>Score</p>
+            </div>
+            <div class="col-2">
+              <p>Dívida</p>
+            </div>
+            <div class="col-2">
+              <p>Serviço</p>
+            </div>
+          </div>
+          <div class="cs-table-body cs-table-body-mini">
+            <div class="cs-table-row" *ngFor="let row of this.formData?.beneficiarios">
+              <div class="col-3 grid-action">
+                <p>
+                  <mat-icon *ngIf="row.IsTitular == 1" class="titular-active"
+                    matTooltip="Este é o titular da proposta">groups</mat-icon>
+                  <mat-icon *ngIf="canEdit() && row.IsTitular == 0" (click)="updateOwner(row)" class="titular-inactive"
+                    matTooltip="Escolher como titular da proposta">groups</mat-icon>
+                  <mat-icon *ngIf="canEdit() || this.auth.isAdm()" (click)="deleteMember(row)" class="delete-p"
+                    matTooltip="Excluir da proposta">delete</mat-icon>
+                  <!-- <mat-icon (click)="viewSerasa(row)" class="titular-active"
+                    matTooltip="Visualizar consulta">picture_as_pdf</mat-icon> -->
+                  {{ row.Nome }}
+                </p>
+              </div>
+              <div class="col-2">
+                <p>{{ this.cc.MascaraCnpjCpf(row.Inscricao) }}</p>
+              </div>
+              <div class="col-1 text-right">
+                <p>{{ row.Score }}</p>
+              </div>
+              <div class="col-2 text-right">
+                <p>R$ {{ this.cc.MascaraDecimal(row.ValorDivida) }}</p>
+              </div>
+              <div class="col-2 text-right">
+                <p>R$ {{ this.cc.MascaraDecimal(row.ValorContrato) }}</p>
+              </div>
+            </div>
+            <div class="cs-table-row">
+              <div class="col-3">
+                <p></p>
+              </div>
+              <div class="col-2">
+                <p></p>
+              </div>
+              <div class="col-1 text-right">
+                <p></p>
+              </div>
+              <div class="col-2 text-right">
+                <p>R$ {{ this.cc.MascaraDecimal(this.totals.totalDivida) }}</p>
+              </div>
+              <div class="col-2 text-right">
+                <p>R$ {{ this.cc.MascaraDecimal(this.totals.totalServico) }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="desconto" *ngIf="this.formData?.beneficiarios?.length > 0">
+      <div [ngClass]="{ 'desconto-container': isMobile == false}" *ngIf="canEdit()">
+        <mat-form-field appearance="fill" class="col-3 mt-1" *ngIf="tipoDesconto == '1'">
+          <mat-label>Desconto</mat-label>
+          <input matInput [(ngModel)]="desconto" name="desconto" (input)="this.cc.mascararPorcentagem($event)" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="col-3 mt-1" *ngIf="tipoDesconto == '2'">
+          <mat-label>Desconto</mat-label>
+          <input matInput [(ngModel)]="desconto" name="desconto" (input)="this.cc.mascararValorMonetario($event)" />
+        </mat-form-field>
+
+        <mat-button-toggle-group style="margin-left: 20px" (click)="this.desconto = ''" [(ngModel)]="tipoDesconto"
+          appearance="legacy">
+          <mat-button-toggle value="1">%</mat-button-toggle>
+          <mat-button-toggle value="2">R$</mat-button-toggle>
+        </mat-button-toggle-group>
+
+        <button mat-raised-button color="primary" (click)="aplicarDesconto(true)">
+          Aplicar
+        </button>
+      </div>
+
+      <div class="desconto-info mt-2">
+        <div class="desc-info">
+          <p>Total do Serviço</p>
+          <p>R$ {{ this.cc.MascaraDecimal(this.totals.totalServico) }}</p>
+        </div>
+        <div class="desc-info">
+          <p>Total do Desconto</p>
+          <p>R$ {{ this.cc.MascaraDecimal(this.totals.valorDesconto) }}</p>
+        </div>
+        <div class="desc-info">
+          <p>Total</p>
+          <p>
+            R$ {{ this.cc.MascaraDecimal(this.totals.valorServicoLiquido) }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cond-pagto" *ngIf="
+        this.formData.situacao >= 2 && this.formData?.beneficiarios?.length > 0
+      ">
+      <div class="row">
+        <h4 class="title-beneficiario">Condições de Pagamento do Contrato</h4>
+      </div>
+      <div class="row">
+        <h5 class="title-beneficiario">Entrada</h5>
+      </div>
+      <div class="row">
+        <mat-form-field appearance="fill" class="col-3">
+          <mat-label>Condição de Pagamento</mat-label>
+          <select matNativeControl required [(ngModel)]="pagto.condPagtoEntrada" name="condPagtoEntrada">
+            <option value="1">Boleto</option>
+            <option value="2">Cartão de Crédito</option>
+            <option selected value="3">Pix</option>
+          </select>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="col-2">
+          <mat-label>Data da Entrada</mat-label>
+          <input matInput [(ngModel)]="pagto.dataEntrada" name="dataEntrada" maxlength="10"
+            oninput="formatDate(this)" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="col-2">
+          <mat-label>R$ Entrada</mat-label>
+          <input matInput [(ngModel)]="pagto.valorEntrada" name="valorEntrada"
+            (input)="this.cc.mascararValorMonetario($event)" />
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <h5 class="title-beneficiario">Parcelas</h5>
+      </div>
+      <div class="row">
+        <mat-form-field appearance="fill" class="col-3">
+          <mat-label>Condição de Pagamento</mat-label>
+          <select matNativeControl required [(ngModel)]="pagto.condPagtoParcela" name="condPagtoEntrada">
+            <option value="1">Boleto</option>
+            <option value="2">Cartão de Crédito</option>
+            <option selected value="3">Pix</option>
+          </select>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="col-2">
+          <mat-label>Data da 1ª Parcela</mat-label>
+          <input matInput [(ngModel)]="pagto.dataPrimeiraParcela" name="dataPrimeiraParcela" maxlength="10"
+            onkeydown="formatDate(this)" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="col-2">
+          <mat-label>Nº de Parcelas</mat-label>
+          <select matNativeControl required [(ngModel)]="pagto.numeroParcela" name="numeroParcelas">
+            <option value="1">1</option>
+            <option selected value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+          </select>
+        </mat-form-field>
+      </div>
+
+      <button mat-raised-button color="primary" (click)="generatePayments()" *ngIf="canEdit()">
+        <mat-icon>sync</mat-icon>
+        Gerar
+      </button>
+    </div>
+    <div class="grid-container" *ngIf="
+        this.formData.situacao >= 2 && this.formData?.duplicatas?.length > 0
+      ">
+      <div class="cs-table">
+        <div class="cs-table-header cs-table-header-mini">
+          <div class="col-1 text-center">
+            <p>Indíce</p>
+          </div>
+          <div class="col-2">
+            <p>Data</p>
+          </div>
+          <div class="col-2">
+            <p>Valor</p>
+          </div>
+          <div class="col-4">
+            <p>Descrição</p>
+          </div>
+        </div>
+        <div class="cs-table-body cs-table-body-mini">
+          <div class="cs-table-row" *ngFor="let row of this.formData?.duplicatas">
+            <div class="col-1">
+              <p>{{ row.indice + 1 }}</p>
+            </div>
+            <div class="col-2">
+              <p>{{ this.cc.DataFormatoBr(row.dataVencimento) }}</p>
+            </div>
+            <div class="col-2 text-right">
+              <p>R$ {{ this.cc.MascaraDecimal(row.valor) }}</p>
+            </div>
+            <div class="col-4">
+              <p>{{ row.descricao }}</p>
+            </div>
+          </div>
+          <div class="cs-table-row">
+            <div class="col-1">
+              <p></p>
+            </div>
+            <div class="col-2">
+              <p></p>
+            </div>
+            <div class="col-2 text-right">
+              <p>R$ {{ this.cc.MascaraDecimal(this.totals.valorParcelas) }}</p>
+            </div>
+            <div class="col-4">
+              <p></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,380 @@
+<div class="report-tittle">
+  <p>Acerta Essencial Positivo</p>
+</div>
+
+<p>Esta consulta é de uso exclusivo para a concessão de crédito, realização de venda a prazo ou quaisquer outras
+  transações comerciais e empresariais que impliquem risco financeiro.</p>
+
+<div class="item-container">
+  <div class="header-avulso">
+    <p>Status do Consumidor</p>
+  </div>
+
+  <div class="white-card">
+    <img class="icon-green" src="https://app.sistemalimpanome.com.br/assets/thumb_up.svg"
+      *ngIf="!reportData.arquivoRetorno.status_consumidor.mensagem.includes('NÃO')">
+    <img class="icon-red" src="https://app.sistemalimpanome.com.br/assets/thumb_down.svg"
+      *ngIf="reportData.arquivoRetorno.status_consumidor.mensagem.includes('NÃO')">
+    <p>{{reportData.arquivoRetorno.status_consumidor.mensagem}}</p>
+  </div>
+</div>
+
+<div class="item-container">
+  <div class="score-container">
+    <div class="gauge-container">
+      <div *ngIf="reportData.score > 1 && reportData.score < 450">
+        <svg viewBox="0 0 200 100" class="gauge">
+          <path d="M 10 100 A 90 90 0 0 1 100 10" class="arc-orange arc-1" />
+        </svg>
+      </div>
+      <div *ngIf="reportData.score > 450 && reportData.score < 650">
+        <svg viewBox="0 0 200 100" class="gauge">
+          <path d="M 10 100 A 90 90 0 0 1 100 10" class="arc arc-1" />
+          <path d="M 120 10 A 90 90 0 0 1 165 35" class="arc arc-2" />
+        </svg>
+      </div>
+      <div *ngIf="reportData.score > 650 || reportData.score == 1">
+        <svg viewBox="0 0 200 100" class="gauge">
+          <path d="M 10 100 A 90 90 0 0 1 100 10" class="arc arc-1" />
+          <path d="M 120 10 A 90 90 0 0 1 165 35" class="arc arc-2" />
+          <path d="M 180 50 A 90 90 0 0 1 190 100" class="arc arc-3" />
+        </svg>
+      </div>
+      <div class="gauge-value">{{reportData.arquivoRetorno?.score_classificacao_varios_modelos?.[0].score}}</div>
+      <div class="gauge-labels">
+        <span>0</span>
+        <span>1000</span>
+      </div>
+      <p class="gauge-title">Score do Consumidor</p>
+    </div>
+    <div class="white-card-border">
+      <img class="image-boa" src="https://app.sistemalimpanome.com.br/assets/image-boa-vista-1.png">
+      <p>{{reportData.arquivoRetorno?.score_classificacao_varios_modelos?.[0].texto}}</p>
+    </div>
+  </div>
+  <div class="score-info">
+    <p>{{reportData.arquivoRetorno?.score_classificacao_varios_modelos?.[0].mensagem}}</p>
+  </div>
+</div>
+
+<div class="item-container">
+  <div class="item-header">
+    <p>Identificação</p>
+  </div>
+  <div class="item-row">
+    <div class="item item-50">
+      <p>Nome</p>
+      <p>{{reportData.arquivoRetorno.identificacao.nome}}</p>
+    </div>
+    <div class="item item-50">
+      <p>CPF</p>
+      <p>{{this.cc.MascaraCnpjCpf(reportData.arquivoRetorno?.identificacao?.documento)}}</p>
+    </div>
+  </div>
+  <div class="item-row">
+    <div class="item item-50">
+      <p>Nome da Mãe</p>
+      <p>{{reportData.arquivoRetorno.identificacao.nomeMae}}</p>
+    </div>
+    <div class="item item-50">
+      <p>Situação do CPF</p>
+      <p>REGULAR</p>
+    </div>
+  </div>
+  <div class="item-row">
+    <div class="item item-50">
+      <p>Nacionalidade</p>
+      <p>{{reportData.arquivoRetorno.identificacao.nacionalidade}}</p>
+    </div>
+    <div class="item item-50">
+      <p>Região de Origem do CPF</p>
+      <p>NÃO INFORMADO</p>
+    </div>
+  </div>
+  <div class="item-row">
+    <div class="item item-50">
+      <p>Data de Atualização</p>
+      <p>{{reportData.arquivoRetorno.identificacao.dataAtualizacao}}</p>
+    </div>
+    <div class="item item-50">
+      <p>Grau de Instrução</p>
+      <p>NÃO INFORMADO</p>
+    </div>
+  </div>
+  <div class="item-row">
+    <div class="item item-50">
+      <p>Sexo</p>
+      <p>{{getGenero()}}</p>
+    </div>
+    <div class="item item-50">
+      <p>Quantidade de dependentes</p>
+      <p>{{reportData.arquivoRetorno.identificacao.numeroDependentes}}</p>
+    </div>
+  </div>
+  <div class="item-row">
+    <div class="item item-50">
+      <p>Data de nascimento</p>
+      <p>{{reportData.arquivoRetorno.identificacao.dataNascimento}}</p>
+    </div>
+    <div class="item item-50">
+      <p>Estado Civil</p>
+      <p>NÃO INFORMADO</p>
+    </div>
+  </div>
+  <div class="item-row">
+    <div class="item item-50">
+      <p>Título de eleitor</p>
+      <p>{{reportData.arquivoRetorno.identificacao.tituloEleitor}}</p>
+    </div>
+  </div>
+</div>
+
+<div class="item-container">
+  <div class="item-header">
+    <p>Renda Presumida Positiva</p>
+  </div>
+  <div class="item-row">
+    <div class="item-row item-50">
+      <img class="icon-renda" src="https://app.sistemalimpanome.com.br/assets/request_quote.svg">
+      <div class="item">
+        <p>Renda Mensal</p>
+        <p class="color-renda">{{reportData.arquivoRetorno?.score_classificacao_varios_modelos?.[1].texto}}</p>
+      </div>
+    </div>
+    <div class="item-row item-50">
+      <img class="icon-renda" src="https://app.sistemalimpanome.com.br/assets/star.svg">
+      <div class="item">
+        <p>Faixa/Classe</p>
+        <p>{{reportData.arquivoRetorno?.score_classificacao_varios_modelos?.[1].score}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="score-info">
+    <p>Renda estimada a partir de informações comportamentais e cadastrais do consumidor.</p>
+  </div>
+</div>
+
+<div class="item-container">
+  <div class="item-header">
+    <p>Localização</p>
+  </div>
+  <p class="nada-consta">NADA CONSTA</p>
+</div>
+
+<div class="item-container">
+  <div class="item-header">
+    <p>Painel de Controle</p>
+  </div>
+  <table>
+    <thead>
+      <tr class="table-header">
+        <td class="item-40">Ocorrência</td>
+        <td class="item-20">Quantidade</td>
+        <td class="item-20">Última</td>
+        <td class="item-20">Valor R$</td>
+      </tr>
+    </thead>
+    <tbody class="table-body-black">
+      <tr>
+        <td class="item-40">Registro de débito</td>
+        <td class="item-20">{{reportData.arquivoRetorno?.resumo_ocorrencias_de_debitos?.totalDevedor}}</td>
+        <td class="item-20">{{reportData.arquivoRetorno?.resumo_ocorrencias_de_debitos?.dataMaiorDebito}}</td>
+        <td class="item-20">{{reportData.arquivoRetorno?.resumo_ocorrencias_de_debitos?.valorAcomulado}}</td>
+      </tr>
+      <tr>
+        <td class="item-40">Ações cíveis</td>
+        <td class="item-20">{{reportData.arquivoRetorno?.resumo_de_acoes_civeis?.quantidade}}</td>
+        <td class="item-20">{{reportData.arquivoRetorno?.resumo_de_acoes_civeis?.periodo_inicial}}</td>
+        <td class="item-20">{{reportData.arquivoRetorno?.resumo_de_acoes_civeis?.periodo_final}}</td>
+      </tr>
+      <tr>
+        <td class="item-40">Consultas anteriores</td>
+        <td class="item-20">-</td>
+        <td class="item-20">-</td>
+        <td class="item-20">-</td>
+      </tr>
+      <tr>
+        <td class="item-40">Cheques sem Fundo</td>
+        <td class="item-20">-</td>
+        <td class="item-20">-</td>
+        <td class="item-20">-</td>
+      </tr>
+      <tr>
+        <td class="item-40">Cheque Sustado Motivo 21</td>
+        <td class="item-20">-</td>
+        <td class="item-20">-</td>
+        <td class="item-20">-</td>
+      </tr>
+      <tr>
+        <td class="item-40">Devoluções Informadas pelo Usuário</td>
+        <td class="item-20">-</td>
+        <td class="item-20">-</td>
+        <td class="item-20">-</td>
+      </tr>
+      <tr>
+        <td class="item-40">Protestos</td>
+        <td class="item-20">{{reportData.arquivoRetorno?.resumo_titulos_protestados?.total}}</td>
+        <td class="item-20">{{reportData.arquivoRetorno?.resumo_titulos_protestados?.ultima}}</td>
+        <td class="item-20">{{this.cc.MascaraDecimal(reportData.arquivoRetorno?.resumo_titulos_protestados?.valor)}}
+        </td>
+      </tr>
+      <tr>
+        <td class="item-40">Participação em Empresas</td>
+        <td class="item-20">-</td>
+        <td class="item-20">-</td>
+        <td class="item-20">-</td>
+      </tr>
+      <tr>
+        <td class="item-40">Recuperações e Falências</td>
+        <td class="item-20">-</td>
+        <td class="item-20">-</td>
+        <td class="item-20">-</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="item-container">
+  <div class="item-header">
+    <p>Consultas Anteriores</p>
+  </div>
+  <table>
+    <p class="table-title">Total de Consultas: {{getQuerysCount()}}</p>
+    <thead>
+    </thead>
+    <tbody class="table-body-black">
+      <tr>
+        <td class="item-40">Consultas feitas nos últimos 3 meses</td>
+        <td class="item-20">
+          {{reportData.arquivoRetorno?.resumoConsultas_anteriores_90_dias?.mes_1}}/{{reportData.arquivoRetorno?.resumoConsultas_anteriores_90_dias?.ano_1}}:
+          {{+reportData.arquivoRetorno?.resumoConsultas_anteriores_90_dias?.total_1}}</td>
+        <td class="item-20">
+          {{reportData.arquivoRetorno?.resumoConsultas_anteriores_90_dias?.mes_2}}/{{reportData.arquivoRetorno?.resumoConsultas_anteriores_90_dias?.ano_2}}:
+          {{+reportData.arquivoRetorno?.resumoConsultas_anteriores_90_dias?.total_2}}</td>
+        <td class="item-20">
+          {{reportData.arquivoRetorno?.resumoConsultas_anteriores_90_dias?.mes_3}}/{{reportData.arquivoRetorno?.resumoConsultas_anteriores_90_dias?.ano_3}}:
+          {{+reportData.arquivoRetorno?.resumoConsultas_anteriores_90_dias?.total_3}}</td>
+        <td class="item-20">
+          {{reportData.arquivoRetorno?.resumoConsultas_anteriores_90_dias?.mes_4}}/{{reportData.arquivoRetorno?.resumoConsultas_anteriores_90_dias?.ano_4}}:
+          {{+reportData.arquivoRetorno?.resumoConsultas_anteriores_90_dias?.total_4}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="table-title">Últimos Consultantes</p>
+  <table>
+    <thead>
+      <tr class="table-header">
+        <td class="item-20">Data</td>
+        <td class="item-60">Empresa</td>
+        <td class="item-20">Tipo de Ocorrência</td>
+      </tr>
+    </thead>
+    <tbody class="table-body-black" *ngIf="reportData.arquivoRetorno?.consultas_anteriores?.length ">
+      <tr *ngFor="let row of reportData.arquivoRetorno?.consultas_anteriores">
+        <td class="item-20">{{row.data}}</td>
+        <td class="item-60">{{row.informante}}</td>
+        <td class="item-20">{{getTipoDescricao(row.tipoOcorrencia)}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="item-container">
+  <div class="item-header">
+    <p>Registros de Débito</p>
+  </div>
+  <p *ngIf="!reportData.arquivoRetorno?.debitos?.length" class="nada-consta">NADA CONSTA</p>
+  <table *ngIf="reportData.arquivoRetorno?.debitos?.length > 0">
+    <thead>
+      <tr class="table-header">
+        <td class="item-20">Data</td>
+        <td class="item-40">Empresa</td>
+        <td class="item-20">Cidade</td>
+        <td class="item-20">Valor</td>
+      </tr>
+    </thead>
+    <tbody class="table-body-black" *ngIf="reportData.arquivoRetorno?.debitos?.length">
+      <tr *ngFor="let row of reportData.arquivoRetorno?.debitos">
+        <td class="item-20">{{row.dataOcorrencia}}</td>
+        <td class="item-40">{{row.informante}}</td>
+        <td class="item-20">{{row.cidade}}</td>
+        <td class="item-20">{{row.valor}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="item-container">
+  <div class="item-header">
+    <p>Ações cíveis</p>
+  </div>
+  <p *ngIf="!reportData.arquivoRetorno?.relacao_de_acoes_civeis?.length" class="nada-consta">NADA CONSTA</p>
+  <table *ngIf="reportData.arquivoRetorno?.relacao_de_acoes_civeis?.length > 0">
+    <thead>
+      <tr class="table-header">
+        <td class="item-20">Data</td>
+        <td class="item-40">Autor</td>
+        <td class="item-20">Processo</td>
+        <td class="item-20">Valor</td>
+      </tr>
+    </thead>
+    <tbody class="table-body-black" *ngIf="reportData.arquivoRetorno?.relacao_de_acoes_civeis?.length">
+      <tr *ngFor="let row of reportData.arquivoRetorno?.relacao_de_acoes_civeis">
+        <td class="item-20">{{row.dataDistribuicao}}</td>
+        <td class="item-40">{{row.autor}}</td>
+        <td class="item-20">{{row.processo}}</td>
+        <td class="item-20">{{row.valor}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="item-container">
+  <div class="item-header">
+    <p>Recuperações e falências</p>
+  </div>
+  <p class="nada-consta">NADA CONSTA</p>
+</div>
+
+<div class="item-container">
+  <div class="item-header">
+    <p>Participações em Empresas</p>
+  </div>
+  <p class="nada-consta">NADA CONSTA</p>
+</div>
+
+<div class="item-container">
+  <div class="item-header">
+    <p>Cheques sem Fundo</p>
+  </div>
+  <p class="nada-consta">NADA CONSTA</p>
+</div>
+
+<div class="item-container">
+  <div class="item-header">
+    <p>Cheque Sustado Motivo 21 (contra ordem ou oposição ao pagamento)</p>
+  </div>
+  <p class="nada-consta">NADA CONSTA</p>
+</div>
+
+<div class="item-container">
+  <div class="item-header">
+    <p>Cheques Devoluções Informadas pelo Usuário</p>
+  </div>
+  <p class="nada-consta">NADA CONSTA</p>
+</div>
+
+<div class="item-container">
+  <div class="item-header">
+    <p>Outras Informações</p>
+  </div>
+  <p class="nada-consta">NADA CONSTA</p>
+</div>
+
+<div class="item-container">
+  <div class="item-header">
+    <p>Protestos</p>
+  </div>
+  <p class="nada-consta">NADA CONSTA</p>
+</div>

@@ -1,0 +1,74 @@
+<div class="container-negocios">
+  <button mat-fab extended color="primary" class="mb-2" (click)="Back()" *ngIf="isDialog == false">
+    <mat-icon>arrow_back_ios</mat-icon>
+    Voltar
+  </button>
+  <div class="dialog-header" *ngIf="batch">
+    <div class="dialog-card">
+      <div class="info-label">
+        <mat-icon>calendar_month</mat-icon>
+        <span>Data</span>
+      </div>
+      <p>{{this.cc.DataFormatoBr(this.batch.data)}}</p>
+    </div>
+    <div class="dialog-card">
+      <div class="info-label">
+        <mat-icon>groups</mat-icon>
+        <span>Pessoas</span>
+      </div>
+      <p>{{this.batch.totalBeneficiarios}}</p>
+    </div>
+    <div class="dialog-card">
+        <div class="info-label">
+        <mat-icon>autorenew</mat-icon>
+        <span>Tipo de lote</span>
+      </div>
+      <p>{{this.batch.tipo == 1 ? 'Envio' : 'Reenvio'}}</p>
+    </div>
+    <div class="dialog-card">
+      <div class="info-label">
+        <mat-icon>cloud</mat-icon>
+        <span>Situação</span>
+      </div>
+      <p>{{getSituacao(this.batch.situacao)}}</p>
+    </div>
+  </div>
+
+  <div class="grid-filters">
+    <mat-form-field appearance="fill" class="col-4">
+      <mat-label>Buscar por CPF ou CNPJ ou Nome</mat-label>
+      <input matInput [(ngModel)]="this.filtros.membro" name="membro" (input)="changeFilter()"/>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="col-3">
+      <mat-label>Situação</mat-label>
+      <select matNativeControl [(ngModel)]="filtros.situacao" name="situacao" (change)="changeFilter()">
+        <option value="2">Todos</option>
+        <option value="1">Válidos</option>
+        <option value="0">Inválidos</option>
+      </select>
+    </mat-form-field>
+  </div>
+  <div class="container-clients" *ngIf="clients?.length > 0">
+    <div class="client" *ngFor="let row of clients">
+      <div class="col-3 grid-edit">
+        <mat-icon matTooltip="Excluir do lote" *ngIf="!row?.isEditing && row.situacao == 0" (click)="deleteRow(row)"
+          class="delete-p">delete</mat-icon>
+        <mat-icon matTooltip="Editar" (click)="editRow(row)" *ngIf="!row?.isEditing && row.situacao == 0">edit</mat-icon>
+        <mat-icon matTooltip="Editar" (click)="saveRow(row)" *ngIf="row?.isEditing">save</mat-icon>
+
+        <div class="form-field" [ngClass]="{'only-text': !row?.isEditing}">
+          <input matInput [(ngModel)]="row.inscricaoFormatada" maxlength="18" onkeydown="MascaraCnpjCpf(this)" />
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-field" [ngClass]="{'only-text': !row?.isEditing}">
+          <input matInput [(ngModel)]="row.nome" />
+        </div>
+      </div>
+      <div class="col-2 text-center">
+        <p class="{{this.situacoes[row.situacao].Classe}}">{{this.situacoes[row.situacao].Texto}}</p>
+      </div>
+    </div>
+  </div>
+</div>

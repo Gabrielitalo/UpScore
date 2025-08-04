@@ -1,0 +1,10 @@
+<div class="dialog-component">
+  <button mat-fab extended color="primary" class="mb-2" (click)="this.childBatch = null" *ngIf="this.childBatch">
+    <mat-icon>arrow_back_ios</mat-icon>
+    Voltar
+  </button>
+
+  <app-MovLotesEmpresas *ngIf="!this.childBatch" [associacaoId]="this.data.id" (data)="receiveData($event)"></app-MovLotesEmpresas>
+
+  <app-ViewBeneficiariosLoteDialog *ngIf="this.childBatch" [id]="this.childBatch" [isDialog]="true"></app-ViewBeneficiariosLoteDialog>
+</div>

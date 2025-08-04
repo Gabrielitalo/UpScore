@@ -1,0 +1,252 @@
+<div class="section">
+  <div class="title">
+    <p>Informações fixadas</p>
+  </div>
+  <div class="cards-container">
+    <div class="serasa-card">
+      <p class="serasa-card-title">{{data.reports[0].registration.statusRegistration}}</p>
+      <p>Situação na Receita Federal</p>
+      <p class="serasa-card-title">Atualizado em
+        {{this.cc.DataFormatoBr(data.reports[0].registration.statusDate)}}</p>
+    </div>
+
+    <div class="serasa-card">
+      <div class="flex-center-v">
+        <p class="serasa-card-title">{{data.reports[0].score.score}}</p>
+        <p class="chancePagamento">{{calcRisk(data.reports[0].score.defaultRate)}} % de chance de pagamento</p>
+      </div>
+      <div class="space-betweeen">
+        <p>0</p>
+        <p>500</p>
+        <p>1000</p>
+      </div>
+    </div>
+
+    <div class="serasa-card">
+      <p class="serasa-card-title">R$ {{totalDivida}}</p>
+      <p>Total em anotações negativas</p>
+      <p>{{qtdDivida}}</p>
+    </div>
+    <div class="serasa-card">
+      <p class="serasa-card-title">{{data.reports[0].partner.partnershipResponse?.length}}
+        <mat-icon>details</mat-icon>
+      </p>
+      <p>Participações societárias</p>
+    </div>
+    <div class="serasa-card">
+      <p class="serasa-card-title">1 consulta <mat-icon>details</mat-icon></p>
+      <p>Consultas neste mês</p>
+    </div>
+  </div>
+</div>
+<div class="section">
+  <div class="title">
+    <p>Identificação Cadastral</p>
+  </div>
+  <div class="cards-container">
+    <div class="serasa-card col-3-5">
+      <p class="serasa-card-title">{{data.reports[0].registration.statusRegistration}}</p>
+      <p>Situação na Receita Federal</p>
+      <p class="serasa-card-title">Atualizado em
+        {{this.cc.DataFormatoBr(data.reports[0].registration.statusDate)}}</p>
+    </div>
+    <div class="serasa-card col-3-5">
+      <p class="serasa-card-title">{{calcularIdade(data.reports[0].registration.birthDate)}} anos</p>
+      <p>{{this.cc.DataFormatoBr(data.reports[0].registration.birthDate)}}</p>
+      <p class="serasa-card-title">Data de Nascimento</p>
+    </div>
+    <div class="serasa-card col-3-5">
+      <p *ngIf="data.reports[0].registration.address">{{data.reports[0].registration.address.city}}/{{data.reports[0].registration.address.state}}</p>
+      <p *ngIf="!data.reports[0].registration.address">Sem Dados</p>
+      <p class="serasa-card-title">Município/UF</p>
+    </div>
+  </div>
+
+  <div class="sub-container">
+    <p class="sub-title">Dados cadastrais</p>
+    <div class="serasa-table-container">
+      <div class="serasa-table-header">
+        <div>Nome completo</div>
+        <div>CPF</div>
+        <div>Data de nascimento</div>
+        <div>Nome da mãe</div>
+        <div>Sexo</div>
+      </div>
+      <div class="serasa-table-body">
+        <div class="serasa-table-row">
+          <div>{{data.reports[0].registration.consumerName}}</div>
+          <div>{{this.cc.MascaraCnpjCpf(data.reports[0].registration.documentNumber)}}</div>
+          <div>{{this.cc.DataFormatoBr(data.reports[0].registration.birthDate)}}</div>
+          <div>{{data.reports[0].registration.motherName}}</div>
+          <div>{{getGenero(data.reports[0].registration.consumerGender)}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub-container" *ngIf="modelo == 1">
+    <p class="sub-title">Telefones</p>
+    <div class="serasa-table-container">
+      <div class="serasa-table-header">
+        <div>Prioridade</div>
+        <div>Tipo</div>
+        <div>Telefone</div>
+        <div>Data de atualização</div>
+      </div>
+      <div class="serasa-table-body">
+        <div class="serasa-table-row" *ngFor="let row of data.reports[0].registration.phones">
+          <div>Secundário</div>
+          <div>{{getPhoneType(row.phoneType)}}</div>
+          <div>{{getPhone(row)}}</div>
+          <div>{{this.cc.DataFormatoBr(row.updateDate)}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub-container" *ngIf="modelo == 1">
+    <p class="sub-title">Endereços</p>
+    <div class="serasa-table-container">
+      <div class="serasa-table-header">
+        <div>Prioridade</div>
+        <div>Endereço</div>
+        <div>Data de atualização</div>
+      </div>
+      <div class="serasa-table-body">
+        <div class="serasa-table-row" *ngFor="let row of data.reports[0].registration.addresses">
+          <div>{{row.addressTypeCode == 1 ? 'Principal' : 'Secundário'}}</div>
+          <div>{{getFullAddress(row)}}</div>
+          <div>{{this.cc.DataFormatoBr(row.updateDate)}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="section" *ngIf="modelo == 1">
+  <div class="title">
+    <p>Informações cadastrais complementares</p>
+  </div>
+  <div class="card-with-title">
+    <p class="card-with-title-title">Identificação</p>
+    <div class="card-with-title-body">
+      <div class="row">
+        <div class="card-info">
+          <p>Nome</p>
+          <p>{{data.reports[0].registration.consumerName}}</p>
+        </div>
+        <div class="card-info">
+          <p>CPF</p>
+          <p>{{data.reports[0].registration.documentNumber}}</p>
+        </div>
+        <div class="card-info">
+          <p>{{data.reports[0].registration.alternativeDocumentDescription}}</p>
+          <p>{{data.reports[0].registration.alternativeDocumentNumber}}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="card-info">
+          <p>Orgão</p>
+          <p>{{data.reports[0].registration.issuingAgency}}</p>
+        </div>
+        <div class="card-info">
+          <p>UF</p>
+          <p>-</p>
+        </div>
+        <div class="card-info">
+          <p>Data de emissão</p>
+          <p>{{data.reports[0].registration.alternativeDocumentDate}}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="card-info">
+          <p>Cidade de nascimento</p>
+          <p>-</p>
+        </div>
+        <div class="card-info">
+          <p>UF de Nascimento</p>
+          <p>-</p>
+        </div>
+        <div class="card-info">
+          <p>Estado civil</p>
+          <p>-</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="card-info">
+          <p>Dependentes</p>
+          <p>-</p>
+        </div>
+        <div class="card-info">
+          <p>Escolaridade</p>
+          <p>-</p>
+        </div>
+        <div class="card-info">
+          <p>Ocupação</p>
+          <p>-</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="card-info">
+          <p>Profissão</p>
+          <p>-</p>
+        </div>
+        <div class="card-info">
+          <p>Cargo</p>
+          <p>-</p>
+        </div>
+        <div class="card-info">
+          <p>Empresa</p>
+          <p>-</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="card-info">
+          <p>CNPJ</p>
+          <p>-</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-with-title">
+    <p class="bold">Atenção</p>
+    <p>As informações acima, de uso exclusivo do destinatário, são protegidas por sigilo contratual. Sua utilização
+      por outra pessoa, ou para finalidade diversa da contratada, caracteriza ilícito civil, tornando a prova para o
+      processo.</p>
+  </div>
+</div>
+<div class="section">
+  <div class="title">
+    <p>Serasa Score</p>
+    <p>Nossa análise de risco de crédito que indica a probabilidade do indivíduo pagar suas contas em dia nos próximos
+      12 meses</p>
+  </div>
+
+  <div class="cards-container">
+    <div class="serasa-card">
+      <div class="flex-center-v">
+        <p class="serasa-card-title">{{this.cc.converterDecimalParaInt(data.reports[0].score.score)}}</p>
+        <p class="chancePagamento" *ngIf="data.reports[0].score.defaultRate">{{calcRisk(data.reports[0].score.defaultRate)}} % de chance de pagamento</p>
+        <p class="serasa-card-title" *ngIf="!data.reports[0].score.defaultRate">Não calculado</p>
+      </div>
+      <div class="space-betweeen">
+        <p>0</p>
+        <p>500</p>
+        <p>1000</p>
+      </div>
+    </div>
+    <div class="serasa-card">
+      <p class="serasa-card-title">Interpretação</p>
+      <p *ngIf="data.reports[0].score.score">{{BuscaChancePagamento(data.reports[0].score.score,
+        data.reports[0].score.defaultRate)}}</p>
+      <p *ngIf="data.reports[0].score.message != 'ESPACO RESERVADO PARA MENSAGEM DA INSTITUICAO'">{{data.reports[0].score.message}}</p>
+    </div>
+  </div>
+  <div class="card-with-title">
+    <p class="bold">Atenção</p>
+    <p>A decisão da aprovação ou não do crédito é de exclusiva responsabilidade do concedente. As informações
+      prestadas pela Serasa Experian têm o objetivo de subsidiar essas decisões e, em hipótese alguma, devem ser
+      utilizadas como justificativa pelo concedente do crédito, para tomada da referida decisão</p>
+  </div>
+</div>

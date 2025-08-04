@@ -1,0 +1,19 @@
+<mat-sidenav #sidenav mode="side" [(opened)]="menuOpen" class="sidenav" [class.closed]="!menuOpen">
+  <div class="logoImg">
+      <img src="../assets/logo.png">
+  </div>
+<nav class="menu">
+  <a mat-button routerLink="/dashboard">
+    <mat-icon>dashboard</mat-icon>
+    <span class="menu-text" *ngIf="menuOpen">Dashboard</span>
+  </a>
+  <a mat-button routerLink="/settings">
+    <mat-icon>settings</mat-icon>
+    <span class="menu-text" *ngIf="menuOpen">Configurações</span>
+  </a>
+  <a mat-button routerLink="/profile">
+    <mat-icon>person</mat-icon>
+    <span class="menu-text" *ngIf="menuOpen">Perfil</span>
+  </a>
+</nav>
+</mat-sidenav>

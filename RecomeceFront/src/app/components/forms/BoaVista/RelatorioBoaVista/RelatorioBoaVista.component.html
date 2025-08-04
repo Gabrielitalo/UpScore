@@ -1,0 +1,22 @@
+<button mat-fab extended color="primary" class="mb-2" (click)="Back()">
+  <mat-icon>arrow_back_ios</mat-icon>
+  Voltar
+</button>
+
+<button mat-fab extended color="primary" class="mb-2" (click)="print()">
+  <mat-icon>picture_as_pdf</mat-icon>
+  Gerar PDF
+</button>
+
+<div class="container a4-page" id="printArea">
+  <div class="report-header" *ngIf="reportData">
+    <img src="https://app.sistemalimpanome.com.br/assets/logo-boavista-blue.png">
+    <p>{{this.cc.DataTempoFormatoBr(reportData.dataHoraConsulta)}}</p>
+  </div>
+  <div *ngIf="reportData?.personType == 1">
+    <app-RelatorioAcerta [reportData]="reportData"></app-RelatorioAcerta>
+  </div>
+  <div *ngIf="reportData?.personType == 2">
+    <app-RelatorioRiscoPositivo [reportData]="reportData"></app-RelatorioRiscoPositivo>
+  </div>
+</div>

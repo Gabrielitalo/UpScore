@@ -1,0 +1,26 @@
+<div class="sub-container">
+  <p class="sub-title"><strong> Cheques Sem Fundo (CCF)</strong> Exibindo
+    {{this.data.summary.count}} registros</p>
+  <div class="serasa-table-container">
+    <div class="serasa-table-header">
+      <div>Data</div>
+      <div>Banco</div>
+      <div>Agência</div>
+      <div>Nº Cheque</div>
+      <div>Cidade</div>
+      <div>UF</div>
+      <div>Total</div>
+    </div>
+    <div class="serasa-table-body">
+      <div class="serasa-table-row" *ngFor="let row of data.checkResponse">
+        <div>{{this.cc.DataFormatoBr(row.occurrenceDate)}}</div>
+        <div>{{row.bankId}}</div>
+        <div>{{row.bankAgencyId}}</div>
+        <div>{{row.checkNumber}}</div>
+        <div>{{row.city}}</div>
+        <div>{{row.federalUnit}}</div>
+        <div>{{row.checkCount}}</div>
+      </div>
+    </div>
+  </div>
+</div>

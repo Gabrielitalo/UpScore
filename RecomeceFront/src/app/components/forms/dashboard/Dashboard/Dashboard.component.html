@@ -1,0 +1,137 @@
+<div class="container-dash" *ngIf="dash">
+<div class="grid-filters">
+  <mat-form-field appearance="fill" class="col-2">
+    <mat-label>Data Inicial</mat-label>
+    <input matInput [(ngModel)]="this.filtros.dataInicial" name="dataInicial"
+      onkeydown="formatDate(this)" />
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="col-2">
+    <mat-label>Data Final</mat-label>
+    <input matInput [(ngModel)]="this.filtros.dataFinal" name="dataFinal"
+      onkeydown="formatDate(this)" />
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="col-3" *ngIf="this.auth.isAdm()">
+    <mat-label>Vendedor</mat-label>
+    <select matNativeControl [(ngModel)]="filtros.vendedor" name="vendedor">
+      <option value="0">Todos</option>
+      <option *ngFor="let item of equipe" value="{{item.id}}">{{item.nome}}</option>
+    </select>
+  </mat-form-field>
+  <button mat-fab extended color="primary" (click)="filter()">
+    <mat-icon>autorenew</mat-icon>
+    Atualizar
+  </button>
+</div>
+  <div class="cards-row">
+    <div class="card-dash">
+      <p>
+        <mat-icon color="primary">work</mat-icon>
+        Propostas Criadas
+      </p>
+      <p>{{dash[0][0].totalPropostas}}</p>
+      <p>R$ {{this.cc.MascaraDecimal(dash[0][0].valorTotalPropostas)}}</p>
+    </div>
+    <div class="card-dash">
+      <p>
+        <mat-icon style="color: var(--green)">work</mat-icon>
+        Propostas Fechadas
+      </p>
+      <p>{{dash[0][0].totalPropostasFechadas}}</p>
+      <p>R$ {{this.cc.MascaraDecimal(dash[0][0].valorTotalPropostasFechadas)}}</p>
+    </div>
+    <div class="card-dash">
+      <p>
+        <mat-icon style="color: var(--red)">work</mat-icon>
+        Propostas Recusadas
+      </p>
+      <p>{{dash[0][0].totalPropostasRecusadas}}</p>
+      <p>R$ {{this.cc.MascaraDecimal(dash[0][0].valorTotalPropostasRecusadas)}}</p>
+    </div>
+    <div class="card-dash">
+      <p>
+        <mat-icon color="primary">receipt_long</mat-icon>
+        Contratos Criados
+      </p>
+      <p>{{dash[0][0].totalContratos}}</p>
+      <p>R$ {{this.cc.MascaraDecimal(dash[0][0].valorTotalContratos)}}</p>
+    </div>
+    <div class="card-dash">
+      <p>
+        <mat-icon style="color: var(--green)">receipt_long</mat-icon>
+        Contratos Assinados
+      </p>
+      <p>{{dash[0][0].totalContratosFechadas}}</p>
+      <p>R$ {{this.cc.MascaraDecimal(dash[0][0].valorTotalContratosFechadas)}}</p>
+    </div>
+  </div>
+
+  <div class="tables-group">
+    <div class="card-table" *ngIf="dash[1]?.length > 0">
+      <h4 class="title-detalhes flex-center "> <mat-icon color="primary">work</mat-icon>Propostas</h4>
+      <div class="table-content">
+        <div class="table-row" *ngFor="let row of dash[1]">
+          <p class="col-6">
+            <mat-icon class="{{this.situacoesPropostas[row.situacao].Classe}}">radio_button_checked</mat-icon>
+            {{row.situacaoDesc}}
+          </p>
+          <p class="col-2">{{row.total}}</p>
+          <p class="col-3">R$ {{this.cc.MascaraDecimal(row.valorAprovado)}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="card-table" *ngIf="dash[2]?.length > 0">
+      <h4 class="title-detalhes flex-center "> <mat-icon color="primary">receipt_long</mat-icon>Contratos
+      </h4>
+      <div class="table-content">
+        <div class="table-row" *ngFor="let row of dash[2]">
+          <p class="col-6">
+            <mat-icon class="{{this.situacoesContratos[row.situacao].Classe}}">radio_button_checked</mat-icon>
+            {{row.situacaoDesc}}
+          </p>
+          <p class="col-2">{{row.total}}</p>
+          <p class="col-3">R$ {{this.cc.MascaraDecimal(row.valorAprovado)}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tables-group">
+    <div class="card-table" *ngIf="this.auth.isAdm() == true && dash[3]?.length > 0">
+      <h4 class="title-detalhes flex-center "> <mat-icon color="primary">bar_chart</mat-icon>Ranking de Vendedores</h4>
+      <div class="table-content">
+        <div class="table-row" *ngFor="let row of dash[3]">
+          <p class="col-6">
+            {{this.cc.FFirtLastName(row.nome)}}</p>
+          <p class="col-2">{{row.total}}</p>
+          <p class="col-3">R$ {{this.cc.MascaraDecimal(row.valorAprovado)}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="card-table" *ngIf="this.auth.isAdm() == true && dash[4]?.length > 0">
+      <h4 class="title-detalhes flex-center "> <mat-icon color="primary">analytics</mat-icon>Ranking de Diagnósticos</h4>
+      <div class="table-content">
+        <div class="table-row" *ngFor="let row of dash[4]">
+          <p class="col-6">
+            {{this.cc.FFirtLastName(row.nome)}}</p>
+          <p class="col-2">{{row.total}}</p>
+          <p class="col-3">R$ {{this.cc.MascaraDecimal(row.valorAvulso)}}</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="tables-group">
+    <div class="card-table" *ngIf="this.auth.isAdm() == true && dash[5]?.length > 0">
+      <h4 class="title-detalhes flex-center "> <mat-icon color="primary">area_chart</mat-icon>Ranking de Origens de Venda</h4>
+      <div class="table-content">
+        <div class="table-row" *ngFor="let row of dash[5]">
+          <p class="col-6">
+            {{this.cc.FFirtLastName(row.nome)}}</p>
+          <p class="col-2">{{row.total}}</p>
+          <p class="col-3">R$ {{this.cc.MascaraDecimal(row.valorAprovado)}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

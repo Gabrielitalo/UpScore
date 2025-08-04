@@ -1,0 +1,77 @@
+<div class="component-header">
+  <app-Header [titulo]="'Associação'"></app-Header>
+
+  <div class="btns-header-groups">
+    <button mat-fab extended color="primary" (click)="newQuery()">
+      <mat-icon>add</mat-icon>
+      Novo Lote
+    </button>
+  </div>
+</div>
+
+<div class="grid-filters">
+  <mat-form-field appearance="fill" class="col-2">
+    <mat-label>CPF ou CNPJ ou Nome</mat-label>
+    <input matInput [(ngModel)]="this.filtros.membro" name="membro" />
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="col-2">
+    <mat-label>Data Inicial</mat-label>
+    <input matInput [(ngModel)]="this.filtros.dataInicial" name="dataInicial" onkeydown="formatDate(this)" />
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="col-2">
+    <mat-label>Data Final</mat-label>
+    <input matInput [(ngModel)]="this.filtros.dataFinal" name="dataFinal" onkeydown="formatDate(this)" />
+  </mat-form-field>
+
+  <button mat-fab extended color="primary" (click)="filter()">
+    <mat-icon>search</mat-icon>
+    Buscar
+  </button>
+</div>
+<div class="cs-table-totals" *ngIf="this.pagination?.itens?.length > 0">
+  <p>{{this.pagination.itens.length}} resultado(s)</p>
+</div>
+<div class="grid-container grid-container-with-filter">
+  <div class="cs-table" *ngIf="this.pagination?.itens?.length > 0">
+    <div class="cs-table-header">
+      <div class="col-2">
+        <p>Data</p>
+      </div>
+      <div class="col-3">
+        <p>Empresa</p>
+      </div>
+      <div class="col-1">
+        <p>Total</p>
+      </div>
+      <div class="col-2">
+        <p>Valor</p>
+      </div>
+      <div class="col-2">
+        <p>Ações</p>
+      </div>
+    </div>
+    <div class="cs-table-body" (scroll)="onScroll($event)">
+      <div class="cs-table-row" *ngFor="let row of this.pagination?.itens">
+        <div class="col-2 text-center">
+          <p>{{this.cc.DataTempoFormatoBr(row.data)}}</p>
+        </div>
+        <div class="col-3 text-center">
+          <p>{{row.nome}}</p>
+        </div>
+        <div class="col-1 text-center">
+          <p>{{row.totalBeneficiarios}}</p>
+        </div>
+        <div class="col-2 text-right">
+          <p>R$ {{this.cc.MascaraDecimal(row.valorTotal)}}</p>
+          <!-- <p class="{{this.situacoes[row.situacao].Classe}}">{{SituacaoDesc(row.situacao)}}</p> -->
+        </div>
+        <div class="col-2 grid-actions">
+          <mat-icon matTooltip="Visualizar beneficiários do lote" (click)="viewDetails(row)">visibility</mat-icon>
+          <mat-icon matTooltip="Download dos nomes em excel" (click)="DownloadExcel(row.id)">download</mat-icon>
+          <!-- <mat-icon matTooltip="Download dos documentos do lotes" (click)="DownloadZip(row.id)">download</mat-icon>
+          <mat-icon matTooltip="Download dados em word" (click)="DownloadWord(row.id)">contact_page</mat-icon> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

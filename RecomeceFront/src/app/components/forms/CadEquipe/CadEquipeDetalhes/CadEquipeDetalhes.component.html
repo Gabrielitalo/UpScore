@@ -1,0 +1,67 @@
+<div class="dialog-component" *ngIf="isLoading == false">
+  <div class="row">
+    <mat-form-field appearance="fill" class="col-3">
+      <mat-label>CPF/CNPJ</mat-label>
+      <input matInput [(ngModel)]="formData.inscricao" required name="inscricao" maxlength="18"
+        onkeydown="MascaraCnpjCpf(this)" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="col-5">
+      <mat-label>Nome</mat-label>
+      <input matInput [(ngModel)]="formData.nome" required name="nome" maxlength="300" />
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="col-3">
+      <mat-label>Tipo</mat-label>
+      <select matNativeControl required [(ngModel)]="formData.tipo" name="tipo">
+        <!-- <option value="0">Global</option> -->
+        <option *ngFor="let row of getTipos()" value="{{row.id}}">{{row.texto}}</option>
+      </select>
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field appearance="fill" class="col-7">
+      <mat-label>Email</mat-label>
+      <input matInput [(ngModel)]="formData.email" name="email" maxlength="250" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="col-3">
+      <mat-label>Telefone</mat-label>
+      <input matInput [(ngModel)]="formData.telefone" onkeypress="MascaraTelefone(this)" name="telefoneResponsavel"
+        maxlength="30" />
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field appearance="fill" class="col-2">
+      <mat-label>CEP</mat-label>
+      <input matInput [(ngModel)]="formData.cep" name="cep" maxlength="9" onkeypress="MascaraCEP(this)"
+        (ngModelChange)="getCEP($event)" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="col-7">
+      <mat-label>Logradouro</mat-label>
+      <input matInput [(ngModel)]="formData.logradouro" name="logradouro" maxlength="300" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="col-2">
+      <mat-label>Nº</mat-label>
+      <input matInput [(ngModel)]="formData.numero" name="numero" maxlength="30" />
+    </mat-form-field>
+
+  </div>
+  <div class="row">
+    <mat-form-field appearance="fill" class="col-4">
+      <mat-label>Bairro</mat-label>
+      <input matInput [(ngModel)]="formData.bairro" name="bairro" maxlength="150" />
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="col-4">
+      <mat-label>Complemento</mat-label>
+      <input matInput [(ngModel)]="formData.complemento" name="complemento" maxlength="60" />
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-checkbox color="primary" [(ngModel)]="formData.ativo" name="Ativo" class="">Ativo</mat-checkbox>
+  </div>
+  <div class="btns-dialog-footer">
+    <button mat-raised-button color="primary" (click)="Salvar()">Salvar</button>
+  </div>
+</div>

@@ -1,0 +1,53 @@
+<div class="component-header">
+  <app-Header [titulo]="'Saldo'"></app-Header>
+
+  <p><strong> Saldo R$ {{this.cc.MascaraDecimal(this.saldoValue)}}</strong></p>
+
+  <div class="btns-header-groups">
+    <button mat-fab extended color="primary" (click)="newQuery()">
+      <mat-icon>shopping_cart</mat-icon>
+      Adicionar saldo
+    </button>
+  </div>
+</div>
+
+<div class="plans-container" [ngClass]="{'plans-container-mobile': isMobile}">
+  <div class="card" [ngClass]="{'card-success': row.situacao == 1, 'card-warning': row.situacao == 0}" *ngFor="let row of this.grid">
+    <div class="card-row">
+      <p class="title flex-center-v">
+        <mat-icon>handshake</mat-icon>
+        Consultas
+      </p>
+      <p class="description">{{row.qtdConsultas}}</p>
+    </div>
+    <div class="card-row">
+      <p class="title flex-center-v">
+        <mat-icon>calendar_month</mat-icon>
+        Data da Compra
+      </p>
+      <p class="description">{{this.cc.DataTempoFormatoBr(row.dataCriacao)}}</p>
+    </div>
+
+    <div class="card-row">
+      <p class="title flex-center-v">
+        <mat-icon>paid</mat-icon>
+        Investimento
+      </p>
+      <p class="description">R$ {{this.cc.MascaraDecimal(row.valor)}}</p>
+    </div>
+    <div class="card-row text-center p-2" *ngIf="row.situacao == 0">
+      <p class="recusado">Aguardando Pagamento</p>
+    </div>
+
+    <div class="card-row text-center p-2" *ngIf="row.situacao == 1">
+      <p class="aprovado">Pago</p>
+    </div>
+
+    <div class="mt-4 flex-center">
+      <button mat-fab extended color="primary" (click)="getAsaas(row)">
+        <mat-icon>receipt_long</mat-icon>
+        Visualizar Fatura
+      </button>
+    </div>
+  </div>
+</div>

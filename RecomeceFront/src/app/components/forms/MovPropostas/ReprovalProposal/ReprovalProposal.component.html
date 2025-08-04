@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Confirmar reprovação</h2>
+<mat-dialog-content>
+  <p *ngIf="this.data.tipo == 'proposta'"><strong>Tem certeza que deseja reprovar esta proposta?</strong></p>
+  <p *ngIf="this.data.tipo == 'contrato'"><strong>Tem certeza que deseja reprovar este contrato?</strong></p>
+  <p>Esta ação é irreversível e não poderá ser desfeita.</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-flat-button color="warn" (click)="onConfirm()">Sim, reprovar</button>
+</mat-dialog-actions>

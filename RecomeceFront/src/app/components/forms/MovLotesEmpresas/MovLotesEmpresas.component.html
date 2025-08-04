@@ -1,0 +1,95 @@
+<div class="component-header" *ngIf="!this.associacaoId">
+  <app-Header [titulo]="this.auth.isAssociacao() ? 'Lotes de Parceiros' : 'Lotes'"></app-Header>
+
+  <div class="btns-header-groups">
+    <button mat-fab extended color="primary" (click)="newQuery()">
+      <mat-icon>add</mat-icon>
+      Novo Lote
+    </button>
+    <button mat-fab extended color="primary" (click)="DownloadXlx()">
+      <mat-icon>download</mat-icon>
+      Modelo de Planilha
+    </button>
+  </div>
+</div>
+
+<div class="grid-filters" *ngIf="!this.associacaoId">
+  <mat-form-field appearance="fill" class="col-2">
+    <mat-label>CPF ou CNPJ ou Nome</mat-label>
+    <input matInput [(ngModel)]="this.filtros.membro" name="membro" />
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="col-2">
+    <mat-label>Data Inicial</mat-label>
+    <input matInput [(ngModel)]="this.filtros.dataInicial" name="dataInicial"
+      onkeydown="formatDate(this)" />
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="col-2">
+    <mat-label>Data Final</mat-label>
+    <input matInput [(ngModel)]="this.filtros.dataFinal" name="dataFinal"
+      onkeydown="formatDate(this)" />
+  </mat-form-field>
+
+  <button mat-fab extended color="primary" (click)="filter()">
+    <mat-icon>search</mat-icon>
+    Buscar
+  </button>
+</div>
+<div class="cs-table-totals" *ngIf="this.pagination?.itens?.length > 0">
+  <p>{{this.pagination.itens.length}} resultado(s)</p>
+</div>
+<div class="grid-container grid-container-with-filter">
+  <div class="cs-table" *ngIf="this.pagination?.itens?.length > 0">
+    <div class="cs-table-header">
+      <div class="col-2">
+        <p>Data</p>
+      </div>
+      <div class="col-1">
+        <p>Tipo</p>
+      </div>
+      <div class="col-2">
+        <p>Empresa</p>
+      </div>
+      <div class="col-1">
+        <p>Total</p>
+      </div>
+      <div class="col-2">
+        <p>Valor</p>
+      </div>
+      <div class="col-1" *ngIf="!this.associacaoId">
+        <p>Status</p>
+      </div>
+      <div class="col-3">
+        <p>Ações</p>
+      </div>
+    </div>
+    <div class="cs-table-body" (scroll)="onScroll($event)">
+      <div class="cs-table-row" *ngFor="let row of this.pagination?.itens">
+        <div class="col-2 text-center">
+          <p>{{this.cc.DataTempoFormatoBr(row.data)}}</p>
+        </div>
+        <div class="col-1 text-center">
+          <p>{{row.tipoDesc}}</p>
+        </div>
+        <div class="col-2 text-center">
+          <p>{{row.nome}}</p>
+        </div>
+        <div class="col-1 text-center">
+          <p>{{row.totalBeneficiarios}}</p>
+        </div>
+        <div class="col-2 text-right">
+          <p>R$ {{this.cc.MascaraDecimal(row.valor)}}</p>
+        </div>
+        <div class="col-1 text-center" *ngIf="!this.associacaoId">
+          <p class="{{this.situacoes[row.situacao].Classe}}">{{SituacaoDesc(row.situacao)}}</p>
+        </div>
+        <div class="col-3 grid-actions">
+          <mat-icon matTooltip="Visualizar beneficiários do lote" (click)="viewDetails(row)">visibility</mat-icon>
+          <mat-icon matTooltip="Aprovar pagamento do lote" (click)="callAprovaBatch(row.id)" *ngIf="this.auth.isAssociacao() && row.situacao == 0">thumb_up</mat-icon>
+          <mat-icon class="delete-p" matTooltip="Reprovar lote" (click)="callReproveBatch(row.id)" *ngIf="this.auth.isAssociacao() && row.situacao == 0">thumb_down</mat-icon>
+          <mat-icon class="delete-p" matTooltip="Excluir lote" (click)="callDeleteBatch(row.id)" *ngIf="row.situacao == 0">delete</mat-icon>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

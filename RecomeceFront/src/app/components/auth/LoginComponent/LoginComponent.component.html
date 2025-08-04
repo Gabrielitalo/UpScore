@@ -1,0 +1,34 @@
+<div class="container">
+  <!-- <img src="assets/logo-upscore-color.png" alt="Logo" class="logo"> -->
+  <h2>Seja bem-vindo(a)!</h2>
+  <!-- <img src="assets/logo.png" alt="Logo" class="logo">
+  <h2>Seja bem-vindo a Recomece Brasil!</h2> -->
+
+  <mat-tab-group class="tabs"  (selectedIndexChange)="tabChanged($event)">
+    <mat-tab label="Franqueado"></mat-tab>
+    <mat-tab label="Cliente" ></mat-tab>
+  </mat-tab-group>
+
+  <form class="login-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" placeholder="Digite seu e-mail" name="userName" [(ngModel)]="userName">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Senha</mat-label>
+      <input matInput [type]="hide ? 'password' : 'text'" placeholder="Digite sua senha" name="passWord" [(ngModel)]="passWord">
+      <button mat-icon-button matSuffix (click)="hide = !hide">
+        <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <a href="#" class="forgot-password">Esqueci minha senha</a>
+
+    <!-- <div class="recaptcha">
+      <img src="assets/recaptcha.png" alt="reCAPTCHA">
+    </div> -->
+
+    <button mat-raised-button color="primary" class="full-width" (click)="Login()">Entrar</button>
+  </form>
+</div>

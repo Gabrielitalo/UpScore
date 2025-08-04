@@ -1,0 +1,44 @@
+<div class="contract-manager">
+  <div class="models">
+    <app-Header [titulo]="'Modelos de documentos'"></app-Header>
+    <div class="btns-groups">
+      <button mat-raised-button color="primary" (click)="downloadContract()">
+        <mat-icon>download</mat-icon>
+        Download Contrato
+      </button>
+      <button mat-raised-button color="primary" (click)="downloadAssociativePdf()">
+        <mat-icon>download</mat-icon>
+        Download Ficha Associativa
+      </button>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="models">
+    <app-Header [titulo]="'Contrato Assinado'"></app-Header>
+    <div class="btns-groups">
+      <mat-card class="card-border" appearance="outlined" *ngIf="contract?.length > 0">
+      <mat-icon matTooltip="Remover contrato" class="delete-p" *ngIf="this.auth.isAdm() == true" (click)="deleteFile(contract[0].id)">delete</mat-icon>
+      <mat-icon matTooltip="Download contrato" color="primary" (click)="downloadFile(contract[0].id)">download</mat-icon>
+        <mat-card-content>Assinado dia {{this.cc.DataTempoFormatoBr(contract[0].dataCriacao)}}</mat-card-content>
+      </mat-card>
+      <button mat-raised-button color="primary" (click)="selectFile(0)" *ngIf="contract?.length == 0">
+        <mat-icon>upload</mat-icon>
+        Enviar
+      </button>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="models">
+    <app-Header [titulo]="'Beneficiário(s)'"></app-Header>
+  </div>
+  <div class="col-12 mt-3 p-3">
+    <div class="grid-beneficiario" *ngFor="let row of this.fichas">
+      <mat-icon matTooltip="Remover ficha associativa" class="delete-p" *ngIf="row.idArquivo > 0 && this.auth.isAdm() == true" (click)="deleteFile(row.id)">delete</mat-icon>
+      <mat-icon matTooltip="Enviar ficha associativa" color="primary" *ngIf="row.idArquivo == 0" (click)="selectFile(row.id)">upload</mat-icon>
+      <mat-icon matTooltip="Ficha associativa enviada" class="green" *ngIf="row.idArquivo > 0">task_alt</mat-icon>
+      {{row.nome}}
+    </div>
+  </div>
+</div>
+
+<input type="file" hidden #fileInput (change)="onFileSelected($event)" />

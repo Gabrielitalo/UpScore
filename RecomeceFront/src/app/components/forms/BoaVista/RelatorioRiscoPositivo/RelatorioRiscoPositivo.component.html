@@ -1,0 +1,315 @@
+<div class="report-tittle">
+  <p>Define Risco Positivo</p>
+</div>
+
+<div class="item-container">
+  <div class="item-header">
+    <p>Informações Fornecidas</p>
+  </div>
+  <div class="item-row">
+    <div class="item item-50">
+      <p>CNPJ</p>
+      <p>{{this.cc.MascaraCnpjCpf(reportData.arquivoRetorno?.identificacao_basico?.cnpj)}}</p>
+    </div>
+    <div class="item item-50">
+      <p>Razão Social</p>
+      <p>{{reportData.arquivoRetorno.identificacao_basico.razao_social}}</p>
+    </div>
+  </div>
+</div>
+
+<div class="item-container">
+  <div class="header-avulso">
+    <p>Status do Consumidor</p>
+  </div>
+
+  <div class="white-card">
+    <img class="icon-green" src="https://app.sistemalimpanome.com.br/assets/thumb_up.svg" *ngIf="!reportData.arquivoRetorno.status_consumidor.mensagem.includes('NÃO')">
+    <img class="icon-red" src="https://app.sistemalimpanome.com.br/assets/thumb_down.svg" *ngIf="reportData.arquivoRetorno.status_consumidor.mensagem.includes('NÃO')">
+    <p>{{reportData.arquivoRetorno.status_consumidor.mensagem}}</p>
+  </div>
+</div>
+
+<div class="item-container">
+  <div class="score-container">
+    <div class="gauge-container">
+      <div *ngIf="reportData.score > 1 && reportData.score < 450">
+        <svg viewBox="0 0 200 100" class="gauge">
+          <path d="M 10 100 A 90 90 0 0 1 100 10" class="arc-orange arc-1" />
+        </svg>
+      </div>
+      <div *ngIf="reportData.score > 450 && reportData.score < 650">
+        <svg viewBox="0 0 200 100" class="gauge">
+          <path d="M 10 100 A 90 90 0 0 1 100 10" class="arc arc-1" />
+          <path d="M 120 10 A 90 90 0 0 1 165 35" class="arc arc-2" />
+        </svg>
+      </div>
+      <div *ngIf="reportData.score > 650 || reportData.score == 1">
+        <svg viewBox="0 0 200 100" class="gauge">
+          <path d="M 10 100 A 90 90 0 0 1 100 10" class="arc arc-1" />
+          <path d="M 120 10 A 90 90 0 0 1 165 35" class="arc arc-2" />
+          <path d="M 180 50 A 90 90 0 0 1 190 100" class="arc arc-3" />
+        </svg>
+      </div>
+      <div class="gauge-value">{{reportData.arquivoRetorno?.score?.score_pj.score}}</div>
+      <div class="gauge-labels">
+        <span>0</span>
+        <span>1000</span>
+      </div>
+      <p class="gauge-title">Score do Consumidor</p>
+    </div>
+
+    <div class="white-card-border">
+      <img class="image-boa" src="https://app.sistemalimpanome.com.br/assets/image-boa-vista-1.png">
+      <p *ngIf="reportData.arquivoRetorno?.score?.score_pj.probabilidade != '0.0'">É provável que
+        {{reportData.arquivoRetorno?.score?.score_pj.probabilidade}} % das empresas com
+        esse mesmo comportamento, paguem
+        suas contas nos próximos 12 meses.</p>
+      <p>{{reportData.arquivoRetorno?.score?.score_pj.texto}}</p>
+    </div>
+  </div>
+</div>
+
+<div class="score-info">
+  <p>*O cálculo desde score não considera informações do Cadastro Positivo - Lei 12.414/2011 (dados com informações de
+    adimplemento para formação de histórico
+    de crédito</p>
+
+  <p>As informações são confidenciais e é proibida a sua reprodução total ou parcial, bem como qualquer forma de
+    divulgação.
+  </p>
+</div>
+
+<div class="item-container">
+  <div class="item-header">
+    <p>Painel de Controle</p>
+  </div>
+  <table>
+    <thead>
+      <tr class="table-header">
+        <td class="item-40">Ocorrência</td>
+        <td class="item-20">Quantidade</td>
+        <td class="item-20">Data da Última</td>
+        <td class="item-20">Valor R$</td>
+      </tr>
+    </thead>
+    <tbody class="table-body">
+      <tr>
+        <td class="item-40">Pendências e Restrições Financeiras</td>
+        <td class="item-20">{{reportData.arquivoRetorno?.pendencias_restricoes?.total_pendencias}}</td>
+        <td class="item-20">{{reportData.arquivoRetorno?.pendencias_restricoes?.data_maior}}</td>
+        <td class="item-20">{{this.cc.MascaraDecimal(reportData.arquivoRetorno?.pendencias_restricoes?.valor)}}</td>
+      </tr>
+      <tr>
+        <td class="item-40">Cheque sem Fundos</td>
+        <td class="item-20">{{reportData.arquivoRetorno?.cheques_sem_fundo?.quantidade_total}}</td>
+        <td class="item-20">{{reportData.arquivoRetorno?.cheques_sem_fundo?.periodo_inicial}}</td>
+        <td class="item-20">{{reportData.arquivoRetorno?.cheques_sem_fundo?.periodo_final}}</td>
+      </tr>
+      <tr>
+        <td class="item-40">Cheques Sustados Motivo 21</td>
+        <td class="item-20">{{reportData.arquivoRetorno?.cheques_sustados?.total}}</td>
+        <td class="item-20">{{reportData.arquivoRetorno?.cheques_sustados?.periodo_inicial}}</td>
+        <td class="item-20">{{reportData.arquivoRetorno?.cheques_sustados?.periodo_final}}</td>
+      </tr>
+      <tr>
+        <td class="item-40">Cheques Devolvidos Informados Pelo Usuário</td>
+        <td class="item-20">{{reportData.arquivoRetorno?.cheques_devolvidos_informados_usuario?.quantidade_total}}</td>
+        <td class="item-20">{{reportData.arquivoRetorno?.cheques_devolvidos_informados_usuario?.periodo_inicial}}</td>
+        <td class="item-20">{{reportData.arquivoRetorno?.cheques_devolvidos_informados_usuario?.periodo_final}}</td>
+      </tr>
+      <tr>
+        <td class="item-40">Protestos</td>
+        <td class="item-20">{{reportData.arquivoRetorno?.protestos?.quantidade}}</td>
+        <td class="item-20">{{reportData.arquivoRetorno?.protestos?.ultima}}</td>
+        <td class="item-20">{{this.cc.MascaraDecimal(reportData.arquivoRetorno?.protestos?.valor)}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<div class="item-container forcar-quebra">
+  <div class="item-header">
+    <p>Identificação</p>
+  </div>
+  <div class="item-row">
+    <div class="item item-33">
+      <p>CNPJ</p>
+      <p>{{this.cc.MascaraCnpjCpf(reportData.arquivoRetorno?.identificacao_basico?.cnpj)}}</p>
+    </div>
+    <div class="item item-33">
+      <p>Razão Social</p>
+      <p>{{reportData.arquivoRetorno?.identificacao_basico?.razao_social}}</p>
+    </div>
+    <div class="item item-33">
+      <p>Nome Fantasia</p>
+      <p>{{reportData.arquivoRetorno?.identificacao_basico?.nome_fantasia}}</p>
+    </div>
+  </div>
+  <div class="item-row">
+    <div class="item item-33">
+      <p>Situação do CNPJ</p>
+      <p>{{reportData.arquivoRetorno?.identificacao_basico?.situacao_cnpj}}</p>
+    </div>
+    <div class="item item-33">
+      <p>Data da Situação</p>
+      <p>{{reportData.arquivoRetorno?.identificacao_basico?.data_situacao_cnpj}}</p>
+    </div>
+    <div class="item item-33">
+      <p>Data de Consulta na Receita Federal</p>
+      <p>{{reportData.arquivoRetorno?.identificacao_basico?.data_consulta_receita_federal}}</p>
+    </div>
+  </div>
+  <div class="item-row">
+    <div class="item item-33">
+      <p>NIRE</p>
+      <p>
+        {{reportData.arquivoRetorno?.identificacao_basico?.uf_nire}}-{{reportData.arquivoRetorno?.identificacao_basico?.numero_nire}}
+      </p>
+    </div>
+    <div class="item item-33">
+      <p>Inscrição Estadual</p>
+      <p>{{reportData.arquivoRetorno?.identificacao_basico?.inscricao_estadual}}</p>
+    </div>
+    <div class="item item-33">
+      <p>Data da Fundação</p>
+      <p>{{reportData.arquivoRetorno?.identificacao_basico?.data_fundacao}}</p>
+    </div>
+  </div>
+  <div class="item-row">
+    <div class="item item-33">
+      <p>Natureza Jurídicа</p>
+      <p>{{reportData.arquivoRetorno?.identificacao_basico?.natureza_juridica}}</p>
+    </div>
+    <div class="item item-33">
+      <p>Ramo de Atividade Primário - CNAE</p>
+      <p>
+        {{reportData.arquivoRetorno?.identificacao_basico?.ramo_atividade.cnae}}-{{reportData.arquivoRetorno?.identificacao_basico?.ramo_atividade.atividade}}
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="item-container">
+  <div class="item-header">
+    <p>Localização</p>
+  </div>
+  <div class="item-row">
+    <div class="item item-100">
+      <p>Endereço</p>
+      <p>{{reportData.arquivoRetorno?.localizacao_basico?.logradouro}}</p>
+    </div>
+  </div>
+  <div class="item-row">
+    <div class="item item-25">
+      <p>Bairro</p>
+      <p>{{reportData.arquivoRetorno?.localizacao_basico?.bairro}}</p>
+    </div>
+    <div class="item item-25">
+      <p>CEP</p>
+      <p>{{reportData.arquivoRetorno?.localizacao_basico?.cep}}</p>
+    </div>
+    <div class="item item-25">
+      <p>Cidade</p>
+      <p>{{reportData.arquivoRetorno?.localizacao_basico?.cidade}}</p>
+    </div>
+    <div class="item item-25">
+      <p>UF</p>
+      <p>{{reportData.arquivoRetorno?.localizacao_basico?.uf}}</p>
+    </div>
+  </div>
+</div>
+
+<div class="item-container">
+  <div class="item-header">
+    <p>Consultas</p>
+  </div>
+  <div class="item-row">
+    <div class="item item-50">
+      <p>Quantidade Total:</p>
+      <p>{{reportData.arquivoRetorno?.consultas?.quantidade_total}}</p>
+    </div>
+    <div class="item item-50">
+      <p>Período:</p>
+      <p>{{reportData.arquivoRetorno?.consultas?.periodo_inicial}} -
+        {{reportData.arquivoRetorno?.consultas?.periodo_final}}</p>
+    </div>
+  </div>
+</div>
+
+<div class="item-container">
+  <div class="item-header">
+    <p>Pendências e Restrições Financeiras</p>
+  </div>
+  <div class="item-row">
+    <div class="item item-50">
+      <p>Total de pendências</p>
+      <p>{{reportData.arquivoRetorno?.pendencias_restricoes?.total_pendencias}}</p>
+    </div>
+    <div class="item item-50">
+      <p>Total de Credores</p>
+      <p>{{reportData.arquivoRetorno?.pendencias_restricoes?.total_credores}}</p>
+    </div>
+  </div>
+  <div class="item-row">
+    <div class="item item-50">
+      <p>Valor (R$)</p>
+      <p>{{reportData.arquivoRetorno?.pendencias_restricoes?.valor}}</p>
+    </div>
+    <div class="item item-50">
+      <p>Período</p>
+      <p>{{reportData.arquivoRetorno?.pendencias_restricoes?.periodo_inicial}} -
+        {{reportData.arquivoRetorno?.pendencias_restricoes?.periodo_final}}</p>
+    </div>
+  </div>
+  <div class="item-row">
+    <div class="item item-25">
+      <p>Data do primeiro registro</p>
+      <p>{{reportData.arquivoRetorno?.pendencias_restricoes?.data_primeiro}}</p>
+    </div>
+    <div class="item item-25">
+      <p>Valor do primeiro (R$)</p>
+      <p>{{this.cc.MascaraDecimal(reportData.arquivoRetorno?.pendencias_restricoes?.valor_primeiro)}}</p>
+    </div>
+    <div class="item item-25">
+      <p>Data do maior registro</p>
+      <p>{{reportData.arquivoRetorno?.pendencias_restricoes?.data_maior}}</p>
+    </div>
+    <div class="item item-25">
+      <p>Valor do maior</p>
+      <p>{{this.cc.MascaraDecimal(reportData.arquivoRetorno?.pendencias_restricoes?.valor_maior)}}</p>
+    </div>
+  </div>
+
+
+</div>
+
+<div class="page-break-container">
+  <table>
+    <thead>
+      <tr class="table-header">
+        <td class="item-40">Informante</td>
+        <td class="item-20">Cidade</td>
+        <td class="item-20">Data da Última</td>
+        <td class="item-20">Valor R$</td>
+      </tr>
+    </thead>
+    <tbody class="table-body">
+      <tr
+        *ngFor="let row of reportData.arquivoRetorno?.pendencias_restricoes.ultimas_ocorrencias.pendencia_restricao;  let i = index">
+        <td class="item-40">{{row.informante}}</td>
+        <td class="item-20">{{row.cidade}}</td>
+        <td class="item-20">{{row.data_debito}}</td>
+        <td class="item-20">{{this.cc.MascaraDecimal(row?.valor)}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="score-info">
+  <p>Esta consulta é de uso exclusivo para a concessão de crédito, realização de venda a prazo ou quaisquer outras
+    transações comerciais e empresariais que impliquem
+    risco financeiro.
+  </p>
+</div>

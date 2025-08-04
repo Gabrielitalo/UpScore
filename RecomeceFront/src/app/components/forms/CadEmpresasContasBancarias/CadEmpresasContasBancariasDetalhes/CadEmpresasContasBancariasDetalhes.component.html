@@ -1,0 +1,39 @@
+<div class="dialog-component">
+  <mat-form-field appearance="outline" class="w-full" *ngIf="bancos.length > 0">
+    <mat-label>Banco</mat-label>
+    <mat-select [(ngModel)]="formData.codBanco" name="codBanco" required>
+      <mat-option *ngFor="let banco of bancos" [value]="banco.CodigoBanco">
+        {{ banco.NomeBanco }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Agência</mat-label>
+    <input matInput [(ngModel)]="formData.agencia" name="agencia" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Conta</mat-label>
+    <input matInput [(ngModel)]="formData.conta" name="conta" required />
+  </mat-form-field>
+
+  <div class="row">
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Chave Pix</mat-label>
+      <input matInput [(ngModel)]="formData.chavePix" name="chavePix" />
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-checkbox color="primary" [(ngModel)]="formData.ativo" name="ativo" class="">Conta Ativa</mat-checkbox>
+  </div>
+  <div class="row">
+    <mat-checkbox color="primary" [(ngModel)]="formData.padrao" name="padrao" class="">Conta Padrão</mat-checkbox>
+  </div>
+  <div class="row">
+    <div class="mt-4">
+      <button mat-raised-button color="primary" (click)="Salvar()">Salvar</button>
+    </div>
+  </div>
+</div>

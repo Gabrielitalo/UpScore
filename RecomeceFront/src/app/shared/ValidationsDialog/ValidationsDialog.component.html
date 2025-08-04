@@ -1,0 +1,30 @@
+<mat-icon (click)="Close()">close</mat-icon>
+<div class="validation-container">
+  <div class="card-grid validation-dialog" *ngIf="this.data.length > 0">
+    <div class="card-item col-11" *ngFor="let item of this.data">
+      <div class="msg-validation" *ngIf="item.type == 3">
+        <mat-icon>dangerous</mat-icon>
+        <p>Validação</p>
+      </div>
+      <div class="msg-validation" *ngIf="item.type == 2">
+        <mat-icon>report</mat-icon>
+        <p>Aviso</p>
+      </div>
+      <p>{{item.content}}</p>
+    </div>
+  </div>
+
+  <div class="card-grid validation-dialog" *ngIf="this.data?.length == null">
+    <div class="card-item col-11">
+      <div class="msg-validation" *ngIf="this.data.type == 3">
+        <mat-icon>dangerous</mat-icon>
+        <p>Validação</p>
+      </div>
+      <div class="msg-validation" *ngIf="this.data.type == 2">
+        <mat-icon>report</mat-icon>
+        <p>Aviso</p>
+      </div>
+      <p>{{this.data.content}}</p>
+    </div>
+  </div>
+</div>

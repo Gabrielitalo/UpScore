@@ -1,0 +1,4 @@
+<div *ngIf="proposal.fk_CadClientes">
+  <h4 class="title-beneficiario">Confirme os dados do titular do contrato</h4>
+  <app-CadClientesDetalhes [id]="proposal.fk_CadClientes" (isSave)="receiveClient($event)" [isValid]="1"></app-CadClientesDetalhes>
+</div>
