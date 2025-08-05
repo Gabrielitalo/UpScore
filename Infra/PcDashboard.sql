@@ -7,6 +7,7 @@ CREATE PROCEDURE PcDashboard(
     IN p_IdRole BIGINT,
     IN p_IdCompany BIGINT,
     IN p_IdVendedor BIGINT,
+    IN p_ProductId BIGINT,
     IN p_DataInicial Datetime, 
     IN p_DataFinal Datetime)
 BEGIN
@@ -19,6 +20,11 @@ Set @DataFinalMesAntetior = DATE_SUB(p_DataFinal, INTERVAL 1 MONTH);
 
     Drop Table If Exists Tp_Equipe;
     CREATE TEMPORARY TABLE IF NOT EXISTS Tp_Equipe (
+      Id BIGINT
+    );
+
+    Drop Table If Exists Tp_Produtos;
+    CREATE TEMPORARY TABLE IF NOT EXISTS Tp_Produtos (
       Id BIGINT
     );
   
@@ -38,6 +44,17 @@ Set @DataFinalMesAntetior = DATE_SUB(p_DataFinal, INTERVAL 1 MONTH);
       Select Ce.Id
       From CadEquipe Ce
       Where (Ce.Id = p_IdUser);
+    End If;
+
+    If (p_ProductId > 0) Then
+      Insert Into Tp_Produtos Select p_ProductId;
+    End If;
+
+    If (p_ProductId = 0 and p_IdRole in (0, 1)) Then
+      Insert Into Tp_Produtos 
+      Select Id 
+      From CadProdutos 
+      Where Fk_CadEmpresas = p_IdCompany and Situacao = 1;
     End If;
 
 DROP TABLE IF EXISTS Retorno;
@@ -66,6 +83,7 @@ Select M.Id, M.Fk_CadEquipe, M.Fk_CadProdutos, M.Fk_CadClientes, M.Situacao, M.T
 M.ValorAprovado, M.ValorEntrada, M.DataHoraCadastro, M.DataHoraFechamento, M.Fk_CadOrigens, M.ValorAvulso
 From MovPropostas M
 Join Tp_Equipe Te on (Te.Id = M.Fk_CadEquipe)
+Join Tp_Produtos Tp on (Tp.Id = M.Fk_CadProdutos)
 Join CadEquipe Ce on (Ce.Id = Te.Id)
 Where (Ce.Fk_CadEmpresas = p_IdCompany) and  
 ((M.DataHoraCadastro between p_DataInicial and p_DataFinal) or ((M.Situacao >= 3) and (M.DataHoraFechamento between p_DataInicial and p_DataFinal)));

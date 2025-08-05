@@ -518,7 +518,7 @@ namespace RecomeceAPI.Services
     {
       throw new NotImplementedException();
     }
-    public async Task<object> GetDashboard(string dataInicial, string dataFinal, long vendedor)
+    public async Task<object> GetDashboard(string dataInicial, string dataFinal, long vendedor, long productId)
     {
       long idUser = Convert.ToInt64(AppIdentity.GetClaimValue("IdUser"));
       long idRole = Convert.ToInt64(AppIdentity.GetClaimValue("IdRole"));
@@ -530,6 +530,7 @@ namespace RecomeceAPI.Services
       _dbContext.Parametros.AddItem("@p_DataInicial", dataInicial);
       _dbContext.Parametros.AddItem("@p_DataFinal", dataFinal);
       _dbContext.Parametros.AddItem("@p_IdVendedor", vendedor);
+      _dbContext.Parametros.AddItem("@p_ProductId", productId);
       DataSet result = await _dbContext.QueryAsync("PcDashboard", 1);
       return result.Tables;
     }

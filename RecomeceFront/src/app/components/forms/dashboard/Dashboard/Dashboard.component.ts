@@ -19,20 +19,31 @@ export class DashboardComponent implements OnInit {
 
   public dash: any;
   public equipe: any = [];
+  public products: any = [];
   public filtros: any = {
     nome: '',
     inscricao: '',
     dataInicial: '',
     dataFinal: '',
     situacao: 0,
-    vendedor: 0
+    vendedor: 0,
+    productId: 0
   };
+
   ngOnInit() {
     const datas = this.cc.getDataInicialEFinalDoMes();
     this.filtros.dataInicial = this.cc.DataFormatoBr(datas.dataInicial);
     this.filtros.dataFinal = this.cc.DataFormatoBr(datas.dataFinal);
     this.getEquipe();
+    this.bindProducts();
   }
+
+  private async bindProducts(): Promise<void> {
+    const response = await this.request.getData(`/CadProdutos/GelAllActive`);
+    this.products = response;
+    console.log(this.products);
+  }
+
 
   private async getEquipe(): Promise<void> {
     this.equipe = await this.request.getData(
@@ -43,7 +54,7 @@ export class DashboardComponent implements OnInit {
 
   private async getDash(): Promise<void> {
     this.dash = await this.request.getData(
-      `/MovPropostas/GetDashboard?dataInicial=${this.cc.DataFormatoUs(this.filtros.dataInicial)}&dataFinal=${this.cc.DataFormatoUs(this.filtros.dataFinal)}&vendedor=${this.filtros.vendedor}`
+      `/MovPropostas/GetDashboard?dataInicial=${this.cc.DataFormatoUs(this.filtros.dataInicial)}&dataFinal=${this.cc.DataFormatoUs(this.filtros.dataFinal)}&vendedor=${this.filtros.vendedor}&productId=${+this.filtros.productId}`
     );
     // console.log(this.dash);
   }

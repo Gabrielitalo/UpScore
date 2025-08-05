@@ -10,11 +10,18 @@
     <input matInput [(ngModel)]="this.filtros.dataFinal" name="dataFinal"
       onkeydown="formatDate(this)" />
   </mat-form-field>
-  <mat-form-field appearance="fill" class="col-3" *ngIf="this.auth.isAdm()">
+  <mat-form-field appearance="fill" class="col-2" *ngIf="this.auth.isAdm()">
     <mat-label>Vendedor</mat-label>
     <select matNativeControl [(ngModel)]="filtros.vendedor" name="vendedor">
       <option value="0">Todos</option>
       <option *ngFor="let item of equipe" value="{{item.id}}">{{item.nome}}</option>
+    </select>
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="col-3" *ngIf="this.auth.isAdm()">
+    <mat-label>Produto</mat-label>
+    <select matNativeControl [(ngModel)]="filtros.productId" name="productId">
+      <option value="0">Todos</option>
+      <option *ngFor="let item of products" value="{{item.id}}">{{item.descricao}}</option>
     </select>
   </mat-form-field>
   <button mat-fab extended color="primary" (click)="filter()">

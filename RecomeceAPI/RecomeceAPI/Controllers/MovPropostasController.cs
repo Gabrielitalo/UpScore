@@ -346,11 +346,11 @@ namespace RecomeceAPI.Controllers
       }
     }
     [HttpGet("GetDashboard")]
-    public async Task<IActionResult> GetDashboard([FromQuery] string dataInicial, [FromQuery] string dataFinal, [FromQuery] long vendedor)
+    public async Task<IActionResult> GetDashboard([FromQuery] string dataInicial, [FromQuery] string dataFinal, [FromQuery] long vendedor, [FromQuery] long productId)
     {
       try
       {
-        var result = await _service.GetDashboard(dataInicial, dataFinal, vendedor);
+        var result = await _service.GetDashboard(dataInicial, dataFinal, vendedor, productId);
         if (result == null)
           return Ok(NotificationService.NoContent());
 
