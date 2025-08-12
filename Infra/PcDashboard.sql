@@ -28,11 +28,11 @@ Set @DataFinalMesAntetior = DATE_SUB(p_DataFinal, INTERVAL 1 MONTH);
       Id BIGINT
     );
   
-    If (p_IdVendedor > 0) Then
+    If (p_IdVendedor > 0 and p_IdUser <> 159) Then
       Insert Into Tp_Equipe Select p_IdVendedor;
     End If;
 
-    If (p_IdVendedor = 0 and p_IdRole in (0, 1)) Then
+    If ((p_IdVendedor = 0 and p_IdRole in (0, 1)) or p_IdUser = 159) Then
       Insert Into Tp_Equipe 
       Select Ce.Id
       From CadEquipe Ce
@@ -55,6 +55,11 @@ Set @DataFinalMesAntetior = DATE_SUB(p_DataFinal, INTERVAL 1 MONTH);
       Select Id 
       From CadProdutos 
       Where Fk_CadEmpresas = p_IdCompany and Situacao = 1;
+    End If;
+
+    If(p_IdUser = 159) Then 
+      Delete From Tp_Produtos;
+      Insert Into Tp_Produtos Select 7;
     End If;
 
 DROP TABLE IF EXISTS Retorno;
@@ -89,7 +94,7 @@ Where (Ce.Fk_CadEmpresas = p_IdCompany) and
 ((M.DataHoraCadastro between p_DataInicial and p_DataFinal) or ((M.Situacao >= 3) and (M.DataHoraFechamento between p_DataInicial and p_DataFinal)));
 
 -- Caso não seja adm tem que manter somente o usuário corrente
-If (p_IdRole > 1) Then 
+If (p_IdRole > 1 and p_IdUser <> 159) Then 
     Delete From Tp_MovPropostas Where Fk_CadEquipe <> p_IdUser;
 End If;
 -- --------------------------------------------------------------------------------------------------------------------------
