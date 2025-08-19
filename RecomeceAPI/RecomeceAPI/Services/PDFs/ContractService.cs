@@ -23,6 +23,7 @@ namespace RecomeceAPI.Services.PDFs
         contrato.CadEmpresas = cadEmpresas;
         contrato.MovContrato = movContrato;
         contrato.MovPropostasDuplicatas = movPropostasDuplicatas;
+        contrato.MovPropostasBeneficiarios = movPropostasBeneficiarios;
         contrato.GeneratePdf(stream);
       }
       else if (company.WhiteLabelConfig.ModeloContrato.ToLower() == "recomece")

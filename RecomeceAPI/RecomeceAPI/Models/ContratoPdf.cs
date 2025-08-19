@@ -9,6 +9,7 @@ public class ContratoPdf : IDocument
 {
   public MovContratosModel MovContrato = new MovContratosModel();
   public CadEmpresasModel CadEmpresas = new CadEmpresasModel();
+  public List<MovPropostasBeneficiariosModel> MovPropostasBeneficiarios = new List<MovPropostasBeneficiariosModel>();
   public List<MovPropostasDuplicatasModel> MovPropostasDuplicatas = new List<MovPropostasDuplicatasModel>();
   public string PagamentoStr { get; set; } = string.Empty;
   public int fontSize = 14;
@@ -55,6 +56,11 @@ public class ContratoPdf : IDocument
   {
     string path = Path.Combine(Directory.GetCurrentDirectory(), "Docs", "logoContrato.png");
     return File.ReadAllBytes(path);
+  }
+  public string GetNewProcessValue()
+  {
+    decimal valorTotal = 250 * MovPropostasBeneficiarios.Count;
+    return $"{ExtensionService.AplicarMascaraMoeda(valorTotal)}";
   }
   public DocumentMetadata GetMetadata() => DocumentMetadata.Default;
 
@@ -120,55 +126,54 @@ public class ContratoPdf : IDocument
            });
 
         // CLÁUSULA  1
-        col.Item().PaddingTop(20).AlignLeft().Text("CLÁUSULA PRIMEIRA – DO OBJETO").Justify().LineHeight(lineHeightParagrafo).FontSize(fontSize).Bold();
-        col.Item()
-           .PaddingTop(10)
-           .AlignLeft()
-           .Text(text =>
-           {
-             text.Span("O presente contrato tem como objeto a prestação de serviços de consultoria e assessoria jurídica em favor da CONTRATANTE pela CONTRATADA, sendo esta última a responsável pela retirada das restrições que constam perante os órgãos de proteção ao crédito, restauração de score e acompanhamento de processo administrativo ou judicial em face dos órgãos de controle de crédito.")
-             .FontSize(fontSize).LineHeight(lineHeightNormal);
-           });
+        col.Item().PaddingTop(20).AlignLeft().Text("I – Do objeto").Justify().LineHeight(lineHeightParagrafo).FontSize(fontSize).Bold();
+        col.Item().Element(GetParagraph("1.1", "O presente contrato tem como objeto o ajuizamento de PEDIDO DE URGÊNCIA pela Contratada, sob a intenção de baixar restrições da Contratante em órgãos de proteção ao crédito", fontSize));
+  
 
         // CLÁUSULA  2
-        col.Item().PaddingTop(20).AlignLeft().Text("CLÁUSULA SEGUNDA – DAS OBRIGAÇÕES DA CONTRATADA").LineHeight(lineHeightParagrafo).FontSize(fontSize).Bold();
-        col.Item().Element(GetParagraph("2.1", "A CONTRATADA compromete-se a prestar os serviços solicitados pela CONTRATANTE conforme descrito na Cláusula Primeira – Do Objeto.", fontSize));
-        col.Item().Element(GetParagraph("2.2", "O prazo para efetiva execução do serviço do objeto deste contrato é de 30 (trinta) a 60 (sessenta) dias úteis, a contar do pagamento e da entrega da documentação necessária para a propositura da ação.", fontSize));
-        col.Item().Element(GetParagraph("2.3", "Até o final do prazo, a CONTRATADA deverá entregar o NADA CONSTA dos birôs de consulta dos órgãos de proteção ao crédito à CONTRATANTE.", fontSize));
-        col.Item().Element(GetParagraph("2.4", "Na prestação de serviços, a CONTRATADA deverá manter sigilo total de todas as informações fornecidas pela CONTRATANTE, utilizando-se delas unicamente para fins de cumprimento do objeto do presente contrato.", fontSize));
-        col.Item().Element(GetParagraph("2.5", "Não há garantia de crédito, mas a CONTRATADA compromete-se a diligenciar para que aumentem as chances do êxito.", fontSize));
-        col.Item().Element(GetParagraph("2.6", "Na hipótese da CONTRATANTE contrair novas dívidas em um período de 12 (doze) meses, inexistentes até o ato da assinatura do presente Contrato, será facultado o direito a uma nova execução do serviço objeto deste instrumento, mediante um novo pagamento equivalente a 50% (cinquenta por cento) do valor expresso na Cláusula Quarta.", fontSize));
-        col.Item().Element(GetParagraph("2.7", "A CONTRATADA não garante pontuação mínima ou máxima na retomada do score.", fontSize));
-        col.Item().Element(GetParagraph("2.8", "Vale ressaltar que dentro da ação não serão feitas negociações, quitações, compras ou parcelamentos das dívidas. O serviço é baseado nos art. 42 e 43 do Código de Defesa do Consumidor (Lei n. 8.078/90).", fontSize));
-        col.Item().Element(GetParagraph("2.9", "Salienta-se que a dívida ainda aparecerá internamente dentro da instituição credora e de visualização interna (cliente) no aplicativo do Serasa e/ou outros.", fontSize));
-
+        col.Item().PaddingTop(20).AlignLeft().Text("II – Do pagamento").LineHeight(lineHeightParagrafo).FontSize(fontSize).Bold();
+        col.Item().Element(GetParagraph("2.1", $"Pelo serviço objeto do presente contrato, a CONTRATANTE deverá pagar à CONTRATADA a quantia total de {ExtensionService.AplicarMascaraMoeda(MovContrato.MovPropostasModel.ValorAprovado)}, de forma irrevogável e irretratável, {GetPagamentoText()}"));
+        col.Item().Element(GetParagraph("2.2", " O não cumprimento do pagamento fará o serviço objeto deste contrato ser revogado, sem direito à devolução de qualquer quantia, incorrendo ainda em multa contratual de 10% (dez por cento) sobre os valores devidos, atualização monetária e juro de mora de 1% (um por cento) ao mês", fontSize));
+    
         // CLÁUSULA  3
-        col.Item().PaddingTop(20).AlignLeft().Text("CLÁUSULA TERCEIRA – DAS OBRIGAÇÕES DA CONTRATANTE").LineHeight(lineHeightParagrafo).Bold().FontSize(fontSize);
-        col.Item().Element(GetParagraph("3.1", "A CONTRATANTE se obriga a cumprir fielmente o pagamento dos honorários aqui acordados, sob pena de, em caso de mora, extinguir-se a relação contratual e ser levado o presente contrato à execução judicial."));
-        col.Item().Element(GetParagraph("3.2", "A CONTRANTE desde já se declara ciente de que a ação em questão obedece a procedimento previsto no Código de Processo Civil, Código Civil e Código de Defesa do Consumidor, não possuindo a CONTRATADA, poder para abreviar a prestação jurisdicional."));
-        col.Item().Element(GetParagraph("3.3", "A CONTRATANTE fornecerá à CONTRATADA os documentos e meios necessários à comprovação processual do seu pretendido direito, sob pena de exclusão da responsabilidade causídico, inclusive dentro dos prazos legais."));
+        col.Item().PaddingTop(20).AlignLeft().Text("III – Das obrigações da Contratada").LineHeight(lineHeightParagrafo).Bold().FontSize(fontSize);
+        col.Item().Element(GetParagraph("3.1", "A Contratada compromete-se a prestar fielmente os serviços objeto do presente contrato"));
+        col.Item().Element(GetParagraph("3.2", "O prazo para execução do serviço objeto deste contrato é de até 60 (sessenta) dias úteis, a contar do ato de assinatura deste instrumento"));
+        col.Item().Element(GetParagraph("3.3", "Até o final do prazo acima fixado, a Contratada entregará o relatório de nada consta para restrições em órgãos de proteção ao crédito à Contratante"));
+        col.Item().Element(GetParagraph("3.4", "A Contratada manterá sigilo total de todas as informações fornecidas pela Contratante, nutilizando-se delas única e exclusivamente para o bom e fiel cumprimento do objeto do presente contrato."));
+        col.Item().Element(GetParagraph("3.5", "Os efeitos do serviço objeto deste contrato não se estendem a qualquer futura restrição que a Contratante venha a incorrer perante órgãos de proteção ao crédito, apenas às existentes no ato da contratação do serviço"));
+        col.Item().Element(GetParagraph("3.6", "As obrigações da Contratada limitam-se à execução do serviço objeto do presente contrato, conforme o ordenamento jurídico vigente na data de celebração deste instrumento, caracterizando-se como obrigação de meio e não de fim (resultado)."));
 
         // CLÁUSULA  4
-        col.Item().PaddingTop(20).AlignLeft().Text("CLÁUSULA QUARTA – DO PAGAMENTO").LineHeight(lineHeightParagrafo).Bold().FontSize(fontSize);
-        col.Item().Element(GetParagraph("4.1", $"Pelo serviço objeto do presente contrato, a CONTRATANTE deverá pagar à CONTRATADA a quantia de {ExtensionService.AplicarMascaraMoeda(MovContrato.MovPropostasModel.ValorAprovado)}, de forma irrevogável e irretratável, {GetPagamentoText()}"));
-        col.Item().Element(GetParagraph("4.2", "O pagamento é devido pela CONTRATANTE em favor da CONTRATADA por ação protocolada, ou seja, cada ação gera uma obrigação de pagamento nos valores constantes na cláusula anterior."));
-        col.Item().Element(GetParagraph("4.3", "O não cumprimento do pagamento fará a ação ser revogada, sem direito à devolução de qualquer quantia paga, incorrendo em multa contratual de 2% (dois por cento) sobre os valores devidos, atualização monetária pelo INPC e juros monetário de 1% ao mês."));
+        col.Item().PaddingTop(20).AlignLeft().Text("IV – Das obrigações da Contratante").LineHeight(lineHeightParagrafo).Bold().FontSize(fontSize);
+        col.Item().Element(GetParagraph("4.1", "A Contratante se obriga a cumprir fielmente o pagamento da quantia aqui acordada, sob pena de, em caso de mora, extinguir-se a relação contratual e ser levado o presente contrato à execução judicial, estando sujeita à correção monetária, juros e multa"));
+        col.Item().Element(GetParagraph("4.2", "A CONTRANTE declara estar ciente de que o serviço objeto deste contrato obedece estritamente a legislação brasileira"));
+        col.Item().Element(GetParagraph("4.3", "A Contratante fornecerá todos os documentos e meios necessários para a plena execução do serviço objeto deste contrato, sob pena de isentar a Contratada de responsabilidades acerca da prestação do serviço nos termos aqui acordados"));
 
         // CLÁUSULA  5
-        col.Item().PaddingTop(20).AlignLeft().Text("CLÁUSULA QUINTA – DA RESCISÃO CONTRATUAL").LineHeight(lineHeightParagrafo).Bold().FontSize(fontSize);
-        col.Item().Element(GetParagraph("5.1", "Em caso de desistência da ação por parte da CONTRATANTE, se a ação já estiver em andamento, não haverá devolução de qualquer quantia paga."));
-        col.Item().Element(GetParagraph("5.2", "A parte que descumprir qualquer das cláusulas deste contrato dará à outra o direito de rescindir o presente instrumento, cientificando-a com aviso prévio de 15 (quinze) dias, ficando desobrigada a parte inocente a dar continuidade a este contrato."));
+        col.Item().PaddingTop(20).AlignLeft().Text("V – Da manutenção processual").LineHeight(lineHeightParagrafo).Bold().FontSize(fontSize);
+        col.Item().Element(GetParagraph("5.1", $"Em caso de indeferimento, revogação, anulação ou extinção da medida judicial objeto do presente contrato, a Contratante, querendo, poderá requerer à Contratada, mantendo os demais termos desse instrumento, a manutenção processual da ação mediante pagamento antecipado de nova quantia sob o valor de {GetNewProcessValue()}."));
 
         // CLÁUSULA  6
-        col.Item().PaddingTop(20).AlignLeft().Text("CLÁUSULA SEXTA – DISPOSIÇÕES GERAIS").LineHeight(lineHeightParagrafo).Bold().FontSize(fontSize);
-        col.Item().Element(GetParagraph("6.1", "A retomada de relacionamento com o mercado financeiro é de 45 (quarenta e cinco) dias após a entrega do NADA CONSTA, ressaltando que não há a garantia de crédito conforme a cláusula segunda (2.5)."));
-        col.Item().Element(GetParagraph("6.2", "A CONTRATANTE se responsabiliza por toda ou quaisquer tentativas frustradas de retomada no mercado antes do prazo de 45 (quarenta e cinco) dias, ciente de que esse ato poderá prejudicar a pontuação do Score."));
-        col.Item().Element(GetParagraph("6.3", "O principal PROPÓSITO da CONTRATADA ao prestar esse serviço é a restruturação da vida financeira da CONTRATANTE, para que esta tenha novos hábitos financeiros a fim de sair da inadimplência e se tornar uma boa consumidora. Sendo assim, a CONTRATANTE se compromete a ter uma boa conduta perante o mercado financeiro."));
-        col.Item().Element(GetParagraph("6.4", "O presente contrato é um título executivo extrajudicial conforme previsão legal e, em caso de inadimplemento da CONTRATANTE, permite a propositura de ação de execução autônoma para o recebimento dos honorários devidos e não pagos."));
-        col.Item().Element(GetParagraph("6.5", "Fica pactuada a total inexistência de vínculo trabalhista entre as partes, excluindo as obrigações previdenciárias e os encargos sociais, não havendo entre as partes qualquer tipo de relação de subordinação."));
-        col.Item().Element(GetParagraph("6.6", "Este contrato, cumpridas todas as formalidades legais, afasta a qualidade de empregado prevista no art. 3º da CLT, nos termos do art. 442-B da CLT."));
-        col.Item().Element(GetParagraph("6.7", "A tolerância, por qualquer das partes, com relação ao descumprimento de qualquer termo ou condição aqui ajustado, não será considerada como desistência em exigir o cumprimento de disposição nele contida, nem representará novação com relação à obrigação passada, presente ou futura, no tocante ao termo ou condição cujo descumprimento foi tolerado."));
-        col.Item().Element(GetParagraph("6.8", "Fica eleito o foro do município de Ribeirão Preto, Estado de São Paulo, com exclusão de qualquer outro, por mais privilegiado que seja, para dirimir eventuais conflitos oriundos do presente contrato."));
+        col.Item().PaddingTop(20).AlignLeft().Text("VI – Da rescisão contratual").LineHeight(lineHeightParagrafo).Bold().FontSize(fontSize);
+        col.Item().Element(GetParagraph("6.1", "Em caso de rescisão do presente contrato por desistência ou inadimplência da Contratante, a Contratada ficará desobrigada de continuar a prestação de serviço, ficando ainda a Contratante responsável por eventuais pagamentos pendentes."));
+        col.Item().Element(GetParagraph("6.1.2", "Em caso de rescisão deste instrumento por desistência ou inadimplência da Contratante, caso esta deseje retomar o serviço em data posterior, deverá celebrar um novo contrato com a Contratada sob as condições vigentes à época da nova adesão, mediante novo pagamento"));
+        col.Item().Element(GetParagraph("6.2", "O atraso superior a 30 (trinta) dias corridos em qualquer parcela caracterizará rescisão automática deste contrato, independentemente de aviso prévio, sem prejuízo às responsabilidades com eventuais pagamentos pendentes"));
+
+        // CLÁUSULA  7
+        col.Item().PaddingTop(20).AlignLeft().Text("VII – Das disposições gerais").LineHeight(lineHeightParagrafo).Bold().FontSize(fontSize);
+        col.Item().Element(GetParagraph("7.1", "A Contratada não realiza negociações, quitações, compras ou parcelamentos de dívidas de consumidores."));
+        col.Item().Element(GetParagraph("7.2", "Restrições ainda podem aparecer internamente aos credores e em visualização própria (consumidor) nos aplicativos de órgãos de proteção ao crédito."));
+        col.Item().Element(GetParagraph("7.3", "A Contratada não garante pontuação de score (pontuação de crédito) com a prestação do serviço objeto deste contrato."));
+        col.Item().Element(GetParagraph("7.4", "A manutenção de atos processuais e suporte jurídico estão condicionados ao pagamento das quantias acordadas neste instrumento."));
+        col.Item().Element(GetParagraph("7.5", "O principal propósito da Contratada ao prestar o serviço objeto deste contrato é a restruturação da vida financeira da Contratante e, para que esta última tenha novos hábitos financeiros, a fim de sair da inadimplência. Sendo assim, a Contratante se compromete a ter uma boa conduta perante o mercado financeiro."));
+        col.Item().Element(GetParagraph("7.6", "As partes reconhecem que a prestação dos serviços objeto deste contrato é baseada na legislação e entendimento jurisprudencial vigentes na data de sua assinatura."));
+        col.Item().Element(GetParagraph("7.7", "Caso haja alteração no Código de Defesa do Consumidor (CDC), em normas correlatas ou em decisões judiciais que modifiquem ou inviabilizem a tese jurídica utilizada, a Contratada não será responsável por eventual perda de eficácia de efeitos processuais, como extinção ou revogação, não sendo devida a devolução de valores já pagos."));
+        col.Item().Element(GetParagraph("7.8", "O presente contrato é um título executivo extrajudicial conforme previsão legal e, em caso de inadimplemento da Contratante, permite a propositura de ação de execução autônoma para o recebimento dos honorários devidos e não pagos."));
+        col.Item().Element(GetParagraph("7.9", "Fica pactuada a total inexistência de vínculo trabalhista entre as partes, excluindo as obrigações previdenciárias e os encargos sociais, não havendo entre as partes qualquer tipo de relação de subordinação."));
+        col.Item().Element(GetParagraph("7.10", "Este contrato, cumpridas todas as formalidades legais, afasta a qualidade de empregado prevista no art. 3º da CLT, nos termos do art. 442-B da CLT"));
+        col.Item().Element(GetParagraph("7.11", "A tolerância, por qualquer das partes, com relação ao descumprimento de qualquer termo ou condição aqui ajustado, não será considerada como desistência em exigir o cumprimento de disposição nele contida, nem representará novação com relação à obrigação\r\npassada, presente ou futura, no tocante ao termo ou condição cujo descumprimento foi tolerado"));
+        col.Item().Element(GetParagraph("7.12", "Fica eleito o foro do município de Ribeirão Preto, Estado de São Paulo, com exclusão de qualquer outro, por mais privilegiado que seja, para dirimir eventuais conflitos oriundos do presente contrato"));
 
 
         col.Item().PaddingTop(20).AlignCenter().Text("E, por assim estarem as partes justas e acordadas, assinam o presente contrato.").FontSize(fontSize);
