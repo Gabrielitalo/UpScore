@@ -27,10 +27,6 @@ namespace RecomeceAPI.Controllers
       try
       {
         var isFind = await _service.Login(userType, email, password);
-
-        if (isFind.Active == 0)
-          return Ok(NotificationService.NoExists());
-
         return Ok(isFind);
       }
       catch (Exception ex)

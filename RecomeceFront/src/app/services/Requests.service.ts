@@ -7,8 +7,8 @@ import { ConfigsService } from './configs.service';
 @Injectable()
 export class RequestsService {
 
-  private baseUrl = 'https://localhost:7240/api';
-  //  private baseUrl = 'https://api.sistemalimpanome.com.br/api';
+  // private baseUrl = 'https://localhost:7240/api';
+   private baseUrl = 'https://api.sistemalimpanome.com.br/api';
   // private baseUrl = 'http://191.252.92.62/api';
 
   //IP Site: 	170.81.43.111

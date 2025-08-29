@@ -162,7 +162,7 @@ namespace RecomeceAPI.Services.PDFs
         else
           queryPF = await _restSerasaService.GetPF(inscricao, queryValue.Id, markId);
 
-        if(queryPF.reports.Count == 0)
+        if (queryPF.reports.Count == 0)
         {
           return NotificationService.Validation("Houve um problema para realizar a consulta, tente novamente em alguns instantes");
         }

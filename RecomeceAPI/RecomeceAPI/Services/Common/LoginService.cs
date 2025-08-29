@@ -24,14 +24,18 @@ namespace RecomeceAPI.Services.Common
       _cyptService = cyptService;
     }
 
-    public async Task<SessionDTO> Login(int userType, string email, string password)
+    public async Task<object> Login(int userType, string email, string password)
     {
       SessionModel sessionModel;
       if (userType == 0) // CadEquipe
       {
         CadEquipeModel model = await _cadEquipeService.Login(email, password);
         if (model.Id == 0)
-          return new SessionDTO();
+          return NotificationService.Validation("Usuário ou senha incorretos!");
+
+        if (model.Ativo == 0)
+          return NotificationService.Validation("Usuário está inativo entre em contato com o administrador");
+
         model.CadEmpresas = await _cadEmpresasService.GetByIdAsync(model.CadEmpresas.Id);
 
         sessionModel = new SessionModel

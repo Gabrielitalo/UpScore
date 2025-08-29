@@ -147,15 +147,25 @@ namespace RecomeceAPI.Services
     public async Task<LogConsultasModel> GetByInscricaoAsync(string inscricao)
     {
       inscricao = ExtensionService.CleanSpecialChars(inscricao);  
-      string cmd = @"SELECT * FROM LogConsultas WHERE Inscricao = @p_Inscricao and Legado = 0 and Situacao = 1 Limit 1;";
+      string cmd = @"SELECT L.* 
+      FROM LogConsultas L 
+      Join CadEquipe Ce on (Ce.Id = L.Fk_CadEquipe)
+      WHERE Ce.Fk_CadEmpresas = @p_CadEmpresa and
+      L.Inscricao = @p_Inscricao and L.Legado = 0 and L.Situacao = 1 Limit 1;";
       _dbContext.Parametros.AddItem("@p_Inscricao", inscricao);
+      _dbContext.Parametros.AddItem("@p_CadEmpresa", AppIdentity.GetIdCompanyValue());
       DataSet result = await _dbContext.QueryAsync(cmd, 0);
       return SetByDataSet(result);
     }
     public async Task<LogConsultasModel> GetByInscricaoProdutoAsync(string inscricao, long productId)
     {
       inscricao = ExtensionService.CleanSpecialChars(inscricao);  
-      string cmd = @"SELECT * FROM LogConsultas WHERE Inscricao = @p_Inscricao and Legado = 0 and Fk_CadConsultas = @p_CadConsultas Order by DataHoraConsulta Desc Limit 1;";
+      string cmd = @"SELECT L.* 
+      FROM LogConsultas L 
+      Join CadEquipe Ce on (Ce.Id = L.Fk_CadEquipe)
+      WHERE Ce.Fk_CadEmpresas = @p_CadEmpresa and L.Inscricao = @p_Inscricao and L.Legado = 0 and L.Fk_CadConsultas = @p_CadConsultas 
+      Order by DataHoraConsulta Desc 
+      Limit 1;";
       _dbContext.Parametros.AddItem("@p_Inscricao", inscricao);
       _dbContext.Parametros.AddItem("@p_CadConsultas", productId);
       DataSet result = await _dbContext.QueryAsync(cmd, 0);

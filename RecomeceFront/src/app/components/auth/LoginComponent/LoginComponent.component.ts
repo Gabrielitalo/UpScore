@@ -51,6 +51,11 @@ export class LoginComponentComponent implements OnInit {
 
   public async Login(): Promise<void> {
     const data = await this.request.getWithMode(`/Login?userType=${this.tab}&email=${this.userName}&password=${this.passWord}`, this.mode);
+    if(data?.type){
+      this.snack.CreateNotification(data.content)
+      return;
+    }
+    
     if (data.token) {
       data.isQa = this.mode == 'qa' ? true : false;
       await this.auth.setSession(data);
@@ -63,7 +68,5 @@ export class LoginComponentComponent implements OnInit {
     else if (data.type == 2) {
       this.snack.CreateNotification('Usuário ou senha não encontrado!')
     }
-    console.log(data)
-
   }
 }
